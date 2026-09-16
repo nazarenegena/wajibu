@@ -1,11 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
+  ArrowRight,
   Eraser,
-  FileSearch,
-  FileText,
-  Search,
-  UploadCloud,
+  Upload,
+  X,
 } from "lucide-react";
 import { cn } from "cn";
 import { useLanguage } from "../context/LanguageContext";
@@ -13,7 +12,6 @@ import { LanguageToggle } from "../components/LanguageToggle";
 import { LoadingState } from "../components/LoadingState";
 import { ErrorState } from "../components/ErrorState";
 import { Button } from "../components/ui/button";
-import { Card, CardContent } from "../components/ui/card";
 import { Textarea } from "../components/ui/textarea";
 import { extractTextFromPdf } from "../lib/pdf";
 import { analyseDocument } from "../lib/api";
@@ -127,29 +125,17 @@ export function Analyse() {
     }
   };
 
-  const header = (
-    <div className="flex flex-wrap items-start justify-between gap-4">
-      <div className="flex items-start gap-4">
-        <span className="mt-1 flex size-12 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-          <FileSearch className="size-6" />
-        </span>
-        <div>
-          <h1 className="text-3xl tracking-tight">{t("analyse_title")}</h1>
-          <p className="mt-1.5 max-w-xl text-balance leading-relaxed text-muted-foreground">
-            {t("analyse_subtitle")}
-          </p>
-        </div>
-      </div>
-      <LanguageToggle />
-    </div>
-  );
-
-  const container = "mx-auto w-full max-w-4xl px-4 py-10 sm:px-6 md:py-14";
-
   if (phase === "error") {
     return (
-      <div className={container}>
-        <div className="mb-8">{header}</div>
+      <div className="mx-auto max-w-3xl px-5 py-16 lg:px-8 lg:py-24">
+        <div className="mb-10">
+          <p className="text-sm font-medium text-primary">
+            {t("analyse_eyebrow")}
+          </p>
+          <h1 className="mt-2 text-4xl font-semibold tracking-tight sm:text-5xl">
+            {t("analyse_title_new")}
+          </h1>
+        </div>
         <ErrorState
           title={t("error_title")}
           message={
@@ -176,8 +162,15 @@ export function Analyse() {
 
   if (phase === "loading") {
     return (
-      <div className={container}>
-        <div className="mb-8">{header}</div>
+      <div className="mx-auto max-w-3xl px-5 py-16 lg:px-8 lg:py-24">
+        <div className="mb-10">
+          <p className="text-sm font-medium text-primary">
+            {t("analyse_eyebrow")}
+          </p>
+          <h1 className="mt-2 text-4xl font-semibold tracking-tight sm:text-5xl">
+            {t("analyse_title_new")}
+          </h1>
+        </div>
         <LoadingState message={t("loading_reading")} />
         <p className="mt-4 text-center text-sm text-muted-foreground">
           {t("loading_seconds")}
@@ -186,131 +179,125 @@ export function Analyse() {
     );
   }
 
-  const charCount = text.trim().length;
-
   return (
-    <div className={container}>
-      <div className="mb-8">{header}</div>
+    <div className="mx-auto max-w-3xl px-5 py-16 lg:px-8 lg:py-24">
+      <div className="mb-10">
+        <p className="text-sm font-medium text-primary">
+          {t("analyse_eyebrow")}
+        </p>
+        <h1 className="mt-2 text-4xl font-semibold tracking-tight sm:text-5xl">
+          {t("analyse_title_new")}
+        </h1>
+        <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted-foreground">
+          {t("analyse_subtitle_new")}
+        </p>
+      </div>
 
-      <Card className="overflow-hidden">
-        <CardContent className="space-y-6 p-6 sm:p-8">
-          <div
-            className={cn(
-              "flex min-h-52 flex-col items-center justify-center gap-4 rounded-xl border-2 border-dashed border-border px-6 py-10 text-center transition-colors",
-              dragOver && "border-primary bg-muted/60"
-            )}
-            onDragOver={(event) => {
-              event.preventDefault();
-              setDragOver(true);
-            }}
-            onDragLeave={() => setDragOver(false)}
-            onDrop={(event) => {
-              event.preventDefault();
-              setDragOver(false);
-              const file = event.dataTransfer.files?.[0];
+      <div className="flex flex-col gap-5">
+        <label
+          className={cn(
+            "group flex min-h-52 cursor-pointer flex-col items-center justify-center rounded-2xl border border-dashed border-primary/40 bg-primary/5 p-8 text-center transition-colors hover:bg-primary/10",
+            dragOver && "border-primary bg-primary/10"
+          )}
+          onDragOver={(event) => {
+            event.preventDefault();
+            setDragOver(true);
+          }}
+          onDragLeave={() => setDragOver(false)}
+          onDrop={(event) => {
+            event.preventDefault();
+            setDragOver(false);
+            const file = event.dataTransfer.files?.[0];
+            if (file) void handlePdfFile(file);
+          }}
+        >
+          <input
+            ref={inputRef}
+            type="file"
+            accept="application/pdf,.pdf"
+            className="sr-only"
+            aria-label={t("analyse_upload")}
+            onChange={(event) => {
+              const file = event.target.files?.[0];
               if (file) void handlePdfFile(file);
+              event.target.value = "";
             }}
-          >
-            <span className="flex size-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-              <UploadCloud className="size-7" />
-            </span>
-            <div className="space-y-1">
-              <p className="text-lg font-medium text-foreground">
-                {t("analyse_drop")}
-              </p>
-              <p className="text-sm text-muted-foreground">
-                {t("analyse_drop_hint")}
-              </p>
+          />
+          <span className="mb-4 grid size-12 place-items-center rounded-full bg-card text-primary shadow-sm">
+            <Upload className="size-5" />
+          </span>
+          <span className="font-medium text-foreground">
+            {sourceName ?? t("analyse_drop")}
+          </span>
+          <span className="mt-2 text-sm text-muted-foreground">
+            {t("analyse_drop_hint")}
+          </span>
+        </label>
+
+        <div className="flex items-center gap-3 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+          <span className="h-px flex-1 bg-border" />
+          {t("analyse_or_paste")}
+          <span className="h-px flex-1 bg-border" />
+        </div>
+
+        <div className="space-y-1">
+          {text.length > 0 ? (
+            <div className="flex items-center justify-end">
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="h-7 gap-1 px-2 text-xs text-muted-foreground"
+                onClick={clearText}
+              >
+                <Eraser className="size-3.5" />
+                {t("analyse_clear")}
+                <X className="size-3" />
+              </Button>
             </div>
-            <Button
-              type="button"
-              variant="outline"
-              size="lg"
-              className="relative"
-              onClick={() => inputRef.current?.click()}
-            >
-              <UploadCloud className="mr-2 size-4" />
-              {t("analyse_upload")}
-            </Button>
-            <input
-              ref={inputRef}
-              type="file"
-              accept="application/pdf,.pdf"
-              className="sr-only"
-              aria-label={t("analyse_upload")}
-              onChange={(event) => {
-                const file = event.target.files?.[0];
-                if (file) void handlePdfFile(file);
-                event.target.value = "";
-              }}
-            />
-          </div>
+          ) : null}
+          <Textarea
+            value={text}
+            onChange={(event) => {
+              setText(event.target.value);
+              setNotice(null);
+            }}
+            placeholder={t("analyse_textarea_placeholder")}
+            aria-label={t("analyse_document_label")}
+            rows={10}
+            className="min-h-44 resize-y rounded-xl p-4 text-sm leading-relaxed focus:border-ring focus:ring-3 focus:ring-ring/30"
+          />
+        </div>
 
-          <div className="flex items-center gap-3 text-sm text-muted-foreground">
-            <span className="h-px flex-1 bg-border" />
-            {t("analyse_or")}
-            <span className="h-px flex-1 bg-border" />
-          </div>
-
-          <div className="space-y-2">
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <div className="flex min-w-0 items-center gap-2">
-                <span className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground">
-                  <FileText className="size-4" />
-                </span>
-                <span className="truncate text-sm font-medium text-foreground">
-                  {sourceName ?? t("analyse_document_label")}
-                </span>
-                {notice ? (
-                  <span
-                    role="status"
-                    className="truncate rounded-full bg-muted px-2.5 py-0.5 text-xs text-muted-foreground"
-                  >
-                    {notice}
-                  </span>
-                ) : null}
-              </div>
-              {text.length > 0 ? (
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  className="h-7 px-2 text-xs text-muted-foreground"
-                  onClick={clearText}
-                >
-                  <Eraser className="mr-1.5 size-3.5" />
-                  {t("analyse_clear")}
-                </Button>
-              ) : null}
-            </div>
-
-            <Textarea
-              value={text}
-              onChange={(event) => {
-                setText(event.target.value);
-                setNotice(null);
-              }}
-              placeholder={t("analyse_textarea_placeholder")}
-              aria-label={t("analyse_document_label")}
-              rows={10}
-              className="h-72 max-h-[60vh] min-h-32"
-            />
-          </div>
-
-          <div className="flex flex-wrap items-center justify-between gap-3 border-t pt-5">
+        <div className="flex flex-col gap-3 rounded-xl border border-border bg-muted/50 p-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="text-sm font-medium">{t("output_language")}</p>
             <p className="text-xs text-muted-foreground">
-              {charCount > 0 ? `${charCount} chars` : "\u00A0"}
-              {charCount > 0 && charCount < 50
-                ? ` \u00B7 ${t("analyse_min_chars")}`
-                : ""}
+              {t("output_hint")}
             </p>
-            <Button size="lg" disabled={!canAnalyse} onClick={runAnalysis}>
-              <Search className="mr-2 size-4" />
-              {t("analyse_analyse")}
-            </Button>
           </div>
-        </CardContent>
-      </Card>
+          <LanguageToggle />
+        </div>
+
+        {notice && !sourceName ? (
+          <p
+            role="status"
+            className="rounded-xl bg-muted/60 px-3 py-2 text-sm text-muted-foreground"
+          >
+            {notice}
+          </p>
+        ) : null}
+
+        <Button
+          size="lg"
+          className="h-12"
+          disabled={!canAnalyse}
+          onClick={runAnalysis}
+        >
+          {t("analyse_action")}
+          <ArrowRight className="ml-2 size-4" />
+        </Button>
+      </div>
     </div>
   );
 }

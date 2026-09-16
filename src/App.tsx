@@ -1,5 +1,6 @@
 import { Outlet, Route, Routes } from "react-router-dom";
 import { Header } from "./components/Header";
+import { LanguageBar } from "./components/LanguageBar";
 import { Footer } from "./components/Footer";
 import { Home } from "./pages/Home";
 import { Analyse } from "./pages/Analyse";
@@ -9,6 +10,7 @@ function Layout() {
   return (
     <div className="flex min-h-dvh flex-col">
       <Header />
+      <LanguageBar />
       <main className="flex-1">
         <Outlet />
       </main>

@@ -3,6 +3,8 @@ export type Language = 'en' | 'sw';
 export interface KeyDetails {
   tender_number: string;
   deadline: string;
+  deadline_iso?: string;
+  cancelled?: boolean;
   eligibility: string;
   estimated_value: string;
   contact: string;

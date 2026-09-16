@@ -6,27 +6,27 @@
 :root {
   /* Wajibu brand — light mode */
   --background: 40 33% 98%;          /* warm off-white #FAF9F6 */
-  --foreground: 215 28% 17%;         /* slate-900 */
+  --foreground: 152 30% 12%;         /* deep green ink */
 
-  --card: 0 0% 100%;                 /* pure white cards */
-  --card-foreground: 215 28% 17%;
+  --card: 40 33% 99%;
+  --card-foreground: 152 30% 12%;
 
-  --popover: 0 0% 100%;
-  --popover-foreground: 215 28% 17%;
+  --popover: 40 33% 99%;
+  --popover-foreground: 152 30% 12%;
 
   --primary: 152 55% 19%;            /* deep Kenyan green #0F5132 */
   --primary-foreground: 40 33% 98%;
 
   --secondary: 40 20% 94%;           /* warm light surface */
-  --secondary-foreground: 152 55% 19%;
+  --secondary-foreground: 152 30% 12%;
 
   --muted: 40 20% 94%;
-  --muted-foreground: 215 16% 47%;
+  --muted-foreground: 152 10% 42%;
 
-  --accent: 152 30% 92%;             /* faint green wash */
-  --accent-foreground: 152 55% 19%;
+  --accent: 40 20% 94%;
+  --accent-foreground: 152 30% 12%;
 
-  --destructive: 0 72% 51%;          /* red — errors */
+  --destructive: 0 70% 48%;
   --destructive-foreground: 0 0% 100%;
 
   --warning: 32 95% 44%;             /* amber #D97706 — red flags */
@@ -35,37 +35,37 @@
   --success: 152 55% 30%;            /* green for eligible */
   --success-foreground: 0 0% 100%;
 
-  --border: 40 15% 88%;
-  --input: 40 15% 88%;
-  --ring: 152 55% 19%;
+  --border: 40 12% 86%;
+  --input: 40 12% 80%;
+  --ring: 152 55% 30%;
 
-  --radius: 0.75rem;
+  --radius: 0.625rem;
 }
 
 .dark {
   /* Wajibu brand — dark mode */
   --background: 152 25% 8%;          /* deep green-black */
-  --foreground: 40 20% 96%;
+  --foreground: 40 33% 96%;
 
-  --card: 152 20% 11%;
-  --card-foreground: 40 20% 96%;
+  --card: 152 22% 12%;
+  --card-foreground: 40 33% 96%;
 
-  --popover: 152 20% 11%;
-  --popover-foreground: 40 20% 96%;
+  --popover: 152 22% 12%;
+  --popover-foreground: 40 33% 96%;
 
   --primary: 152 45% 55%;            /* brighter green for contrast */
   --primary-foreground: 152 25% 8%;
 
   --secondary: 152 15% 18%;
-  --secondary-foreground: 40 20% 96%;
+  --secondary-foreground: 40 33% 96%;
 
   --muted: 152 15% 18%;
-  --muted-foreground: 40 10% 65%;
+  --muted-foreground: 152 10% 68%;
 
   --accent: 152 20% 20%;
-  --accent-foreground: 40 20% 96%;
+  --accent-foreground: 40 33% 96%;
 
-  --destructive: 0 62% 55%;
+  --destructive: 0 65% 58%;
   --destructive-foreground: 0 0% 100%;
 
   --warning: 32 85% 55%;
@@ -74,8 +74,8 @@
   --success: 152 45% 50%;
   --success-foreground: 152 25% 8%;
 
-  --border: 152 15% 20%;
-  --input: 152 15% 20%;
+  --border: 152 15% 23%;
+  --input: 152 15% 27%;
   --ring: 152 45% 55%;
 }
 
@@ -104,10 +104,13 @@
   --color-input: hsl(var(--input));
   --color-ring: hsl(var(--ring));
 
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
 
   --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
     Helvetica, Arial, sans-serif;
@@ -115,7 +118,7 @@
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border outline-ring/50;
   }
 
   html {

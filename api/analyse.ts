@@ -12,11 +12,13 @@ const responseSchema = {
       properties: {
         tender_number: { type: 'STRING' },
         deadline: { type: 'STRING' },
+        deadline_iso: { type: 'STRING' },
+        cancelled: { type: 'BOOLEAN' },
         eligibility: { type: 'STRING' },
         estimated_value: { type: 'STRING' },
         contact: { type: 'STRING' },
       },
-      required: ['tender_number', 'deadline', 'eligibility', 'estimated_value', 'contact'],
+      required: ['tender_number', 'deadline', 'deadline_iso', 'cancelled', 'eligibility', 'estimated_value', 'contact'],
     },
     who_can_apply: { type: 'STRING' },
     jargon: {
@@ -90,8 +92,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const systemPrompt = lang === 'sw'
-    ? `Wewe ni Wajibu. Chukua tangazo la zabuni au hati ya bajeti ya kaunti na uieleze kwa Kiswahili rahisi. Rudisha JSON pekee. Hii ndiyo muundo sahihi: title (string), summary (string), key_details (object yenye: tender_number, deadline, eligibility, estimated_value, contact - zote string), who_can_apply (string), jargon (array ya {term, plain_meaning}), red_flags (array ya {flag, why_it_matters, source_quote}), next_steps (array ya string), source_citations (array ya string). Kwa kila sehemu isiyotajwa kwenye hati, tumia "Haijaelezwa kwenye hati hii" ikiwa halipo. Usibuni ukweli.`
-    : `You are Wajibu. Take a Kenyan county tender or budget document and explain it in plain English. Return ONLY valid JSON with exactly this shape: title (string), summary (string), key_details (object with: tender_number, deadline, eligibility, estimated_value, contact - all strings), who_can_apply (string), jargon (array of {term, plain_meaning}), red_flags (array of {flag, why_it_matters, source_quote}), next_steps (array of strings), source_citations (array of strings). For any field not stated in the document, use "Not stated in this document." Do not invent facts.`;
+    ? `Wewe ni Wajibu. Chukua tangazo la zabuni au hati ya bajeti ya kaunti na uieleze kwa Kiswahili rahisi. Rudisha JSON pekee. Hii ndiyo muundo sahihi: title (string), summary (string), key_details (object yenye: tender_number, deadline, deadline_iso, cancelled, eligibility, estimated_value, contact - zote string isipokuwa cancelled ambayo ni boolean), who_can_apply (string), jargon (array ya {term, plain_meaning}), red_flags (array ya {flag, why_it_matters, source_quote}), next_steps (array ya string), source_citations (array ya string). deadline_iso: toa tarehe halisi ya kufunga kama mtindo wa ISO 8601 (mfano 2024-10-18), au mfuatano tupu ("") ikiwa hakuna tarehe kamili kwenye hati. cancelled: weka true TU ikiwa hati inasema wazi kwamba zabuni imeghairiwa au kufutwa; vinginevyo false. Kwa kila sehemu isiyotajwa kwenye hati, tumia "Haijaelezwa kwenye hati hii" ikiwa halipo. Usibuni ukweli.`
+    : `You are Wajibu. Take a Kenyan county tender or budget document and explain it in plain English. Return ONLY valid JSON with exactly this shape: title (string), summary (string), key_details (object with: tender_number, deadline, deadline_iso, cancelled, eligibility, estimated_value, contact - all strings except cancelled which is a boolean), who_can_apply (string), jargon (array of {term, plain_meaning}), red_flags (array of {flag, why_it_matters, source_quote}), next_steps (array of strings), source_citations (array of strings). deadline_iso: extract the concrete closing date as an ISO 8601 string (e.g. 2024-10-18, or full datetime), or an empty string ("") if the document has no exact date. cancelled: set to true ONLY if the document explicitly states the tender was cancelled or withdrawn; otherwise false. For any field not stated in the document, use "Not stated in this document." Do not invent facts.`;
 
   try {
     const response = await fetch(

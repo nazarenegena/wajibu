@@ -1,42 +1,20 @@
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
-  AlertTriangle,
-  CheckCircle2,
-  ChevronDown,
+  Check,
+  Clipboard,
   HelpCircle,
   Search,
-  Share2,
+  ShieldAlert,
 } from "lucide-react";
 import { cn } from "cn";
-import type { CSSProperties } from "react";
 import { useLanguage, type UiStrings } from "../context/LanguageContext";
-import { LanguageToggle } from "../components/LanguageToggle";
 import { LoadingState } from "../components/LoadingState";
 import { JargonPopover } from "../components/JargonPopover";
 import { RedFlagList } from "../components/RedFlagList";
 import { NextSteps } from "../components/NextSteps";
+import { StatusBadge } from "../components/StatusBadge";
 import { Button } from "../components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "../components/ui/card";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "../components/ui/collapsible";
-import { Separator } from "../components/ui/separator";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../components/ui/select";
 import { analyseDocument } from "../lib/api";
 import type { Language, WajibuResult } from "../lib/types";
 
@@ -81,32 +59,38 @@ function getVerdict(hay: string, category: CategoryId): Verdict {
   return "unclear";
 }
 
-function VerdictPanel({ verdict }: { verdict: Verdict }) {
+function InlineVerdict({
+  verdict,
+  className,
+}: {
+  verdict: Verdict;
+  className?: string;
+}) {
   const { t } = useLanguage();
 
   if (verdict === "eligible") {
     return (
-      <p className="flex items-center gap-2 rounded-lg bg-success/10 px-3 py-2.5 text-sm font-medium text-success">
-        <CheckCircle2 className="size-4 shrink-0" />
+      <span className={cn("inline-flex items-center gap-1.5 text-sm font-medium text-success", className)}>
+        <Check className="size-4" />
         {t("result_eligible")}
-      </p>
+      </span>
     );
   }
 
   if (verdict === "not-eligible") {
     return (
-      <p className="flex items-center gap-2 rounded-lg bg-warning/10 px-3 py-2.5 text-sm font-medium text-warning">
-        <AlertTriangle className="size-4 shrink-0" />
+      <span className={cn("inline-flex items-center gap-1.5 text-sm font-medium text-warning", className)}>
+        <ShieldAlert className="size-4" />
         {t("result_not_eligible")}
-      </p>
+      </span>
     );
   }
 
   return (
-    <p className="flex items-center gap-2 rounded-lg bg-muted px-3 py-2.5 text-sm font-medium text-muted-foreground">
-      <HelpCircle className="size-4 shrink-0" />
+    <span className={cn("inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground", className)}>
+      <HelpCircle className="size-4" />
       {t("result_unclear")}
-    </p>
+    </span>
   );
 }
 
@@ -167,27 +151,23 @@ export function Result() {
 
   if (!current) {
     return (
-      <div className="mx-auto w-full max-w-3xl px-4 py-12 sm:px-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-2xl">
-              {t("result_no_result")}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="p-6">
-            <Button size="lg" onClick={() => navigate("/analyse")}>
-              <Search className="mr-2 size-4" />
-              {t("analyse_analyse")}
-            </Button>
-          </CardContent>
-        </Card>
+      <div className="mx-auto max-w-5xl px-5 py-12 lg:px-8 lg:py-16">
+        <div className="rounded-2xl border border-border bg-card p-6 sm:p-8">
+          <h1 className="text-2xl tracking-tight">
+            {t("result_no_result")}
+          </h1>
+          <Button className="mt-5" onClick={() => navigate("/analyse")}>
+            <Search className="mr-2 size-4" />
+            {t("analyse_analyse")}
+          </Button>
+        </div>
       </div>
     );
   }
 
   if (reloading) {
     return (
-      <div className="mx-auto w-full max-w-3xl px-4 py-12 sm:px-6">
+      <div className="mx-auto max-w-5xl px-5 py-12 lg:px-8 lg:py-16">
         <LoadingState message={t("loading_reading")} />
         <p className="mt-4 text-center text-sm text-muted-foreground">
           {t("loading_seconds")}
@@ -196,7 +176,7 @@ export function Result() {
     );
   }
 
-  const roomier = { "--card-spacing": "1.5rem" } as CSSProperties;
+  const langLabel = analysedLang === "sw" ? "Kiswahili" : "English";
   const hay = `${current.who_can_apply} ${current.key_details.eligibility}`
     .toLowerCase();
 
@@ -209,181 +189,191 @@ export function Result() {
   ];
 
   return (
-    <div className="mx-auto w-full max-w-3xl space-y-6 px-4 py-10 sm:px-6">
-      <div className="flex flex-col gap-4 border-b border-border pb-6 sm:flex-row sm:items-start sm:justify-between">
+    <div className="mx-auto max-w-5xl px-5 py-12 lg:px-8 lg:py-16">
+      <div className="mb-10 flex flex-col gap-5 border-b border-border pb-8 sm:flex-row sm:items-start sm:justify-between">
         <div className="min-w-0">
-          <h1 className="text-2xl leading-snug tracking-tight">
+          <Button
+            variant="link"
+            className="mb-3 h-auto px-0 text-primary"
+            render={<Link to="/" />}
+          >
+            {t("result_back")}
+          </Button>
+          <p className="text-sm text-muted-foreground">
+            {t("result_complete")} · {langLabel}
+          </p>
+          <h1 className="mt-2 max-w-2xl text-3xl font-semibold tracking-tight sm:text-4xl">
             {current.title}
           </h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            {analysedLang === "sw" ? "Kiswahili" : "English"}
-          </p>
+          <div className="mt-2 flex flex-wrap items-center gap-2.5">
+            <StatusBadge keyDetails={current.key_details} />
+            <span className="text-sm text-muted-foreground">
+              Nyeri County · Tender {current.key_details.tender_number}
+            </span>
+          </div>
         </div>
-        <div className="flex shrink-0 items-center gap-2">
-          <LanguageToggle />
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => navigate("/analyse")}
-          >
-            <Search className="mr-1.5 size-4" />
-            {t("analyse_analyse")}
-          </Button>
-        </div>
+        <Button variant="outline" render={<Link to="/analyse" />}>
+          {t("result_analyse_another")}
+        </Button>
       </div>
 
-      <Card style={roomier}>
-        <CardHeader>
-          <CardTitle className="text-lg">{t("result_summary")}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-lg leading-relaxed text-foreground">
-            {current.summary}
-          </p>
-        </CardContent>
-      </Card>
+      <div className="grid gap-6 lg:grid-cols-[1.3fr_.7fr]">
+        <div className="flex flex-col gap-6">
+          <section className="rounded-2xl bg-primary p-6 text-primary-foreground shadow-lg shadow-primary/10 sm:p-8">
+            <p className="text-sm font-medium text-primary-foreground/70">
+              {t("result_plain_lang")}
+            </p>
+            <p className="mt-4 text-xl leading-relaxed sm:text-2xl">
+              {current.summary}
+            </p>
+          </section>
 
-      <Card style={roomier}>
-        <CardHeader>
-          <CardTitle className="text-lg">{t("result_key_details")}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <dl className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
-            {keyDetailFields.map((field) => (
-              <div key={field.label}>
-                <dt className="text-sm font-medium text-muted-foreground">
-                  {field.label}
-                </dt>
-                <dd className="mt-1 text-base font-medium text-foreground">
-                  {field.value.trim() || "—"}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </CardContent>
-      </Card>
-
-      <Card style={roomier}>
-        <CardHeader>
-          <CardTitle className="text-lg">{t("result_who_can_apply")}</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-5">
-          <p className="text-base leading-relaxed text-foreground">
-            {current.who_can_apply}
-          </p>
-          <Separator />
-          <div className="space-y-2">
-            <label
-              id="eligibility-label"
-              className="text-sm font-medium text-foreground"
-            >
-              {t("result_category_prompt")}
-            </label>
-            <Select
-              value={category}
-              onValueChange={(value) =>
-                setCategory(value as CategoryId | null)
-              }
-            >
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder={t("result_category_prompt")} />
-              </SelectTrigger>
-              <SelectContent align="start" className="w-full">
-                {categoryOptions.map((option) => (
-                  <SelectItem key={option.id} value={option.id}>
-                    {t(option.labelKey)}
-                  </SelectItem>
+          <section className="rounded-2xl border border-border bg-card p-6">
+            <h2 className="text-lg font-semibold">
+              {t("result_who_can_apply")}
+            </h2>
+            <p className="mt-3 leading-relaxed text-muted-foreground">
+              {current.who_can_apply}
+            </p>
+            <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
+              <select
+                value={category ?? ""}
+                onChange={(e) =>
+                  setCategory((e.target.value as CategoryId) || null)
+                }
+                className="h-10 rounded-lg border border-input bg-background px-3 text-sm outline-none focus:ring-3 focus:ring-ring/30"
+              >
+                <option value="">{t("result_category_prompt")}</option>
+                {categoryOptions.map((opt) => (
+                  <option key={opt.id} value={opt.id}>
+                    {t(opt.labelKey)}
+                  </option>
                 ))}
-              </SelectContent>
-            </Select>
-          </div>
-          {category ? (
-            <VerdictPanel verdict={getVerdict(hay, category)} />
-          ) : null}
-        </CardContent>
-      </Card>
+              </select>
+              {category ? (
+                <InlineVerdict verdict={getVerdict(hay, category)} />
+              ) : null}
+            </div>
+          </section>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">{t("result_jargon")}</CardTitle>
-          <CardDescription>{t("result_jargon_hint")}</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <JargonPopover terms={current.jargon} />
-        </CardContent>
-      </Card>
+          <section className="rounded-2xl border border-border bg-card p-6">
+            <h2 className="text-lg font-semibold">
+              {t("result_jargon")}
+            </h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {t("result_jargon_hint")}
+            </p>
+            <div className="mt-5">
+              <JargonPopover terms={current.jargon} />
+            </div>
+          </section>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">{t("result_red_flags")}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <RedFlagList flags={current.red_flags} />
-        </CardContent>
-      </Card>
+          <section>
+            <div className="mb-4 flex items-end justify-between">
+              <div>
+                <h2 className="text-lg font-semibold">
+                  {t("result_red_flags_title")}
+                </h2>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  {t("result_red_flags_hint")}
+                </p>
+              </div>
+              <ShieldAlert className="text-warning" />
+            </div>
+            <RedFlagList flags={current.red_flags} />
+          </section>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">{t("result_next_steps")}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <NextSteps steps={current.next_steps} />
-        </CardContent>
-      </Card>
+          <section className="rounded-2xl border border-border bg-card">
+            <button
+              type="button"
+              className="flex w-full items-center justify-between rounded-2xl px-6 py-4 text-left font-semibold tracking-tight outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+              onClick={() => setSourcesOpen(!sourcesOpen)}
+            >
+              <span>{t("result_sources")}</span>
+              <svg
+                className={cn(
+                  "size-4 text-muted-foreground transition-transform",
+                  sourcesOpen && "rotate-180"
+                )}
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </button>
+            {sourcesOpen ? (
+              <div className="px-6 pb-5">
+                <ul className="list-disc space-y-2 pl-5 text-sm text-muted-foreground">
+                  {current.source_citations.map((citation, index) => (
+                    <li key={index} className="leading-relaxed">
+                      {citation}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+          </section>
+        </div>
 
-      <Collapsible
-        open={sourcesOpen}
-        onOpenChange={setSourcesOpen}
-        className="rounded-xl border border-border bg-card"
-      >
-        <CollapsibleTrigger className="flex w-full items-center justify-between rounded-xl px-6 py-4 text-left outline-none focus-visible:ring-3 focus-visible:ring-ring/50">
-          <span className="font-semibold tracking-tight">
-            {t("result_sources")}
-          </span>
-          <ChevronDown
-            className={cn(
-              "size-4 text-muted-foreground transition-transform",
-              sourcesOpen && "rotate-180"
-            )}
-          />
-        </CollapsibleTrigger>
-        <CollapsibleContent className="px-6 pb-5">
-          <ul className="list-disc space-y-2 pl-5 text-sm text-muted-foreground">
-            {current.source_citations.map((citation, index) => (
-              <li key={index} className="leading-relaxed">
-                {citation}
-              </li>
-            ))}
-          </ul>
-        </CollapsibleContent>
-      </Collapsible>
+        <aside className="flex flex-col gap-6">
+          <section className="rounded-2xl border border-border bg-card p-6">
+            <h2 className="text-lg font-semibold">
+              {t("result_key_details")}
+            </h2>
+<dl className="mt-5 flex flex-col gap-4">
+            <div className="border-b border-border pb-3 last:border-0 last:pb-0">
+              <dt className="text-xs text-muted-foreground">
+                {t("result_status")}
+              </dt>
+              <dd className="mt-1.5">
+                <StatusBadge keyDetails={current.key_details} />
+              </dd>
+            </div>
+            {keyDetailFields.map((field) => (
+                <div
+                  key={field.label}
+                  className="border-b border-border pb-3 last:border-0 last:pb-0"
+                >
+                  <dt className="text-xs text-muted-foreground">
+                    {field.label}
+                  </dt>
+                  <dd className="mt-1 text-sm font-medium leading-relaxed">
+                    {field.value.trim() || "—"}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </section>
 
-      <Card style={roomier}>
-        <CardContent className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div>
+          <section className="rounded-2xl border border-border bg-card p-6">
+            <h2 className="text-lg font-semibold">
+              {t("result_next_steps")}
+            </h2>
+            <NextSteps steps={current.next_steps} />
+          </section>
+
+          <section className="rounded-2xl border border-border bg-muted/50 p-5">
+            <p className="text-sm font-medium">{t("result_share")}</p>
+            <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+              {t("result_share_hint")}
+            </p>
             <Button
               variant="outline"
-              size="lg"
-              className={cn(copied && "border-success text-success")}
+              className="mt-4 w-full"
               onClick={shareSummary}
             >
               {copied ? (
-                <CheckCircle2 className="mr-2 size-4" />
+                <Check className="mr-2 size-4" />
               ) : (
-                <Share2 className="mr-2 size-4" />
+                <Clipboard className="mr-2 size-4" />
               )}
-              {copied ? t("result_shared") : t("result_share")}
+              {copied ? t("result_link_copied") : t("result_copy_link")}
             </Button>
-            <p className="mt-2 text-xs text-muted-foreground" aria-live="polite">
-              {copied ? t("result_shared") : "\u00A0"}
-            </p>
-          </div>
-          <Button size="lg" onClick={() => navigate("/analyse")}>
-            <Search className="mr-2 size-4" />
-            {t("result_analyse_another")}
-          </Button>
-        </CardContent>
-      </Card>
+          </section>
+        </aside>
+      </div>
     </div>
   );
 }

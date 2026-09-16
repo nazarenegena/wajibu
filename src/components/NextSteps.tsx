@@ -1,5 +1,3 @@
-import { CornerDownRight } from "lucide-react";
-
 interface NextStepsProps {
   steps: string[];
 }
@@ -14,16 +12,13 @@ export function NextSteps({ steps }: NextStepsProps) {
   }
 
   return (
-    <ol className="space-y-3">
+    <ol className="mt-5 flex flex-col gap-4">
       {steps.map((step, index) => (
-        <li key={index} className="flex items-start gap-3">
-          <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">
+        <li key={index} className="flex gap-3 text-sm leading-relaxed">
+          <span className="grid size-6 shrink-0 place-items-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">
             {index + 1}
           </span>
-          <span className="flex-1 text-base leading-relaxed text-foreground">
-            {step}
-          </span>
-          <CornerDownRight className="mt-1 size-4 shrink-0 text-muted-foreground" />
+          <span>{step}</span>
         </li>
       ))}
     </ol>
