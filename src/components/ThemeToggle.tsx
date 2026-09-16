@@ -20,13 +20,13 @@ export function ThemeToggle() {
         <Moon className="hidden size-5 dark:block" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-32">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
+        <DropdownMenuItem className="cursor-pointer" onClick={() => setTheme("light")}>
           <Sun className="mr-2 size-4" /> Light
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
+        <DropdownMenuItem className="cursor-pointer" onClick={() => setTheme("dark")}>
           <Moon className="mr-2 size-4" /> Dark
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
+        <DropdownMenuItem className="cursor-pointer" onClick={() => setTheme("system")}>
           <Monitor className="mr-2 size-4" /> System
         </DropdownMenuItem>
       </DropdownMenuContent>

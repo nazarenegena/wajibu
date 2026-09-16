@@ -37,6 +37,7 @@ export function Home() {
               <Button
                 size="lg"
                 className="h-12 px-5"
+                nativeButton={false}
                 render={<Link to="/analyse" />}
               >
                 {t("cta_analyse")}
@@ -46,6 +47,7 @@ export function Home() {
                 size="lg"
                 variant="outline"
                 className="h-12 px-5"
+                nativeButton={false}
                 render={<a href="#samples" />}
               >
                 {t("cta_sample")}
@@ -109,7 +111,7 @@ export function Home() {
         </div>
       </section>
 
-      <section id="how-it-works" className="scroll-mt-20">
+      <section id="how-it-works" className="scroll-mt-24">
         <div className="mx-auto max-w-6xl px-5 pb-16 pt-20 lg:px-8">
           <div className="mb-12 text-center">
             <h2 className="text-3xl font-semibold tracking-tight">
@@ -148,7 +150,7 @@ export function Home() {
 
       <section
         id="samples"
-        className="scroll-mt-20 border-y border-border bg-muted/50"
+        className="scroll-mt-24 border-y border-border bg-muted/50"
       >
         <div className="mx-auto max-w-6xl px-5 py-16 lg:px-8">
           <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">

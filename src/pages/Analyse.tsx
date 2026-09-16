@@ -14,7 +14,6 @@ import { LoadingState } from "../components/LoadingState";
 import { ErrorState } from "../components/ErrorState";
 import { Button } from "../components/ui/button";
 import { Textarea } from "../components/ui/textarea";
-import { extractTextFromPdf } from "../lib/pdf";
 import { analyseDocument } from "../lib/api";
 
 type Phase = "idle" | "loading" | "error";
@@ -35,7 +34,7 @@ export function Analyse() {
   const inputRef = useRef<HTMLInputElement>(null);
   const location = useLocation();
   const navigate = useNavigate();
-  const { lang, t } = useLanguage();
+  const { t } = useLanguage();
 
   const state = location.state as AnalyseLocationState | null;
   const samplePath = state?.sample;
@@ -50,6 +49,7 @@ export function Analyse() {
         const response = await fetch(samplePath);
         if (!response.ok) throw new Error("Sample not found");
         const blob = await response.blob();
+        const { extractTextFromPdf } = await import("../lib/pdf");
         const file = new File(
           [blob],
           samplePath.split("/").pop() ?? "sample.pdf",
@@ -88,6 +88,7 @@ export function Analyse() {
 
     setPhase("loading");
     try {
+      const { extractTextFromPdf } = await import("../lib/pdf");
       const extracted = await extractTextFromPdf(file);
       setText(extracted);
       setSourceName(file.name);
@@ -110,9 +111,9 @@ export function Analyse() {
     if (!canAnalyse) return;
     setPhase("loading");
     try {
-      const result = await analyseDocument(text, lang);
+      const result = await analyseDocument(text);
       sessionStorage.setItem("wajibu-last-text", text);
-      navigate("/result", { state: { result, lang } });
+      navigate("/result", { state: { result } });
     } catch (error) {
       setErrorKind("api");
       setServerError(

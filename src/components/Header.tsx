@@ -52,7 +52,7 @@ export function Header() {
               <Moon className="size-4" />
             )}
           </Button>
-          <Button variant="outline" size="sm" render={<Link to="/analyse" />}>
+          <Button variant="outline" size="sm" nativeButton={false} render={<Link to="/analyse" />}>
             {t("cta_analyse_doc")}
             <ArrowUpRight className="ml-1 size-4" />
           </Button>

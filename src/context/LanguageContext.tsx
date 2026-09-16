@@ -122,6 +122,8 @@ const en = {
   result_share: 'Share this summary',
   result_shared: 'Summary copied to clipboard',
   result_analyse_another: 'Analyse another document',
+  result_reanalyse: 'Re-analyse',
+  result_reanalysed: 'Re-analysed with the latest details',
   result_no_result: 'No analysis found. Please analyse a document first.',
   footer_disclaimer:
     'A proof of concept. Not affiliated with Nyeri County Government.',
@@ -256,6 +258,8 @@ const sw: UiStrings = {
   result_share: 'Shiriki muhtasari huu',
   result_shared: 'Muhtasari umenakiliwa kwenye clipboard',
   result_analyse_another: 'Chambua hati nyingine',
+  result_reanalyse: 'Chambua tena',
+  result_reanalysed: 'Imechambuliwa tena kwa maelezo mapya zaidi',
   result_no_result: 'Hakuna uchambuzi. Tafadhali chambua hati kwanza.',
   footer_disclaimer:
     'Huu ni uthibitisho wa dhana. Hatuunganishwi na Serikali ya Kaunti ya Nyeri.',
