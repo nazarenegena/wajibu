@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import {
   ArrowRight,
   Eraser,
@@ -31,7 +32,6 @@ export function Analyse() {
   const [errorKind, setErrorKind] = useState<ErrorKind>("api");
   const [serverError, setServerError] = useState<string | null>(null);
   const [dragOver, setDragOver] = useState(false);
-  const [notice, setNotice] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const location = useLocation();
   const navigate = useNavigate();
@@ -60,7 +60,7 @@ export function Analyse() {
           setText(extracted);
           setSourceName(file.name);
           setPhase("idle");
-          setNotice(t("analyse_sample_loaded"));
+          toast.success(t("analyse_sample_loaded"));
         }
       } catch {
         if (!cancelled) {
@@ -82,18 +82,17 @@ export function Analyse() {
       file.type === "application/pdf" ||
       file.name.toLowerCase().endsWith(".pdf");
     if (!isPdf || file.size > 10 * 1024 * 1024) {
-      setNotice(t("analyse_invalid_file"));
+      toast.error(t("analyse_invalid_file"));
       return;
     }
 
     setPhase("loading");
-    setNotice(null);
     try {
       const extracted = await extractTextFromPdf(file);
       setText(extracted);
       setSourceName(file.name);
       setPhase("idle");
-      setNotice(t("analyse_sample_loaded"));
+      toast.success(t("analyse_sample_loaded"));
     } catch {
       setErrorKind("file");
       setPhase("error");
@@ -102,7 +101,6 @@ export function Analyse() {
 
   const clearText = () => {
     setText("");
-    setNotice(null);
     setSourceName(null);
   };
 
@@ -111,7 +109,6 @@ export function Analyse() {
   const runAnalysis = async () => {
     if (!canAnalyse) return;
     setPhase("loading");
-    setNotice(null);
     try {
       const result = await analyseDocument(text, lang);
       sessionStorage.setItem("wajibu-last-text", text);
@@ -150,7 +147,6 @@ export function Analyse() {
           onRetry={() => {
             setErrorKind("api");
             setServerError(null);
-            setNotice(null);
             setSourceName(null);
             setPhase("idle");
           }}
@@ -196,8 +192,8 @@ export function Analyse() {
       <div className="flex flex-col gap-5">
         <label
           className={cn(
-            "group flex min-h-52 cursor-pointer flex-col items-center justify-center rounded-2xl border border-dashed border-primary/40 bg-primary/5 p-8 text-center transition-colors hover:bg-primary/10",
-            dragOver && "border-primary bg-primary/10"
+            "group flex min-h-52 cursor-pointer flex-col items-center justify-center rounded-2xl border border-dashed border-primary/40 bg-primary/5 p-8 text-center transition-all duration-200 hover:scale-[1.005] hover:bg-primary/10 active:scale-[0.995] motion-reduce:transition-none",
+            dragOver && "scale-[1.005] border-primary bg-primary/10"
           )}
           onDragOver={(event) => {
             event.preventDefault();
@@ -260,7 +256,6 @@ export function Analyse() {
             value={text}
             onChange={(event) => {
               setText(event.target.value);
-              setNotice(null);
             }}
             placeholder={t("analyse_textarea_placeholder")}
             aria-label={t("analyse_document_label")}
@@ -278,15 +273,6 @@ export function Analyse() {
           </div>
           <LanguageToggle />
         </div>
-
-        {notice && !sourceName ? (
-          <p
-            role="status"
-            className="rounded-xl bg-muted/60 px-3 py-2 text-sm text-muted-foreground"
-          >
-            {notice}
-          </p>
-        ) : null}
 
         <Button
           size="lg"

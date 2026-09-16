@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import {
   Check,
   Clipboard,
@@ -107,7 +108,6 @@ export function Result() {
   const [analysedLang, setAnalysedLang] = useState<Language>(initialLang);
   const [reloading, setReloading] = useState(false);
   const [category, setCategory] = useState<CategoryId | null>(null);
-  const [copied, setCopied] = useState(false);
   const [sourcesOpen, setSourcesOpen] = useState(false);
 
   useEffect(() => {
@@ -142,10 +142,9 @@ export function Result() {
     if (!current) return;
     try {
       await navigator.clipboard.writeText(current.summary);
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 2500);
+      toast.success(t("result_link_copied"));
     } catch {
-      setCopied(false);
+      toast.error(t("result_copy_failed"));
     }
   };
 
@@ -364,12 +363,8 @@ export function Result() {
               className="mt-4 w-full"
               onClick={shareSummary}
             >
-              {copied ? (
-                <Check className="mr-2 size-4" />
-              ) : (
-                <Clipboard className="mr-2 size-4" />
-              )}
-              {copied ? t("result_link_copied") : t("result_copy_link")}
+              <Clipboard className="mr-2 size-4" />
+              {t("result_copy_link")}
             </Button>
           </section>
         </aside>
