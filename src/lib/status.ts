@@ -1,4 +1,7 @@
-import type { KeyDetails } from './types';
+export interface StatusInput {
+  deadline_iso?: string;
+  cancelled?: boolean;
+}
 
 export type TenderStatus = 'open' | 'closed' | 'cancelled' | 'unknown';
 
@@ -27,7 +30,7 @@ function startOfToday(now: Date): Date {
 }
 
 export function deriveStatus(
-  keyDetails: KeyDetails,
+  keyDetails: StatusInput,
   now: Date = new Date()
 ): TenderStatusInfo {
   if (keyDetails.cancelled === true) {

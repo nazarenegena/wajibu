@@ -1,13 +1,28 @@
-import { useEffect, useRef } from "react";
+import { Suspense, lazy, useEffect, useRef } from "react";
 import { Outlet, Route, Routes } from "react-router-dom";
 import { Header } from "./components/Header";
 import { LanguageBar } from "./components/LanguageBar";
 import { Footer } from "./components/Footer";
 import { Toaster } from "./components/toaster";
-import { Home } from "./pages/Home";
-import { Analyse } from "./pages/Analyse";
-import { Result } from "./pages/Result";
 import { useLanguage } from "./context/LanguageContext";
+
+const Home = lazy(() =>
+  import("./pages/Home").then((module) => ({ default: module.Home }))
+);
+const Analyse = lazy(() =>
+  import("./pages/Analyse").then((module) => ({ default: module.Analyse }))
+);
+const Result = lazy(() =>
+  import("./pages/Result").then((module) => ({ default: module.Result }))
+);
+
+function PageFallback() {
+  return (
+    <div className="mx-auto flex min-h-[40vh] max-w-6xl items-center justify-center px-5 lg:px-8">
+      <span className="text-sm text-muted-foreground">Loading…</span>
+    </div>
+  );
+}
 
 function Layout() {
   const { lang } = useLanguage();
@@ -26,10 +41,14 @@ function Layout() {
 
   return (
     <div className="flex min-h-dvh flex-col">
-      <Header />
-      <LanguageBar />
+      <div className="sticky top-0 z-40">
+        <Header />
+        <LanguageBar />
+      </div>
       <main ref={mainRef} className="flex-1">
-        <Outlet />
+        <Suspense fallback={<PageFallback />}>
+          <Outlet />
+        </Suspense>
       </main>
       <Footer />
     </div>

@@ -1,11 +1,10 @@
 import { Ban, CheckCircle2, Clock, HelpCircle } from 'lucide-react';
 import { cn } from 'cn';
 import { useLanguage } from '../context/LanguageContext';
-import { deriveStatus, formatDateView } from '../lib/status';
-import type { KeyDetails } from '../lib/types';
+import { deriveStatus, formatDateView, type StatusInput } from '../lib/status';
 
 interface StatusBadgeProps {
-  keyDetails: KeyDetails;
+  keyDetails: StatusInput;
   className?: string;
 }
 

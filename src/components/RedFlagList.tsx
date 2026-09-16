@@ -6,10 +6,10 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
-import type { RedFlag } from "../lib/types";
+import type { MonolingualResult } from "../lib/types";
 
 interface RedFlagListProps {
-  flags: RedFlag[];
+  flags: MonolingualResult["red_flags"];
 }
 
 export function RedFlagList({ flags }: RedFlagListProps) {

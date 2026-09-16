@@ -1,27 +1,27 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import {
   Check,
   Clipboard,
   HelpCircle,
+  RotateCcw,
   Search,
   ShieldAlert,
 } from "lucide-react";
 import { cn } from "cn";
 import { useLanguage, type UiStrings } from "../context/LanguageContext";
-import { LoadingState } from "../components/LoadingState";
 import { JargonPopover } from "../components/JargonPopover";
 import { RedFlagList } from "../components/RedFlagList";
 import { NextSteps } from "../components/NextSteps";
 import { StatusBadge } from "../components/StatusBadge";
 import { Button } from "../components/ui/button";
 import { analyseDocument } from "../lib/api";
-import type { Language, WajibuResult } from "../lib/types";
+import { toMonolingual } from "../lib/monolingual";
+import type { WajibuResult } from "../lib/types";
 
 interface ResultLocationState {
   result?: WajibuResult;
-  lang?: Language;
 }
 
 type CategoryId = "OPEN" | "YOUTH" | "WOMEN" | "PLWD";
@@ -102,51 +102,11 @@ export function Result() {
 
   const locationState = location.state as ResultLocationState | null;
   const initialResult = locationState?.result ?? null;
-  const initialLang = locationState?.lang ?? "en";
 
   const [current, setCurrent] = useState<WajibuResult | null>(initialResult);
-  const [analysedLang, setAnalysedLang] = useState<Language>(initialLang);
-  const [reloading, setReloading] = useState(false);
+  const [reanalysing, setReanalysing] = useState(false);
   const [category, setCategory] = useState<CategoryId | null>(null);
   const [sourcesOpen, setSourcesOpen] = useState(false);
-
-  useEffect(() => {
-    if (current && lang !== analysedLang) {
-      if (reloading) return;
-      const cached = sessionStorage.getItem("wajibu-last-text");
-      if (!cached) {
-        setAnalysedLang(lang);
-        return;
-      }
-      let cancelled = false;
-      setReloading(true);
-      analyseDocument(cached, lang)
-        .then((next) => {
-          if (cancelled) return;
-          setCurrent(next);
-          setAnalysedLang(lang);
-        })
-        .catch(() => {
-          if (!cancelled) setAnalysedLang(lang);
-        })
-        .finally(() => {
-          if (!cancelled) setReloading(false);
-        });
-      return () => {
-        cancelled = true;
-      };
-    }
-  }, [lang, analysedLang, current, reloading]);
-
-  const shareSummary = async () => {
-    if (!current) return;
-    try {
-      await navigator.clipboard.writeText(current.summary);
-      toast.success(t("result_link_copied"));
-    } catch {
-      toast.error(t("result_copy_failed"));
-    }
-  };
 
   if (!current) {
     return (
@@ -164,28 +124,45 @@ export function Result() {
     );
   }
 
-  if (reloading) {
-    return (
-      <div className="mx-auto max-w-5xl px-5 py-12 lg:px-8 lg:py-16">
-        <LoadingState message={t("loading_reading")} />
-        <p className="mt-4 text-center text-sm text-muted-foreground">
-          {t("loading_seconds")}
-        </p>
-      </div>
-    );
-  }
-
-  const langLabel = analysedLang === "sw" ? "Kiswahili" : "English";
-  const hay = `${current.who_can_apply} ${current.key_details.eligibility}`
+  const view = toMonolingual(current, lang);
+  const langLabel = lang === "sw" ? "Kiswahili" : "English";
+  const hay = `${view.who_can_apply} ${view.key_details.eligibility}`
     .toLowerCase();
 
   const keyDetailFields: { label: string; value: string }[] = [
-    { label: t("result_tender_number"), value: current.key_details.tender_number },
-    { label: t("result_deadline"), value: current.key_details.deadline },
-    { label: t("result_eligibility"), value: current.key_details.eligibility },
-    { label: t("result_value"), value: current.key_details.estimated_value },
-    { label: t("result_contact"), value: current.key_details.contact },
+    { label: t("result_tender_number"), value: view.key_details.tender_number },
+    { label: t("result_deadline"), value: view.key_details.deadline },
+    { label: t("result_eligibility"), value: view.key_details.eligibility },
+    { label: t("result_value"), value: view.key_details.estimated_value },
+    { label: t("result_contact"), value: view.key_details.contact },
   ];
+
+  const shareSummary = async () => {
+    try {
+      await navigator.clipboard.writeText(view.summary);
+      toast.success(t("result_link_copied"));
+    } catch {
+      toast.error(t("result_copy_failed"));
+    }
+  };
+
+  const reAnalyse = async () => {
+    const text = sessionStorage.getItem("wajibu-last-text");
+    if (!text) {
+      navigate("/analyse");
+      return;
+    }
+    setReanalysing(true);
+    try {
+      const next = await analyseDocument(text, { force: true });
+      setCurrent(next);
+      toast.success(t("result_reanalysed"));
+    } catch {
+      toast.error(t("error_message"));
+    } finally {
+      setReanalysing(false);
+    }
+  };
 
   return (
     <div className="mx-auto max-w-5xl px-5 py-12 lg:px-8 lg:py-16">
@@ -194,6 +171,7 @@ export function Result() {
           <Button
             variant="link"
             className="mb-3 h-auto px-0 text-primary"
+            nativeButton={false}
             render={<Link to="/" />}
           >
             {t("result_back")}
@@ -202,18 +180,30 @@ export function Result() {
             {t("result_complete")} · {langLabel}
           </p>
           <h1 className="mt-2 max-w-2xl text-3xl font-semibold tracking-tight sm:text-4xl">
-            {current.title}
+            {view.title}
           </h1>
           <div className="mt-2 flex flex-wrap items-center gap-2.5">
-            <StatusBadge keyDetails={current.key_details} />
+            <StatusBadge keyDetails={view.key_details} />
             <span className="text-sm text-muted-foreground">
-              Nyeri County · Tender {current.key_details.tender_number}
+              Nyeri County · Tender {view.key_details.tender_number}
             </span>
           </div>
         </div>
-        <Button variant="outline" render={<Link to="/analyse" />}>
+        <div className="flex flex-col gap-2 sm:flex-row">
+          <Button
+            variant="ghost"
+            onClick={reAnalyse}
+            disabled={reanalysing}
+          >
+            <RotateCcw
+              className={cn("mr-2 size-4", reanalysing && "animate-spin")}
+            />
+            {t("result_reanalyse")}
+          </Button>
+          <Button variant="outline" nativeButton={false} render={<Link to="/analyse" />}>
           {t("result_analyse_another")}
         </Button>
+        </div>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[1.3fr_.7fr]">
@@ -223,7 +213,7 @@ export function Result() {
               {t("result_plain_lang")}
             </p>
             <p className="mt-4 text-xl leading-relaxed sm:text-2xl">
-              {current.summary}
+              {view.summary}
             </p>
           </section>
 
@@ -232,7 +222,7 @@ export function Result() {
               {t("result_who_can_apply")}
             </h2>
             <p className="mt-3 leading-relaxed text-muted-foreground">
-              {current.who_can_apply}
+              {view.who_can_apply}
             </p>
             <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
               <select
@@ -263,7 +253,7 @@ export function Result() {
               {t("result_jargon_hint")}
             </p>
             <div className="mt-5">
-              <JargonPopover terms={current.jargon} />
+              <JargonPopover terms={view.jargon} />
             </div>
           </section>
 
@@ -279,7 +269,7 @@ export function Result() {
               </div>
               <ShieldAlert className="text-warning" />
             </div>
-            <RedFlagList flags={current.red_flags} />
+            <RedFlagList flags={view.red_flags} />
           </section>
 
           <section className="rounded-2xl border border-border bg-card">
@@ -305,7 +295,7 @@ export function Result() {
             {sourcesOpen ? (
               <div className="px-6 pb-5">
                 <ul className="list-disc space-y-2 pl-5 text-sm text-muted-foreground">
-                  {current.source_citations.map((citation, index) => (
+                  {view.source_citations.map((citation, index) => (
                     <li key={index} className="leading-relaxed">
                       {citation}
                     </li>
@@ -327,7 +317,7 @@ export function Result() {
                 {t("result_status")}
               </dt>
               <dd className="mt-1.5">
-                <StatusBadge keyDetails={current.key_details} />
+                <StatusBadge keyDetails={view.key_details} />
               </dd>
             </div>
             {keyDetailFields.map((field) => (
@@ -350,7 +340,7 @@ export function Result() {
             <h2 className="text-lg font-semibold">
               {t("result_next_steps")}
             </h2>
-            <NextSteps steps={current.next_steps} />
+            <NextSteps steps={view.next_steps} />
           </section>
 
           <section className="rounded-2xl border border-border bg-muted/50 p-5">

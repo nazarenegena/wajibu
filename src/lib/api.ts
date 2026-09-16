@@ -1,14 +1,30 @@
-import type { Language, WajibuResult } from './types';
+import type { WajibuResult } from './types';
 import { normalizeResult } from './normalize';
+import {
+  getCachedAnalysis,
+  hashText,
+  setCachedAnalysis,
+} from './cache';
+
+export interface AnalyseOptions {
+  force?: boolean;
+}
 
 export async function analyseDocument(
   text: string,
-  lang: Language
+  options: AnalyseOptions = {}
 ): Promise<WajibuResult> {
+  const hash = await hashText(text);
+
+  if (!options.force) {
+    const cached = getCachedAnalysis(hash);
+    if (cached) return cached;
+  }
+
   const response = await fetch('/api/analyse', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ text, lang }),
+    body: JSON.stringify({ text }),
   });
 
   if (!response.ok) {
@@ -19,5 +35,7 @@ export async function analyseDocument(
   }
 
   const raw: unknown = await response.json();
-  return normalizeResult(raw);
+  const result = normalizeResult(raw);
+  setCachedAnalysis(hash, result);
+  return result;
 }

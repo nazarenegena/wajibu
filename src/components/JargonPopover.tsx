@@ -6,10 +6,10 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "./ui/collapsible";
-import type { JargonTerm } from "../lib/types";
+import type { MonolingualResult } from "../lib/types";
 
 interface JargonPopoverProps {
-  terms: JargonTerm[];
+  terms: MonolingualResult["jargon"];
 }
 
 export function JargonPopover({ terms }: JargonPopoverProps) {
