@@ -1,0 +1,63 @@
+import type { KeyDetails } from './types';
+
+export type TenderStatus = 'open' | 'closed' | 'cancelled' | 'unknown';
+
+export interface TenderStatusInfo {
+  status: TenderStatus;
+  daysRemaining?: number;
+  deadlineDate?: Date;
+}
+
+const DAY_MS = 86_400_000;
+
+function parseDate(value: string | undefined): Date | null {
+  if (!value || typeof value !== 'string') return null;
+  const bareDate = /^\d{4}-\d{2}-\d{2}$/.test(value.trim());
+  if (bareDate) {
+    const [year, month, day] = value.trim().split('-').map(Number);
+    const date = new Date(year, month - 1, day);
+    return Number.isNaN(date.getTime()) ? null : date;
+  }
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+
+function startOfToday(now: Date): Date {
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+}
+
+export function deriveStatus(
+  keyDetails: KeyDetails,
+  now: Date = new Date()
+): TenderStatusInfo {
+  if (keyDetails.cancelled === true) {
+    return { status: 'cancelled' };
+  }
+
+  const deadlineDate = parseDate(keyDetails.deadline_iso);
+  if (!deadlineDate) {
+    return { status: 'unknown' };
+  }
+
+  const today = startOfToday(now).getTime();
+  const deadline = deadlineDate.getTime();
+
+  if (deadline >= today) {
+    const daysRemaining = Math.ceil((deadline - today) / DAY_MS);
+    return { status: 'open', daysRemaining, deadlineDate };
+  }
+
+  return { status: 'closed', daysRemaining: 0, deadlineDate };
+}
+
+export function formatDateView(date: Date, lang: 'en' | 'sw'): string {
+  try {
+    return new Intl.DateTimeFormat(lang === 'sw' ? 'sw' : 'en', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+    }).format(date);
+  } catch {
+    return date.toDateString();
+  }
+}

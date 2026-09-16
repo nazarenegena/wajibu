@@ -1,10 +1,13 @@
 import type { Language } from './types';
 
+export type SampleType = 'open' | 'youth' | 'women' | 'pwd' | 'agpo';
+
 export interface WajibuSample {
   id: string;
   fileName: string;
   filePath: string;
   category: 'Tender' | 'Budget';
+  type: SampleType;
   title: Record<Language, string>;
   description: Record<Language, string>;
 }
@@ -15,6 +18,7 @@ export const samples: WajibuSample[] = [
     fileName: 'Nyewasco-supply-of-Water-meters.pdf',
     filePath: '/samples/Nyewasco-supply-of-Water-meters.pdf',
     category: 'Tender',
+    type: 'open',
     title: {
       en: 'NYEWASCO Supply of Water Meters',
       sw: 'Ugavi wa Mita za Maji NYEWASCO',
@@ -29,6 +33,7 @@ export const samples: WajibuSample[] = [
     fileName: 'Nyeri-Sports-Tender.pdf',
     filePath: '/samples/Nyeri-Sports-Tender.pdf',
     category: 'Tender',
+    type: 'women',
     title: {
       en: 'Nyeri County Sports Facilities Tender',
       sw: 'Zabuni ya Mifumo ya Michezo Nyeri',
@@ -43,6 +48,7 @@ export const samples: WajibuSample[] = [
     fileName: 'Nyeri-Youth-Tender.pdf',
     filePath: '/samples/Nyeri-Youth-Tender.pdf',
     category: 'Tender',
+    type: 'youth',
     title: {
       en: 'Nyeri Youth Group Tender',
       sw: 'Zabuni ya Vikundi vya Vijana Nyeri',

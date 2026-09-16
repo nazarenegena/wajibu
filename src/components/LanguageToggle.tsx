@@ -3,8 +3,8 @@ import { Button } from "./ui/button";
 import type { Language } from "../lib/types";
 
 const options: { value: Language; label: string }[] = [
-  { value: "en", label: "EN" },
-  { value: "sw", label: "SW" },
+  { value: "en", label: "English" },
+  { value: "sw", label: "Kiswahili" },
 ];
 
 export function LanguageToggle() {
@@ -14,7 +14,7 @@ export function LanguageToggle() {
     <div
       role="group"
       aria-label="Document language"
-      className="inline-flex items-center gap-1 rounded-full bg-muted p-1"
+      className="inline-flex items-center gap-1 rounded-full border border-border bg-muted p-1 text-sm"
     >
       {options.map((option) => {
         const active = lang === option.value;
@@ -25,7 +25,7 @@ export function LanguageToggle() {
             variant={active ? "default" : "ghost"}
             aria-pressed={active}
             onClick={() => setLang(option.value)}
-            className={`min-w-10 px-2.5 ${active ? "" : "text-muted-foreground"}`}
+            className={`h-7 rounded-full px-2.5 text-xs ${active ? "" : "text-muted-foreground"}`}
           >
             {option.label}
           </Button>

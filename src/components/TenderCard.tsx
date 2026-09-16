@@ -1,15 +1,16 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, FileText, Receipt } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
-import { Badge } from "./ui/badge";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "./ui/card";
+import type { SampleType } from "../lib/samples";
 import type { WajibuSample } from "../lib/samples";
+
+const typeKey: Record<SampleType, "type_open" | "type_youth" | "type_women" | "type_pwd" | "type_agpo"> = {
+  open: "type_open",
+  youth: "type_youth",
+  women: "type_women",
+  pwd: "type_pwd",
+  agpo: "type_agpo",
+};
 
 interface TenderCardProps {
   sample: WajibuSample;
@@ -17,45 +18,33 @@ interface TenderCardProps {
 
 export function TenderCard({ sample }: TenderCardProps) {
   const { lang, t } = useLanguage();
-  const isTender = sample.category === "Tender";
+  const isOpen = sample.type === "open";
 
   return (
-    <Card
-      className="relative h-full transition-colors ring-foreground/10 hover:ring-primary/40 focus-within:ring-primary/60"
+    <Link
+      to="/analyse"
+      state={{ sample: sample.filePath }}
+      aria-label={`${sample.title[lang]} — ${t("cta_sample")}`}
+      className="group flex h-auto flex-col items-start rounded-2xl border border-border bg-card p-5 text-left shadow-sm transition-all hover:-translate-y-1 hover:bg-card hover:shadow-md focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
     >
-      <CardHeader>
-        <div className="flex items-start justify-between gap-2">
-          <Badge
-            variant={isTender ? "secondary" : "outline"}
-            className="mb-1 capitalize"
-          >
-            {isTender ? (
-              <FileText className="mr-1 size-3" />
-            ) : (
-              <Receipt className="mr-1 size-3" />
-            )}
-            {sample.category}
-          </Badge>
-        </div>
-        <CardTitle className="text-balance leading-snug">
-          {sample.title[lang]}
-        </CardTitle>
-        <CardDescription>{sample.description[lang]}</CardDescription>
-      </CardHeader>
-      <CardContent className="mt-auto">
-        <span className="inline-flex items-center gap-1 text-sm font-medium text-primary">
-          {t("cta_sample")}
-          <ArrowRight className="size-4" />
+      <div className="mb-7 flex w-full items-center justify-between">
+        <span
+          className={`rounded-full px-2.5 py-1 text-xs font-medium ${
+            isOpen
+              ? "bg-success/10 text-success"
+              : "bg-warning/10 text-warning"
+          }`}
+        >
+          {t(typeKey[sample.type])}
         </span>
-      </CardContent>
-      <Link
-        to="/analyse"
-        state={{ sample: sample.filePath }}
-        className="absolute inset-0 z-10 rounded-xl outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
-        aria-label={`${sample.title[lang]} — ${t("cta_sample")}`}
-      >
-        <span className="sr-only">{sample.title[lang]}</span>
-      </Link>
-    </Card>
+        <ArrowUpRight className="text-muted-foreground transition-transform group-hover:-translate-x-0.5 group-hover:translate-y-0.5" />
+      </div>
+      <p className="text-base font-medium leading-snug">
+        {sample.title[lang]}
+      </p>
+      <p className="mt-3 text-xs text-muted-foreground">
+        {sample.description[lang]} &middot; Nyeri County
+      </p>
+    </Link>
   );
 }

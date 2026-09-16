@@ -36,7 +36,7 @@ export function JargonPopover({ terms }: JargonPopoverProps) {
   }
 
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-col gap-2">
       {terms.map((term, index) => {
         const open = openIds.has(index);
         return (
@@ -45,24 +45,19 @@ export function JargonPopover({ terms }: JargonPopoverProps) {
             open={open}
             onOpenChange={(nextOpen) => toggle(index, nextOpen)}
           >
-            <CollapsibleTrigger
-              className={cn(
-                "inline-flex items-center gap-1 rounded-full border border-border px-3 py-1 text-sm font-medium transition-colors outline-none hover:bg-muted focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50",
-                open ? "bg-secondary text-secondary-foreground" : "bg-card text-foreground"
-              )}
-            >
-              {term.term}
+            <CollapsibleTrigger className="flex h-auto w-full items-center justify-between rounded-xl border border-border px-4 py-3 text-left font-medium transition-colors outline-none hover:bg-muted focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50">
+              <span>{term.term}</span>
               <ChevronDown
                 className={cn(
-                  "size-3.5 text-muted-foreground transition-transform",
+                  "size-4 text-muted-foreground transition-transform",
                   open && "rotate-180"
                 )}
               />
             </CollapsibleTrigger>
-            <CollapsibleContent className="mt-1 w-full">
-              <div className="rounded-lg border border-border bg-muted/50 px-3 py-2 text-sm leading-relaxed text-muted-foreground">
+            <CollapsibleContent className="px-4 pb-4 pt-0">
+              <p className="text-sm leading-relaxed text-muted-foreground">
                 {term.plain_meaning}
-              </div>
+              </p>
             </CollapsibleContent>
           </Collapsible>
         );

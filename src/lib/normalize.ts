@@ -54,6 +54,11 @@ export function normalizeResult(raw: unknown): WajibuResult {
     key_details: {
       tender_number: stringField(key_details.tender_number, NOT_STATED),
       deadline: stringField(key_details.deadline, NOT_STATED),
+      deadline_iso: stringField(key_details.deadline_iso, '') || undefined,
+      cancelled:
+        typeof key_details.cancelled === 'boolean'
+          ? key_details.cancelled
+          : undefined,
       eligibility: stringField(key_details.eligibility, NOT_STATED),
       estimated_value: stringField(key_details.estimated_value, NOT_STATED),
       contact: stringField(key_details.contact, NOT_STATED),
