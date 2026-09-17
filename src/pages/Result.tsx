@@ -15,7 +15,8 @@ import { useLanguage, type UiStrings } from "../context/LanguageContext";
 import { JargonPopover } from "../components/JargonPopover";
 import { RedFlagList } from "../components/RedFlagList";
 import { SourceDisclosure } from "../components/SourceDisclosure";
-import { SmsPreview } from "../components/SmsPreview";
+import { SmsChatPreview } from "../components/SmsChatPreview";
+import { isNotStated } from "../lib/normalize";
 import { NextSteps } from "../components/NextSteps";
 import { StatusBadge } from "../components/StatusBadge";
 import { Button } from "../components/ui/button";
@@ -115,6 +116,10 @@ function TextOnlyBody({
 }: TextOnlyBodyProps) {
   const { t } = useLanguage();
 
+  const tenderNumber = isNotStated(view.key_details.tender_number)
+    ? undefined
+    : view.key_details.tender_number;
+
   const keyDetailFields: { label: string; value: string }[] = [
     { label: t("result_tender_number"), value: view.key_details.tender_number },
     { label: t("result_deadline"), value: view.key_details.deadline },
@@ -147,7 +152,7 @@ function TextOnlyBody({
       </p>
 
       <div className="mt-6">
-        <SmsPreview view={view} />
+        <SmsChatPreview tenderNumber={tenderNumber} />
       </div>
 
       <section className={sectionClass}>
@@ -317,6 +322,9 @@ export function Result() {
   }
 
   const view = toMonolingual(current, lang);
+  const tenderNumber = isNotStated(view.key_details.tender_number)
+    ? undefined
+    : view.key_details.tender_number;
   const langLabel = lang === "sw" ? "Kiswahili" : "English";
   const hay = `${view.who_can_apply} ${view.key_details.eligibility}`
     .toLowerCase();
@@ -561,7 +569,7 @@ export function Result() {
             <NextSteps steps={view.next_steps} />
           </section>
 
-          <SmsPreview view={view} />
+          <SmsChatPreview tenderNumber={tenderNumber} />
 
           <section className="rounded-2xl border border-border bg-muted/50 p-5">
             <p className="text-sm font-medium">{t("result_share")}</p>
