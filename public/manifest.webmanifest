@@ -1,0 +1,19 @@
+{
+  "name": "Wajibu — Understand your county tenders",
+  "short_name": "Wajibu",
+  "description": "Understand Nyeri County tenders in plain Swahili or English.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#faf9f6",
+  "theme_color": "#0f5132",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

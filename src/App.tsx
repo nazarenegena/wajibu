@@ -25,7 +25,7 @@ function PageFallback() {
 }
 
 function Layout() {
-  const { lang } = useLanguage();
+  const { lang, t } = useLanguage();
   const mainRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -41,11 +41,22 @@ function Layout() {
 
   return (
     <div className="flex min-h-dvh flex-col">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-primary-foreground"
+      >
+        {t("skip_to_content")}
+      </a>
       <div className="sticky top-0 z-40">
         <Header />
         <LanguageBar />
       </div>
-      <main ref={mainRef} className="flex-1">
+      <main
+        ref={mainRef}
+        id="main-content"
+        tabIndex={-1}
+        className="flex-1 outline-none"
+      >
         <Suspense fallback={<PageFallback />}>
           <Outlet />
         </Suspense>

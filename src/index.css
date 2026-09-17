@@ -125,6 +125,13 @@
     @apply scroll-smooth;
   }
 
+  html.text-large {
+    font-size: 112.5%;
+  }
+  html.text-extra-large {
+    font-size: 125%;
+  }
+
   body {
     @apply bg-background text-foreground font-sans text-base leading-relaxed antialiased;
   }
@@ -144,8 +151,5 @@
   }
   .prose-wajibu p + p {
     @apply mt-4;
-  }
-  .source-quote {
-    @apply border-l-2 border-warning/60 pl-3 text-sm text-muted-foreground italic;
   }
 }
