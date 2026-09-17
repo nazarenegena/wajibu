@@ -7,6 +7,38 @@ interface SmsChatMessage {
   text: string;
 }
 
+interface MessageBubbleProps {
+  role: "incoming" | "outgoing";
+  label?: string;
+  text: string;
+}
+
+function MessageBubble({ role, label, text }: MessageBubbleProps) {
+  if (role === "incoming") {
+    return (
+      <div className="max-w-[85%] self-start rounded-2xl rounded-bl-md bg-[hsl(152_15%_16%)] px-4 py-3 text-sm leading-relaxed text-white">
+        {label ? (
+          <p className="mb-1 text-xs font-medium text-[hsl(152_45%_55%)]">
+            {label}
+          </p>
+        ) : null}
+        <p>{text}</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="max-w-[80%] self-end rounded-2xl rounded-br-md bg-[hsl(152_45%_55%)] px-4 py-3 text-sm leading-relaxed text-[hsl(152_25%_10%)]">
+      {label ? (
+        <p className="mb-1 text-xs font-medium text-[hsl(152_25%_10%)]/70">
+          {label}
+        </p>
+      ) : null}
+      <p>{text}</p>
+    </div>
+  );
+}
+
 interface SmsChatPreviewProps {
   messages?: SmsChatMessage[];
   tenderNumber?: string;
@@ -79,33 +111,9 @@ export function SmsChatPreview({ messages, tenderNumber }: SmsChatPreviewProps) 
         </div>
 
         <div className="flex flex-col gap-3">
-          {thread.map((message, index) =>
-            message.role === "incoming" ? (
-              <div
-                key={index}
-                className="max-w-[85%] self-start rounded-2xl rounded-bl-md bg-[hsl(152_15%_16%)] px-4 py-3 text-sm leading-relaxed text-white"
-              >
-                {message.label ? (
-                  <p className="mb-1 text-xs font-medium text-[hsl(152_45%_55%)]">
-                    {message.label}
-                  </p>
-                ) : null}
-                <p>{message.text}</p>
-              </div>
-            ) : (
-              <div
-                key={index}
-                className="max-w-[80%] self-end rounded-2xl rounded-br-md bg-[hsl(152_45%_55%)] px-4 py-3 text-sm leading-relaxed text-[hsl(152_25%_10%)]"
-              >
-                {message.label ? (
-                  <p className="mb-1 text-xs font-medium text-[hsl(152_25%_10%)]/70">
-                    {message.label}
-                  </p>
-                ) : null}
-                <p>{message.text}</p>
-              </div>
-            )
-          )}
+          {thread.map((message, index) => (
+            <MessageBubble key={index} {...message} />
+          ))}
         </div>
 
         <div

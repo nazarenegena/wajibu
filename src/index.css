@@ -27,13 +27,10 @@
   --accent-foreground: 152 30% 12%;
 
   --destructive: 0 70% 48%;
-  --destructive-foreground: 0 0% 100%;
 
   --warning: 32 95% 44%;             /* amber #D97706 — red flags */
-  --warning-foreground: 0 0% 100%;
 
   --success: 152 55% 30%;            /* green for eligible */
-  --success-foreground: 0 0% 100%;
 
   --border: 40 12% 86%;
   --input: 40 12% 80%;
@@ -66,13 +63,10 @@
   --accent-foreground: 40 33% 96%;
 
   --destructive: 0 65% 58%;
-  --destructive-foreground: 0 0% 100%;
 
   --warning: 32 85% 55%;
-  --warning-foreground: 152 25% 8%;
 
   --success: 152 45% 50%;
-  --success-foreground: 152 25% 8%;
 
   --border: 152 15% 23%;
   --input: 152 15% 27%;
@@ -95,11 +89,8 @@
   --color-accent: hsl(var(--accent));
   --color-accent-foreground: hsl(var(--accent-foreground));
   --color-destructive: hsl(var(--destructive));
-  --color-destructive-foreground: hsl(var(--destructive-foreground));
   --color-warning: hsl(var(--warning));
-  --color-warning-foreground: hsl(var(--warning-foreground));
   --color-success: hsl(var(--success));
-  --color-success-foreground: hsl(var(--success-foreground));
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));
   --color-ring: hsl(var(--ring));
@@ -141,15 +132,5 @@
   h3,
   h4 {
     @apply font-semibold tracking-tight;
-  }
-}
-
-/* Wajibu-specific utilities */
-@layer utilities {
-  .prose-wajibu {
-    @apply text-base leading-relaxed text-foreground/90;
-  }
-  .prose-wajibu p + p {
-    @apply mt-4;
   }
 }

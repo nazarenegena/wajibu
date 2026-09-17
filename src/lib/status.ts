@@ -1,3 +1,5 @@
+import type { UiStrings } from '../context/LanguageContext';
+
 export interface StatusInput {
   deadline_iso?: string;
   cancelled?: boolean;
@@ -63,4 +65,30 @@ export function formatDateView(date: Date, lang: 'en' | 'sw'): string {
   } catch {
     return date.toDateString();
   }
+}
+
+export function buildStatusLabel(
+  info: TenderStatusInfo,
+  t: (key: keyof UiStrings) => string,
+  lang: 'en' | 'sw',
+): string {
+  let label = t('status_unknown');
+
+  if (info.status === 'open') {
+    if (info.daysRemaining !== undefined && info.daysRemaining <= 0) {
+      label = `${t('status_open')} · ${t('status_closes_today')}`;
+    } else if (info.daysRemaining !== undefined) {
+      label = `${t('status_open')} · ${info.daysRemaining} ${t('status_days_left')}`;
+    } else {
+      label = t('status_open');
+    }
+  } else if (info.status === 'closed') {
+    label = info.deadlineDate
+      ? `${t('status_closed')} · ${t('status_on')} ${formatDateView(info.deadlineDate, lang)}`
+      : t('status_closed');
+  } else if (info.status === 'cancelled') {
+    label = t('status_cancelled');
+  }
+
+  return label;
 }
