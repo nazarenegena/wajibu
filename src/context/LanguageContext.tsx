@@ -132,6 +132,21 @@ const en = {
   footer_built:
     'Built by Nazarene Gena for the 2026 civic tech invention sprint.',
   lang_label: 'Language',
+  text_size: 'Text size',
+  text_size_standard: 'Standard text',
+  text_size_large: 'Large text',
+  text_size_extra: 'Extra-large text',
+  skip_to_content: 'Skip to content',
+  show_original_text: 'Show original text',
+  text_only: 'Text-only mode',
+  text_only_hint: 'Reduced layout for slow connections',
+  sms_title: 'SMS preview',
+  sms_hint:
+    'What a user with no smartphone sees — every tender as a free SMS.',
+  sms_chars: 'characters',
+  sms_from: 'WAJIBU',
+  sms_copy: 'Copy SMS',
+  sms_delivered: 'Delivered',
 };
 
 type UiStrings = typeof en;
@@ -268,6 +283,21 @@ const sw: UiStrings = {
   footer_built:
     'Imejengwa na Nazarene Gena kwa mashindano ya ubunifu wa teknolojia ya kiraia 2026.',
   lang_label: 'Lugha',
+  text_size: 'Ukubwa wa maandishi',
+  text_size_standard: 'Maandishi ya kawaida',
+  text_size_large: 'Maandishi makubwa',
+  text_size_extra: 'Maandishi makubwa zaidi',
+  skip_to_content: 'Ruka hadi kwenye maudhui',
+  show_original_text: 'Onyesha maandishi ya asili',
+  text_only: 'Hali ya maandishi pekee',
+  text_only_hint: 'Mpangilio rahisi kwa mitandao polepole',
+  sms_title: 'Onyesho la SMS',
+  sms_hint:
+    'Kile mtumiaji asiye na simu mahiri huona — kila zabuni, kama SMS ya bure.',
+  sms_chars: 'herufi',
+  sms_from: 'WAJIBU',
+  sms_copy: 'Nakili SMS',
+  sms_delivered: 'Imefikishwa',
 };
 
 const strings: Record<Language, UiStrings> = { en, sw };

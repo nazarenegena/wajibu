@@ -1,4 +1,4 @@
-import { AlertTriangle, Quote } from "lucide-react";
+import { AlertTriangle } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -6,6 +6,8 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
+import { SourceDisclosure } from "./SourceDisclosure";
+import { useLanguage } from "../context/LanguageContext";
 import type { MonolingualResult } from "../lib/types";
 
 interface RedFlagListProps {
@@ -13,6 +15,8 @@ interface RedFlagListProps {
 }
 
 export function RedFlagList({ flags }: RedFlagListProps) {
+  const { t } = useLanguage();
+
   if (flags.length === 0) {
     return (
       <p className="text-sm text-muted-foreground">
@@ -41,10 +45,10 @@ export function RedFlagList({ flags }: RedFlagListProps) {
           </CardHeader>
           <CardContent className="space-y-2">
             {flag.source_quote ? (
-              <blockquote className="source-quote">
-                <Quote className="mb-1 size-3.5 opacity-60" />
-                &ldquo;{flag.source_quote}&rdquo;
-              </blockquote>
+              <SourceDisclosure
+                label={t("show_original_text")}
+                passages={[flag.source_quote]}
+              />
             ) : null}
           </CardContent>
         </Card>

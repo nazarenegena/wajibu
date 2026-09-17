@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import {
@@ -8,17 +8,20 @@ import {
   RotateCcw,
   Search,
   ShieldAlert,
+  Type,
 } from "lucide-react";
 import { cn } from "cn";
 import { useLanguage, type UiStrings } from "../context/LanguageContext";
 import { JargonPopover } from "../components/JargonPopover";
 import { RedFlagList } from "../components/RedFlagList";
+import { SourceDisclosure } from "../components/SourceDisclosure";
+import { SmsPreview } from "../components/SmsPreview";
 import { NextSteps } from "../components/NextSteps";
 import { StatusBadge } from "../components/StatusBadge";
 import { Button } from "../components/ui/button";
 import { analyseDocument } from "../lib/api";
 import { toMonolingual } from "../lib/monolingual";
-import type { WajibuResult } from "../lib/types";
+import type { WajibuResult, MonolingualResult } from "../lib/types";
 
 interface ResultLocationState {
   result?: WajibuResult;
@@ -95,6 +98,187 @@ function InlineVerdict({
   );
 }
 
+interface TextOnlyBodyProps {
+  view: MonolingualResult;
+  category: CategoryId | null;
+  setCategory: (category: CategoryId | null) => void;
+  verdict: Verdict | null;
+  onShare: () => void;
+}
+
+function TextOnlyBody({
+  view,
+  category,
+  setCategory,
+  verdict,
+  onShare,
+}: TextOnlyBodyProps) {
+  const { t } = useLanguage();
+
+  const keyDetailFields: { label: string; value: string }[] = [
+    { label: t("result_tender_number"), value: view.key_details.tender_number },
+    { label: t("result_deadline"), value: view.key_details.deadline },
+    { label: t("result_eligibility"), value: view.key_details.eligibility },
+    { label: t("result_value"), value: view.key_details.estimated_value },
+    { label: t("result_contact"), value: view.key_details.contact },
+  ];
+
+  const verdictInfo = (() => {
+    switch (verdict) {
+      case "eligible":
+        return { label: t("result_eligible"), className: "text-success" };
+      case "not-eligible":
+        return { label: t("result_not_eligible"), className: "text-warning" };
+      case "unclear":
+        return { label: t("result_unclear"), className: "text-muted-foreground" };
+      default:
+        return null;
+    }
+  })();
+
+  const sectionClass = "mt-10";
+  const headingClass = "text-lg font-semibold";
+  const bodyClass = "mt-3 max-w-3xl text-base leading-relaxed";
+
+  return (
+    <div className="max-w-3xl text-base leading-relaxed">
+      <p className="text-sm text-muted-foreground">
+        {t("result_complete")} · {t("text_only_hint")}
+      </p>
+
+      <div className="mt-6">
+        <SmsPreview view={view} />
+      </div>
+
+      <section className={sectionClass}>
+        <h2 className={headingClass}>{t("result_plain_lang")}</h2>
+        <p className={bodyClass}>{view.summary}</p>
+        {view.source_citations.length > 0 ? (
+          <>
+            <h3 className="mt-6 text-sm font-semibold text-muted-foreground">
+              {t("result_sources")}
+            </h3>
+            <ol className="mt-2 list-decimal space-y-2 pl-5 text-sm text-muted-foreground">
+              {view.source_citations.map((citation, index) => (
+                <li key={index} className="leading-relaxed">
+                  {citation}
+                </li>
+              ))}
+            </ol>
+          </>
+        ) : null}
+      </section>
+
+      <hr className="mt-10 border-border" />
+
+      <section className={sectionClass}>
+        <h2 className={headingClass}>{t("result_key_details")}</h2>
+        <dl className="mt-3 space-y-2">
+          {keyDetailFields.map((field) => (
+            <div key={field.label}>
+              <dt className="text-sm font-semibold text-muted-foreground">
+                {field.label}
+              </dt>
+              <dd>{field.value.trim() || "—"}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+
+      <section className={sectionClass}>
+        <h2 className={headingClass}>{t("result_who_can_apply")}</h2>
+        <p className={bodyClass}>{view.who_can_apply}</p>
+        <select
+          value={category ?? ""}
+          onChange={(e) => setCategory((e.target.value as CategoryId) || null)}
+          className="mt-4 h-10 rounded-lg border border-input bg-background px-3 text-sm outline-none focus:ring-3 focus:ring-ring/30"
+        >
+          <option value="">{t("result_category_prompt")}</option>
+          {categoryOptions.map((opt) => (
+            <option key={opt.id} value={opt.id}>
+              {t(opt.labelKey)}
+            </option>
+          ))}
+        </select>
+        {verdictInfo ? (
+          <p
+            className={cn(
+              "mt-3 text-sm font-medium",
+              verdictInfo.className
+            )}
+          >
+            {verdictInfo.label}
+          </p>
+        ) : null}
+      </section>
+
+      {view.jargon.length > 0 ? (
+        <section className={sectionClass}>
+          <h2 className={headingClass}>{t("result_jargon")}</h2>
+          <ul className="mt-3 space-y-3">
+            {view.jargon.map((term, index) => (
+              <li key={index}>
+                <strong>{term.term}</strong>
+                <span className="text-muted-foreground">
+                  {" — "}
+                  {term.plain_meaning}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+
+      <section className={sectionClass}>
+        <h2 className={headingClass}>{t("result_red_flags_title")}</h2>
+        {view.red_flags.length === 0 ? (
+          <p className={bodyClass}>
+            No issues worth flagging were found in this document.
+          </p>
+        ) : (
+          <div className="mt-3 space-y-6">
+            {view.red_flags.map((flag, index) => (
+              <section key={index}>
+                <h3 className="text-base font-semibold">{flag.flag}</h3>
+                <p className="mt-1 text-muted-foreground">
+                  {flag.why_it_matters}
+                </p>
+                {flag.source_quote ? (
+                  <blockquote className="mt-2 border-l-2 border-border pl-3 text-sm italic text-muted-foreground">
+                    &ldquo;{flag.source_quote}&rdquo;
+                  </blockquote>
+                ) : null}
+              </section>
+            ))}
+          </div>
+        )}
+      </section>
+
+      <section className={sectionClass}>
+        <h2 className={headingClass}>{t("result_next_steps")}</h2>
+        {view.next_steps.length === 0 ? (
+          <p className={bodyClass}>
+            No clear next steps were identified for this document.
+          </p>
+        ) : (
+          <ol className="mt-3 list-decimal space-y-2 pl-5">
+            {view.next_steps.map((step, index) => (
+              <li key={index}>{step}</li>
+            ))}
+          </ol>
+        )}
+      </section>
+
+      <hr className="mt-10 border-border" />
+
+      <Button variant="outline" className="mt-8" onClick={onShare}>
+        <Clipboard className="mr-2 size-4" />
+        {t("result_copy_link")}
+      </Button>
+    </div>
+  );
+}
+
 export function Result() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -107,6 +291,14 @@ export function Result() {
   const [reanalysing, setReanalysing] = useState(false);
   const [category, setCategory] = useState<CategoryId | null>(null);
   const [sourcesOpen, setSourcesOpen] = useState(false);
+
+  const [textOnly, setTextOnly] = useState(
+    () => sessionStorage.getItem("wajibu-text-only") === "1"
+  );
+
+  useEffect(() => {
+    sessionStorage.setItem("wajibu-text-only", textOnly ? "1" : "0");
+  }, [textOnly]);
 
   if (!current) {
     return (
@@ -191,6 +383,16 @@ export function Result() {
         </div>
         <div className="flex flex-col gap-2 sm:flex-row">
           <Button
+            variant="outline"
+            aria-pressed={textOnly}
+            aria-label={t("text_only")}
+            title={t("text_only_hint")}
+            onClick={() => setTextOnly((prev) => !prev)}
+          >
+            <Type className="mr-2 size-4" />
+            {t("text_only")}
+          </Button>
+          <Button
             variant="ghost"
             onClick={reAnalyse}
             disabled={reanalysing}
@@ -206,6 +408,15 @@ export function Result() {
         </div>
       </div>
 
+      {textOnly ? (
+        <TextOnlyBody
+          view={view}
+          category={category}
+          setCategory={setCategory}
+          verdict={category ? getVerdict(hay, category) : null}
+          onShare={shareSummary}
+        />
+      ) : (
       <div className="grid gap-6 lg:grid-cols-[1.3fr_.7fr]">
         <div className="flex flex-col gap-6">
           <section className="rounded-2xl bg-primary p-6 text-primary-foreground shadow-lg shadow-primary/10 sm:p-8">
@@ -215,6 +426,13 @@ export function Result() {
             <p className="mt-4 text-xl leading-relaxed sm:text-2xl">
               {view.summary}
             </p>
+            <div className="mt-5">
+              <SourceDisclosure
+                variant="on-primary"
+                label={t("show_original_text")}
+                passages={view.source_citations.slice(0, 2)}
+              />
+            </div>
           </section>
 
           <section className="rounded-2xl border border-border bg-card p-6">
@@ -343,6 +561,8 @@ export function Result() {
             <NextSteps steps={view.next_steps} />
           </section>
 
+          <SmsPreview view={view} />
+
           <section className="rounded-2xl border border-border bg-muted/50 p-5">
             <p className="text-sm font-medium">{t("result_share")}</p>
             <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
@@ -359,6 +579,7 @@ export function Result() {
           </section>
         </aside>
       </div>
+      )}
     </div>
   );
 }

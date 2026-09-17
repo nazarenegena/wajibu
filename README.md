@@ -54,8 +54,8 @@ PDF upload → text extraction (pdfjs-dist) → /api/analyse → Gemini → stru
 | Constraint | How Wajibu meets it |
 |---|---|
 | Trust & verification | Every summary cites the source page and quote |
-| Low bandwidth | Lightweight pages; SMS/USSD fallback planned |
-| Accessibility | WCAG-aware design, large-type option, plain language |
+| Low bandwidth | Lightweight pages; offline app shell (service worker); SMS/USSD fallback planned |
+| Accessibility | WCAG-aware design, skip-to-content link, three text sizes (standard/large/extra-large), plain language |
 | Privacy | No login to read; queries not tied to identity |
 | Multilingual | Swahili + English toggle; Kikuyu on roadmap |
 | Local relevance | Real Nyeri County documents |
