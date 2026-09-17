@@ -1,12 +1,16 @@
+import { useLanguage } from "../context/LanguageContext";
+
 interface NextStepsProps {
   steps: string[];
 }
 
 export function NextSteps({ steps }: NextStepsProps) {
+  const { t } = useLanguage();
+
   if (steps.length === 0) {
     return (
-      <p className="text-sm text-muted-foreground">
-        No clear next steps were identified for this document.
+      <p className="mt-5 text-sm text-muted-foreground">
+        {t("result_next_steps_empty")}
       </p>
     );
   }

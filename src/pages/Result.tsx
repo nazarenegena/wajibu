@@ -1,67 +1,36 @@
-import { useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import {
-  Check,
   Clipboard,
-  HelpCircle,
   RotateCcw,
   Search,
   ShieldAlert,
   Type,
 } from "lucide-react";
 import { cn } from "cn";
-import { useLanguage, type UiStrings } from "../context/LanguageContext";
-import { JargonPopover } from "../components/JargonPopover";
-import { RedFlagList } from "../components/RedFlagList";
-import { SourceDisclosure } from "../components/SourceDisclosure";
-import { SmsChatPreview } from "../components/SmsChatPreview";
-import { isNotStated } from "../lib/normalize";
-import { NextSteps } from "../components/NextSteps";
-import { StatusBadge } from "../components/StatusBadge";
+import { useLanguage } from "../context/LanguageContext";
 import { Button } from "../components/ui/button";
+import { CategorySelect } from "../components/category-select";
+import { JargonPopover } from "../components/JargonPopover";
+import { NextSteps } from "../components/NextSteps";
+import { RedFlagList } from "../components/RedFlagList";
+import { SmsChatPreview } from "../components/SmsChatPreview";
+import { SourceDisclosure } from "../components/SourceDisclosure";
+import { StatusBadge } from "../components/StatusBadge";
 import { analyseDocument } from "../lib/api";
+import {
+  getVerdict,
+  verdictMeta,
+  type CategoryId,
+  type Verdict,
+} from "../lib/eligibility";
 import { toMonolingual } from "../lib/monolingual";
+import { getKeyDetailFields, resolveTenderNumber } from "../lib/normalize";
 import type { WajibuResult, MonolingualResult } from "../lib/types";
 
 interface ResultLocationState {
   result?: WajibuResult;
-}
-
-type CategoryId = "OPEN" | "YOUTH" | "WOMEN" | "PLWD";
-type Verdict = "eligible" | "not-eligible" | "unclear";
-
-const categoryOptions: { id: CategoryId; labelKey: keyof UiStrings }[] = [
-  { id: "OPEN", labelKey: "result_category_open" },
-  { id: "YOUTH", labelKey: "result_category_youth" },
-  { id: "WOMEN", labelKey: "result_category_women" },
-  { id: "PLWD", labelKey: "result_category_plwd" },
-];
-
-const reservedKeywords: Record<Exclude<CategoryId, "OPEN">, string[]> = {
-  YOUTH: ["youth", "aged 18", "18-35", "18 – 35", "young entrepreneur", "youth group"],
-  WOMEN: ["women", "woman", "women-led", "women-owned", "female"],
-  PLWD: ["disab", "persons with", "people with", "special group", "pwds"],
-};
-
-function getVerdict(hay: string, category: CategoryId): Verdict {
-  if (category === "OPEN") {
-    if (/(reserved|restricted|exclusive|only for|only to)/.test(hay)) {
-      return "not-eligible";
-    }
-    if (/(open to all|open competition|any (registered|qualified|interested)|no restriction)/.test(hay)) {
-      return "eligible";
-    }
-    return "unclear";
-  }
-
-  const keywords = reservedKeywords[category];
-  if (keywords.some((word) => hay.includes(word))) return "eligible";
-
-  if (/(reserved|restricted|exclusive)/.test(hay)) return "not-eligible";
-  if (/(no (youth|women|disab)|excluding|not open to)/.test(hay)) return "not-eligible";
-
-  return "unclear";
 }
 
 function InlineVerdict({
@@ -72,29 +41,19 @@ function InlineVerdict({
   className?: string;
 }) {
   const { t } = useLanguage();
-
-  if (verdict === "eligible") {
-    return (
-      <span className={cn("inline-flex items-center gap-1.5 text-sm font-medium text-success", className)}>
-        <Check className="size-4" />
-        {t("result_eligible")}
-      </span>
-    );
-  }
-
-  if (verdict === "not-eligible") {
-    return (
-      <span className={cn("inline-flex items-center gap-1.5 text-sm font-medium text-warning", className)}>
-        <ShieldAlert className="size-4" />
-        {t("result_not_eligible")}
-      </span>
-    );
-  }
+  const meta = verdictMeta[verdict];
+  const Icon = meta.icon;
 
   return (
-    <span className={cn("inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground", className)}>
-      <HelpCircle className="size-4" />
-      {t("result_unclear")}
+    <span
+      className={cn(
+        "inline-flex items-center gap-1.5 text-sm font-medium",
+        meta.className,
+        className
+      )}
+    >
+      <Icon className="size-4" />
+      {t(meta.labelKey)}
     </span>
   );
 }
@@ -107,7 +66,7 @@ interface TextOnlyBodyProps {
   onShare: () => void;
 }
 
-function TextOnlyBody({
+const TextOnlyBody = memo(function TextOnlyBody({
   view,
   category,
   setCategory,
@@ -116,30 +75,8 @@ function TextOnlyBody({
 }: TextOnlyBodyProps) {
   const { t } = useLanguage();
 
-  const tenderNumber = isNotStated(view.key_details.tender_number)
-    ? undefined
-    : view.key_details.tender_number;
-
-  const keyDetailFields: { label: string; value: string }[] = [
-    { label: t("result_tender_number"), value: view.key_details.tender_number },
-    { label: t("result_deadline"), value: view.key_details.deadline },
-    { label: t("result_eligibility"), value: view.key_details.eligibility },
-    { label: t("result_value"), value: view.key_details.estimated_value },
-    { label: t("result_contact"), value: view.key_details.contact },
-  ];
-
-  const verdictInfo = (() => {
-    switch (verdict) {
-      case "eligible":
-        return { label: t("result_eligible"), className: "text-success" };
-      case "not-eligible":
-        return { label: t("result_not_eligible"), className: "text-warning" };
-      case "unclear":
-        return { label: t("result_unclear"), className: "text-muted-foreground" };
-      default:
-        return null;
-    }
-  })();
+  const tenderNumber = resolveTenderNumber(view);
+  const keyDetailFields = getKeyDetailFields(view, t);
 
   const sectionClass = "mt-10";
   const headingClass = "text-lg font-semibold";
@@ -159,18 +96,12 @@ function TextOnlyBody({
         <h2 className={headingClass}>{t("result_plain_lang")}</h2>
         <p className={bodyClass}>{view.summary}</p>
         {view.source_citations.length > 0 ? (
-          <>
-            <h3 className="mt-6 text-sm font-semibold text-muted-foreground">
-              {t("result_sources")}
-            </h3>
-            <ol className="mt-2 list-decimal space-y-2 pl-5 text-sm text-muted-foreground">
-              {view.source_citations.map((citation, index) => (
-                <li key={index} className="leading-relaxed">
-                  {citation}
-                </li>
-              ))}
-            </ol>
-          </>
+          <div className="mt-6">
+            <SourceDisclosure
+              label={t("result_sources")}
+              passages={view.source_citations}
+            />
+          </div>
         ) : null}
       </section>
 
@@ -193,85 +124,41 @@ function TextOnlyBody({
       <section className={sectionClass}>
         <h2 className={headingClass}>{t("result_who_can_apply")}</h2>
         <p className={bodyClass}>{view.who_can_apply}</p>
-        <select
-          value={category ?? ""}
-          onChange={(e) => setCategory((e.target.value as CategoryId) || null)}
-          className="mt-4 h-10 rounded-lg border border-input bg-background px-3 text-sm outline-none focus:ring-3 focus:ring-ring/30"
-        >
-          <option value="">{t("result_category_prompt")}</option>
-          {categoryOptions.map((opt) => (
-            <option key={opt.id} value={opt.id}>
-              {t(opt.labelKey)}
-            </option>
-          ))}
-        </select>
-        {verdictInfo ? (
+        <CategorySelect
+          className="mt-4"
+          value={category}
+          onChange={setCategory}
+        />{verdict ? (
           <p
             className={cn(
               "mt-3 text-sm font-medium",
-              verdictInfo.className
+              verdictMeta[verdict].className
             )}
           >
-            {verdictInfo.label}
+            {t(verdictMeta[verdict].labelKey)}
           </p>
         ) : null}
       </section>
 
-      {view.jargon.length > 0 ? (
-        <section className={sectionClass}>
-          <h2 className={headingClass}>{t("result_jargon")}</h2>
-          <ul className="mt-3 space-y-3">
-            {view.jargon.map((term, index) => (
-              <li key={index}>
-                <strong>{term.term}</strong>
-                <span className="text-muted-foreground">
-                  {" — "}
-                  {term.plain_meaning}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </section>
-      ) : null}
+      <section className={sectionClass}>
+        <h2 className={headingClass}>{t("result_jargon")}</h2>
+        <div className="mt-3">
+          <JargonPopover terms={view.jargon} />
+        </div>
+      </section>
 
       <section className={sectionClass}>
         <h2 className={headingClass}>{t("result_red_flags_title")}</h2>
-        {view.red_flags.length === 0 ? (
-          <p className={bodyClass}>
-            No issues worth flagging were found in this document.
-          </p>
-        ) : (
-          <div className="mt-3 space-y-6">
-            {view.red_flags.map((flag, index) => (
-              <section key={index}>
-                <h3 className="text-base font-semibold">{flag.flag}</h3>
-                <p className="mt-1 text-muted-foreground">
-                  {flag.why_it_matters}
-                </p>
-                {flag.source_quote ? (
-                  <blockquote className="mt-2 border-l-2 border-border pl-3 text-sm italic text-muted-foreground">
-                    &ldquo;{flag.source_quote}&rdquo;
-                  </blockquote>
-                ) : null}
-              </section>
-            ))}
-          </div>
-        )}
+        <div className="mt-3">
+          <RedFlagList flags={view.red_flags} />
+        </div>
       </section>
 
       <section className={sectionClass}>
         <h2 className={headingClass}>{t("result_next_steps")}</h2>
-        {view.next_steps.length === 0 ? (
-          <p className={bodyClass}>
-            No clear next steps were identified for this document.
-          </p>
-        ) : (
-          <ol className="mt-3 list-decimal space-y-2 pl-5">
-            {view.next_steps.map((step, index) => (
-              <li key={index}>{step}</li>
-            ))}
-          </ol>
-        )}
+        <div className="mt-3">
+          <NextSteps steps={view.next_steps} />
+        </div>
       </section>
 
       <hr className="mt-10 border-border" />
@@ -282,7 +169,7 @@ function TextOnlyBody({
       </Button>
     </div>
   );
-}
+});
 
 export function Result() {
   const navigate = useNavigate();
@@ -305,7 +192,22 @@ export function Result() {
     sessionStorage.setItem("wajibu-text-only", textOnly ? "1" : "0");
   }, [textOnly]);
 
-  if (!current) {
+  const view = useMemo<MonolingualResult | null>(
+    () => (current ? toMonolingual(current, lang) : null),
+    [current, lang]
+  );
+
+  const shareSummary = useCallback(async () => {
+    if (!view) return;
+    try {
+      await navigator.clipboard.writeText(view.summary);
+      toast.success(t("result_link_copied"));
+    } catch {
+      toast.error(t("result_copy_failed"));
+    }
+  }, [t, view]);
+
+  if (!view) {
     return (
       <div className="mx-auto max-w-5xl px-5 py-12 lg:px-8 lg:py-16">
         <div className="rounded-2xl border border-border bg-card p-6 sm:p-8">
@@ -321,30 +223,12 @@ export function Result() {
     );
   }
 
-  const view = toMonolingual(current, lang);
-  const tenderNumber = isNotStated(view.key_details.tender_number)
-    ? undefined
-    : view.key_details.tender_number;
+  const tenderNumber = resolveTenderNumber(view);
   const langLabel = lang === "sw" ? "Kiswahili" : "English";
   const hay = `${view.who_can_apply} ${view.key_details.eligibility}`
     .toLowerCase();
 
-  const keyDetailFields: { label: string; value: string }[] = [
-    { label: t("result_tender_number"), value: view.key_details.tender_number },
-    { label: t("result_deadline"), value: view.key_details.deadline },
-    { label: t("result_eligibility"), value: view.key_details.eligibility },
-    { label: t("result_value"), value: view.key_details.estimated_value },
-    { label: t("result_contact"), value: view.key_details.contact },
-  ];
-
-  const shareSummary = async () => {
-    try {
-      await navigator.clipboard.writeText(view.summary);
-      toast.success(t("result_link_copied"));
-    } catch {
-      toast.error(t("result_copy_failed"));
-    }
-  };
+  const keyDetailFields = getKeyDetailFields(view, t);
 
   const reAnalyse = async () => {
     const text = sessionStorage.getItem("wajibu-last-text");
@@ -400,19 +284,19 @@ export function Result() {
             <Type className="mr-2 size-4" />
             {t("text_only")}
           </Button>
-          <Button
-            variant="ghost"
-            onClick={reAnalyse}
-            disabled={reanalysing}
-          >
+          <Button variant="ghost" onClick={reAnalyse} disabled={reanalysing}>
             <RotateCcw
               className={cn("mr-2 size-4", reanalysing && "animate-spin")}
             />
             {t("result_reanalyse")}
           </Button>
-          <Button variant="outline" nativeButton={false} render={<Link to="/analyse" />}>
-          {t("result_analyse_another")}
-        </Button>
+          <Button
+            variant="outline"
+            nativeButton={false}
+            render={<Link to="/analyse" />}
+          >
+            {t("result_analyse_another")}
+          </Button>
         </div>
       </div>
 
@@ -451,20 +335,7 @@ export function Result() {
               {view.who_can_apply}
             </p>
             <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
-              <select
-                value={category ?? ""}
-                onChange={(e) =>
-                  setCategory((e.target.value as CategoryId) || null)
-                }
-                className="h-10 rounded-lg border border-input bg-background px-3 text-sm outline-none focus:ring-3 focus:ring-ring/30"
-              >
-                <option value="">{t("result_category_prompt")}</option>
-                {categoryOptions.map((opt) => (
-                  <option key={opt.id} value={opt.id}>
-                    {t(opt.labelKey)}
-                  </option>
-                ))}
-              </select>
+              <CategorySelect value={category} onChange={setCategory} />
               {category ? (
                 <InlineVerdict verdict={getVerdict(hay, category)} />
               ) : null}
@@ -538,15 +409,15 @@ export function Result() {
               {t("result_key_details")}
             </h2>
 <dl className="mt-5 flex flex-col gap-4">
-            <div className="border-b border-border pb-3 last:border-0 last:pb-0">
-              <dt className="text-xs text-muted-foreground">
-                {t("result_status")}
-              </dt>
-              <dd className="mt-1.5">
-                <StatusBadge keyDetails={view.key_details} />
-              </dd>
-            </div>
-            {keyDetailFields.map((field) => (
+              <div className="border-b border-border pb-3 last:border-0 last:pb-0">
+                <dt className="text-xs text-muted-foreground">
+                  {t("result_status")}
+                </dt>
+                <dd className="mt-1.5">
+                  <StatusBadge keyDetails={view.key_details} />
+                </dd>
+              </div>
+              {keyDetailFields.map((field) => (
                 <div
                   key={field.label}
                   className="border-b border-border pb-3 last:border-0 last:pb-0"

@@ -75,7 +75,3 @@ export function setCachedAnalysis(hash: string, data: WajibuResult): void {
   const payload: CacheEntry = { at: now, data };
   localStorage.setItem(PREFIX + hash, JSON.stringify(payload));
 }
-
-export function clearCachedAnalysis(hash: string): void {
-  localStorage.removeItem(PREFIX + hash);
-}

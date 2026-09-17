@@ -6,6 +6,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "./ui/collapsible";
+import { useLanguage } from "../context/LanguageContext";
 import type { MonolingualResult } from "../lib/types";
 
 interface JargonPopoverProps {
@@ -13,6 +14,7 @@ interface JargonPopoverProps {
 }
 
 export function JargonPopover({ terms }: JargonPopoverProps) {
+  const { t } = useLanguage();
   const [openIds, setOpenIds] = useState<Set<number>>(new Set());
 
   const toggle = (index: number, nextOpen: boolean) => {
@@ -30,7 +32,7 @@ export function JargonPopover({ terms }: JargonPopoverProps) {
   if (terms.length === 0) {
     return (
       <p className="text-sm text-muted-foreground">
-        No technical terms to explain in this document.
+        {t("result_jargon_empty")}
       </p>
     );
   }

@@ -8,7 +8,7 @@ import {
   X,
 } from "lucide-react";
 import { cn } from "cn";
-import { useLanguage } from "../context/LanguageContext";
+import { useLanguage, type UiStrings } from "../context/LanguageContext";
 import { LanguageToggle } from "../components/LanguageToggle";
 import { LoadingState } from "../components/LoadingState";
 import { ErrorState } from "../components/ErrorState";
@@ -22,6 +22,16 @@ type ErrorKind = "sample" | "file" | "api";
 interface AnalyseLocationState {
   sample?: string;
   text?: string;
+}
+
+function getErrorMessage(
+  errorKind: ErrorKind,
+  serverError: string | null,
+  t: (key: keyof UiStrings) => string,
+): string {
+  if (errorKind === "sample") return t("error_sample_not_found");
+  if (errorKind === "api" && serverError) return serverError;
+  return t("error_message");
 }
 
 export function Analyse() {
@@ -136,13 +146,7 @@ export function Analyse() {
         </div>
         <ErrorState
           title={t("error_title")}
-          message={
-            errorKind === "sample"
-              ? t("error_sample_not_found")
-              : errorKind === "api" && serverError
-                ? serverError
-                : t("error_message")
-          }
+          message={getErrorMessage(errorKind, serverError, t)}
           retryLabel={t("error_retry")}
           backLabel={t("error_back")}
           onRetry={() => {

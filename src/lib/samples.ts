@@ -59,7 +59,3 @@ export const samples: WajibuSample[] = [
     },
   },
 ];
-
-export function getSampleById(id: string | undefined): WajibuSample | undefined {
-  return samples.find((sample) => sample.id === id);
-}

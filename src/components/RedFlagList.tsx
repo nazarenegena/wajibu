@@ -20,7 +20,7 @@ export function RedFlagList({ flags }: RedFlagListProps) {
   if (flags.length === 0) {
     return (
       <p className="text-sm text-muted-foreground">
-        No issues worth flagging were found in this document.
+        {t("result_red_flags_empty")}
       </p>
     );
   }

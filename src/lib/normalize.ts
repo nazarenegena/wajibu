@@ -1,3 +1,4 @@
+import type { UiStrings } from '../context/LanguageContext';
 import type { Bilingual, JargonTerm, RedFlag, WajibuResult } from './types';
 
 const notStated: Bilingual = {
@@ -5,12 +6,29 @@ const notStated: Bilingual = {
   sw: 'Haijaelezwa kwenye hati hii',
 };
 
-export const NOT_STATED = Object.values(notStated);
+const NOT_STATED = Object.values(notStated);
 
 export function isNotStated(value?: string | null): boolean {
   if (!value) return false;
   const clean = value.trim().toLowerCase();
   return NOT_STATED.some((phrase) => phrase.toLowerCase() === clean);
+}
+
+export function resolveTenderNumber(view: { key_details: { tender_number: string } }): string | undefined {
+  return isNotStated(view.key_details.tender_number) ? undefined : view.key_details.tender_number;
+}
+
+export function getKeyDetailFields(
+  view: { key_details: { tender_number: string; deadline: string; eligibility: string; estimated_value: string; contact: string } },
+  t: (key: keyof UiStrings) => string,
+): { label: string; value: string }[] {
+  return [
+    { label: t("result_tender_number"), value: view.key_details.tender_number },
+    { label: t("result_deadline"), value: view.key_details.deadline },
+    { label: t("result_eligibility"), value: view.key_details.eligibility },
+    { label: t("result_value"), value: view.key_details.estimated_value },
+    { label: t("result_contact"), value: view.key_details.contact },
+  ];
 }
 
 const stringField = (value: unknown, fallback = ''): string =>

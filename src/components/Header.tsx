@@ -10,7 +10,7 @@ export function Header() {
   const nextTheme = resolved === "dark" ? "light" : "dark";
 
   return (
-    <header className="border-b border-border bg-background/90 backdrop-blur">
+    <header className="border-b border-border bg-background">
       <div className="mx-auto flex h-20 max-w-6xl items-center justify-between px-5 lg:px-8">
         <Link
           to="/"
