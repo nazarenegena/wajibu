@@ -18,7 +18,7 @@ export function Home() {
   return (
     <>
       <section className="relative overflow-hidden">
-        <div className="mx-auto grid max-w-6xl gap-14 px-5 pb-20 pt-20 lg:grid-cols-[1.05fr_.95fr] lg:items-center lg:px-8 lg:pb-28 lg:pt-28">
+        <div className="mx-auto grid max-w-6xl gap-14 px-5 pb-16 pt-16 lg:grid-cols-[1.05fr_.95fr] lg:items-center lg:px-8 lg:pb-20 lg:pt-20">
           <div>
             <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium text-muted-foreground">
               <span className="size-2 rounded-full bg-success" />
@@ -112,8 +112,8 @@ export function Home() {
       </section>
 
       <section id="how-it-works" className="scroll-mt-24">
-        <div className="mx-auto max-w-6xl px-5 pb-16 pt-20 lg:px-8">
-          <div className="mb-12 text-center">
+        <div className="mx-auto max-w-6xl px-5 pb-12 pt-12 lg:px-8">
+          <div className="mb-10 text-center">
             <h2 className="text-3xl font-semibold tracking-tight">
               {t("how_title")}
             </h2>
@@ -152,7 +152,7 @@ export function Home() {
         id="samples"
         className="scroll-mt-24 border-y border-border bg-muted/50"
       >
-        <div className="mx-auto max-w-6xl px-5 py-16 lg:px-8">
+        <div className="mx-auto max-w-6xl px-5 py-12 lg:px-8">
           <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="text-sm font-medium text-primary">
