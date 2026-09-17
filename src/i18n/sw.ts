@@ -141,8 +141,6 @@ export const sw: UiStrings = {
   text_size_extra: 'Maandishi makubwa zaidi',
   skip_to_content: 'Ruka hadi kwenye maudhui',
   show_original_text: 'Onyesha maandishi ya asili',
-  text_only: 'Hali ya maandishi pekee',
-  text_only_hint: 'Mpangilio rahisi kwa mitandao polepole',
   sms_from: 'Wajibu',
   sms_chat_you: 'Wewe',
   sms_chat_app_name: 'Taarifa za Wajibu',

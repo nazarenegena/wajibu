@@ -140,8 +140,6 @@ export const en = {
   text_size_extra: 'Extra-large text',
   skip_to_content: 'Skip to content',
   show_original_text: 'Show original text',
-  text_only: 'Text-only mode',
-  text_only_hint: 'Reduced layout for slow connections',
   sms_from: 'Wajibu',
   sms_chat_you: 'You',
   sms_chat_app_name: 'Wajibu Updates',

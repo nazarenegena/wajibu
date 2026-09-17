@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import {
@@ -6,7 +6,6 @@ import {
   RotateCcw,
   Search,
   ShieldAlert,
-  Type,
 } from "lucide-react";
 import { cn } from "cn";
 import { useLanguage } from "../context/LanguageContext";
@@ -58,119 +57,6 @@ function InlineVerdict({
   );
 }
 
-interface TextOnlyBodyProps {
-  view: MonolingualResult;
-  category: CategoryId | null;
-  setCategory: (category: CategoryId | null) => void;
-  verdict: Verdict | null;
-  onShare: () => void;
-}
-
-const TextOnlyBody = memo(function TextOnlyBody({
-  view,
-  category,
-  setCategory,
-  verdict,
-  onShare,
-}: TextOnlyBodyProps) {
-  const { t } = useLanguage();
-
-  const tenderNumber = resolveTenderNumber(view);
-  const keyDetailFields = getKeyDetailFields(view, t);
-
-  const sectionClass = "mt-10";
-  const headingClass = "text-lg font-semibold";
-  const bodyClass = "mt-3 max-w-3xl text-base leading-relaxed";
-
-  return (
-    <div className="max-w-3xl text-base leading-relaxed">
-      <p className="text-sm text-muted-foreground">
-        {t("result_complete")} · {t("text_only_hint")}
-      </p>
-
-      <div className="mt-6">
-        <SmsChatPreview tenderNumber={tenderNumber} />
-      </div>
-
-      <section className={sectionClass}>
-        <h2 className={headingClass}>{t("result_plain_lang")}</h2>
-        <p className={bodyClass}>{view.summary}</p>
-        {view.source_citations.length > 0 ? (
-          <div className="mt-6">
-            <SourceDisclosure
-              label={t("result_sources")}
-              passages={view.source_citations}
-            />
-          </div>
-        ) : null}
-      </section>
-
-      <hr className="mt-10 border-border" />
-
-      <section className={sectionClass}>
-        <h2 className={headingClass}>{t("result_key_details")}</h2>
-        <dl className="mt-3 space-y-2">
-          {keyDetailFields.map((field) => (
-            <div key={field.label}>
-              <dt className="text-sm font-semibold text-muted-foreground">
-                {field.label}
-              </dt>
-              <dd>{field.value.trim() || "—"}</dd>
-            </div>
-          ))}
-        </dl>
-      </section>
-
-      <section className={sectionClass}>
-        <h2 className={headingClass}>{t("result_who_can_apply")}</h2>
-        <p className={bodyClass}>{view.who_can_apply}</p>
-        <CategorySelect
-          className="mt-4"
-          value={category}
-          onChange={setCategory}
-        />{verdict ? (
-          <p
-            className={cn(
-              "mt-3 text-sm font-medium",
-              verdictMeta[verdict].className
-            )}
-          >
-            {t(verdictMeta[verdict].labelKey)}
-          </p>
-        ) : null}
-      </section>
-
-      <section className={sectionClass}>
-        <h2 className={headingClass}>{t("result_jargon")}</h2>
-        <div className="mt-3">
-          <JargonPopover terms={view.jargon} />
-        </div>
-      </section>
-
-      <section className={sectionClass}>
-        <h2 className={headingClass}>{t("result_red_flags_title")}</h2>
-        <div className="mt-3">
-          <RedFlagList flags={view.red_flags} />
-        </div>
-      </section>
-
-      <section className={sectionClass}>
-        <h2 className={headingClass}>{t("result_next_steps")}</h2>
-        <div className="mt-3">
-          <NextSteps steps={view.next_steps} />
-        </div>
-      </section>
-
-      <hr className="mt-10 border-border" />
-
-      <Button variant="outline" className="mt-8" onClick={onShare}>
-        <Clipboard className="mr-2 size-4" />
-        {t("result_copy_link")}
-      </Button>
-    </div>
-  );
-});
-
 export function Result() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -183,14 +69,6 @@ export function Result() {
   const [reanalysing, setReanalysing] = useState(false);
   const [category, setCategory] = useState<CategoryId | null>(null);
   const [sourcesOpen, setSourcesOpen] = useState(false);
-
-  const [textOnly, setTextOnly] = useState(
-    () => sessionStorage.getItem("wajibu-text-only") === "1"
-  );
-
-  useEffect(() => {
-    sessionStorage.setItem("wajibu-text-only", textOnly ? "1" : "0");
-  }, [textOnly]);
 
   const view = useMemo<MonolingualResult | null>(
     () => (current ? toMonolingual(current, lang) : null),
@@ -274,16 +152,6 @@ export function Result() {
           </div>
         </div>
         <div className="flex flex-col gap-2 sm:flex-row">
-          <Button
-            variant="outline"
-            aria-pressed={textOnly}
-            aria-label={t("text_only")}
-            title={t("text_only_hint")}
-            onClick={() => setTextOnly((prev) => !prev)}
-          >
-            <Type className="mr-2 size-4" />
-            {t("text_only")}
-          </Button>
           <Button variant="ghost" onClick={reAnalyse} disabled={reanalysing}>
             <RotateCcw
               className={cn("mr-2 size-4", reanalysing && "animate-spin")}
@@ -300,15 +168,6 @@ export function Result() {
         </div>
       </div>
 
-      {textOnly ? (
-        <TextOnlyBody
-          view={view}
-          category={category}
-          setCategory={setCategory}
-          verdict={category ? getVerdict(hay, category) : null}
-          onShare={shareSummary}
-        />
-      ) : (
       <div className="grid gap-6 lg:grid-cols-[1.3fr_.7fr]">
         <div className="flex flex-col gap-6">
           <section className="rounded-2xl bg-primary p-6 text-primary-foreground shadow-lg shadow-primary/10 sm:p-8">
@@ -409,28 +268,28 @@ export function Result() {
               {t("result_key_details")}
             </h2>
 <dl className="mt-5 flex flex-col gap-4">
-              <div className="border-b border-border pb-3 last:border-0 last:pb-0">
+            <div className="border-b border-border pb-3 last:border-0 last:pb-0">
+              <dt className="text-xs text-muted-foreground">
+                {t("result_status")}
+              </dt>
+              <dd className="mt-1.5">
+                <StatusBadge keyDetails={view.key_details} />
+              </dd>
+            </div>
+            {keyDetailFields.map((field) => (
+              <div
+                key={field.label}
+                className="border-b border-border pb-3 last:border-0 last:pb-0"
+              >
                 <dt className="text-xs text-muted-foreground">
-                  {t("result_status")}
+                  {field.label}
                 </dt>
-                <dd className="mt-1.5">
-                  <StatusBadge keyDetails={view.key_details} />
+                <dd className="mt-1 text-sm font-medium leading-relaxed">
+                  {field.value.trim() || "—"}
                 </dd>
               </div>
-              {keyDetailFields.map((field) => (
-                <div
-                  key={field.label}
-                  className="border-b border-border pb-3 last:border-0 last:pb-0"
-                >
-                  <dt className="text-xs text-muted-foreground">
-                    {field.label}
-                  </dt>
-                  <dd className="mt-1 text-sm font-medium leading-relaxed">
-                    {field.value.trim() || "—"}
-                  </dd>
-                </div>
-              ))}
-            </dl>
+            ))}
+          </dl>
           </section>
 
           <section className="rounded-2xl border border-border bg-card p-6">
@@ -458,7 +317,6 @@ export function Result() {
           </section>
         </aside>
       </div>
-      )}
     </div>
   );
 }
