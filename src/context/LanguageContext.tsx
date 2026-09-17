@@ -140,13 +140,19 @@ const en = {
   show_original_text: 'Show original text',
   text_only: 'Text-only mode',
   text_only_hint: 'Reduced layout for slow connections',
-  sms_title: 'SMS preview',
-  sms_hint:
-    'What a user with no smartphone sees — every tender as a free SMS.',
-  sms_chars: 'characters',
-  sms_from: 'WAJIBU',
-  sms_copy: 'Copy SMS',
-  sms_delivered: 'Delivered',
+  sms_from: 'Wajibu',
+  sms_chat_app_name: 'Wajibu Updates',
+  sms_chat_subtitle: 'Nyeri County tender',
+  sms_chat_date: 'Today · 10:42 AM',
+  sms_chat_placeholder: 'Reply with a question',
+  sms_chat_msg1: 'Tender: Medical equipment for Nyeri health facilities.',
+  sms_chat_msg2:
+    'Apply if your business is registered, tax compliant, and has supplied similar equipment before.',
+  sms_chat_msg3:
+    'Deadline: 18 Oct 2024 at 11:00 AM. Tender value: KES 12.5M.',
+  sms_chat_question: 'What should I watch out for?',
+  sms_chat_msg4:
+    'Include 2% bid security and submit both hard and electronic copies.',
 };
 
 type UiStrings = typeof en;
@@ -291,13 +297,21 @@ const sw: UiStrings = {
   show_original_text: 'Onyesha maandishi ya asili',
   text_only: 'Hali ya maandishi pekee',
   text_only_hint: 'Mpangilio rahisi kwa mitandao polepole',
-  sms_title: 'Onyesho la SMS',
-  sms_hint:
-    'Kile mtumiaji asiye na simu mahiri huona — kila zabuni, kama SMS ya bure.',
-  sms_chars: 'herufi',
-  sms_from: 'WAJIBU',
-  sms_copy: 'Nakili SMS',
-  sms_delivered: 'Imefikishwa',
+  sms_from: 'Wajibu',
+
+  sms_chat_app_name: 'Taarifa za Wajibu',
+  sms_chat_subtitle: 'Zabuni ya Kaunti ya Nyeri',
+  sms_chat_date: 'Leo · 10:42 asubuhi',
+  sms_chat_placeholder: 'Jibu kwa swali',
+  sms_chat_msg1:
+    'Zabuni: Vifaa vya matibabu kwa vituo vya afya vya Nyeri.',
+  sms_chat_msg2:
+    'Omba ikiwa biashara yako imesajiliwa, inatii ushuru, na imewahi kusambaza vifaa kama hivi hapo awali.',
+  sms_chat_msg3:
+    'Tarehe ya mwisho: 18 Okt 2024 saa 11:00 asubuhi. Thamani ya zabuni: KES 12.5M.',
+  sms_chat_question: 'Ninapaswa kuchunga nini?',
+  sms_chat_msg4:
+    'Jumuisha dhamana ya zabuni ya asilimia 2 na wasilisha nakala za karatasi na za kielektroniki.',
 };
 
 const strings: Record<Language, UiStrings> = { en, sw };

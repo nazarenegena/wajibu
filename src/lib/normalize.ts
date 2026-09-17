@@ -5,6 +5,14 @@ const notStated: Bilingual = {
   sw: 'Haijaelezwa kwenye hati hii',
 };
 
+export const NOT_STATED = Object.values(notStated);
+
+export function isNotStated(value?: string | null): boolean {
+  if (!value) return false;
+  const clean = value.trim().toLowerCase();
+  return NOT_STATED.some((phrase) => phrase.toLowerCase() === clean);
+}
+
 const stringField = (value: unknown, fallback = ''): string =>
   typeof value === 'string' && value.trim() ? value : fallback;
 
