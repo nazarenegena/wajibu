@@ -1,12 +1,12 @@
-# Project Wajibu
+# Wajibu
 
 **Making Nyeri County tenders and budgets understandable to everyone.**
 
-Wajibu is a civic-tech proof of concept that turns dense Kenyan county tender notices and budget documents into plain Swahili and English — so residents, small suppliers, and local journalists can understand, question, and act on public spending.
+Wajibu is a civic-tech proof of concept that turns dense Kenyan county tender notices and budget documents into plain Swahili and English so residents, small suppliers, and local journalists can understand, question, and act on public spending.
 
 > *Wajibu* (Swahili): responsibility, duty.
 
-**Live app:** [wajibu.vercel.app](https://wajibu.vercel.app)
+**Live app:** [wajibu.vercel.app](https://wajibu-five.vercel.app/)
 
 ---
 
@@ -14,7 +14,7 @@ Wajibu is a civic-tech proof of concept that turns dense Kenyan county tender no
 
 Built for the **Andela × Open Society Foundations** civic tech invention sprint (September 2026).
 
-- 🌐 **Live app:** [wajibu.vercel.app](https://wajibu.vercel.app)
+- 🌐 **Live app:** [wajibu.vercel.app](https://wajibu-five.vercel.app/)
 - 📹 **Demo video:** [Watch on YouTube](https://youtu.be/...) *(link to be added)*
 - 📊 **Pitch deck:** [View slides](https://docs.google.com/presentation/...) · [Outline in PITCH-DECK.md](./PITCH-DECK.md)
 - 📝 **Written summary:** [SUMMARY.md](./SUMMARY.md)
@@ -83,8 +83,7 @@ The LLM prompt explicitly forbids invention: if something is not in the document
 - **Review red flags** — each with the exact source quote
 - **Verify the source** — "Show original text" reveals the passage each claim came from
 - **Enlarge the text** — standard / large / extra-large, without browser zoom
-- **Switch to text-only mode** — for slow connections, strips visuals and reduces page size
-- **Get an SMS summary** — a ≤160-character version, plus a mock SMS conversation
+- **Get an SMS summary** — a mock SMS conversation
 - **Read clear next steps** — who to ask, who to report to, where to learn more
 
 ---
@@ -94,7 +93,7 @@ The LLM prompt explicitly forbids invention: if something is not in the document
 | Constraint | How Wajibu meets it |
 |---|---|
 | **Trust & verification** | Every summary and red flag carries a source citation. "Show original text" reveals the passage it was based on. The prompt forbids invention. |
-| **Low bandwidth** | Text-only mode strips visuals. SMS preview shows the ≤160-character summary a feature-phone user receives. Offline app shell via service worker. |
+| **Low bandwidth** | Documents are parsed locally and analyses are cached on-device, revisiting the same PDF loads instantly with no extra request. The service worker keeps the app shell offline-capable, and the SMS preview gives feature-phone users a ≤160-character summary.|
 | **Accessibility** | WCAG-aware semantics, skip-to-content link, three text sizes, keyboard-navigable, high contrast in both themes. |
 | **Privacy** | No login to read. No tracking. Uploaded PDFs are parsed in the browser — only extracted text reaches the server. Queries are not tied to identity. |
 | **Multilingual access** | Swahili + English today. Kikuyu on the roadmap. |
@@ -126,11 +125,11 @@ Open http://localhost:5173
 
 ## Sample Documents
 
-Real Nyeri County documents used in the demo are in `public/samples/`:
+Real Nyeri County documents used in the demo are in `public/samples/` — all three are tenders:
 
-- NYEWASCO Tender Notice
-- Nyeri County Finance Bill 2025 (Simplified)
-- Nyeri Irrigation Project Tender
+- **NYEWASCO Supply of Water Meters** ([PDF](public/samples/Nyewasco-supply-of-Water-meters.pdf)) — a Nyeri Water & Sewerage Company tender for the supply of water meters
+- **Nyeri County Sports Facilities Tender** ([PDF](public/samples/Nyeri-Sports-Tender.pdf)) — for the construction or upgrading of sports facilities
+- **Nyeri Youth Group Tender** ([PDF](public/samples/Nyeri-Youth-Tender.pdf)) — with eligibility reserved for youth groups
 
 All are publicly available. Wajibu does not host or redistribute anything that is not already public.
 
@@ -148,14 +147,15 @@ This is an **invention sprint proof of concept**, not a production product.
 
 ## Originality
 
-The idea, problem framing, and design of Wajibu are the author's own. AI development tools (Google Gemini for the app's summarisation, and AI coding assistants for development) were used to support the build, as permitted by the hackathon rules. No AI tool generated the core concept.
+Wajibu comes from lived experience. Growing up in Nyeri County, the author saw firsthand how county tender notices and budget documents — though publicly available — remained unreadable to the very people they were meant to serve: small suppliers, youth, and ordinary residents. That observation, not an AI tool, is the origin of the project's problem framing and design.
+
+AI development tools (Google Gemini for summarisation, AI coding assistants for development) supported the build only, as permitted by the hackathon rules. The core concept is the author's own.
 
 ---
 
 ## Roadmap
 
 - [ ] Multiple language support
-- [ ] SMS/USSD interface for low-bandwidth users
 - [ ] Direct integration with `tenders.go.ke` and county websites
 - [ ] Community verification layer (citizens flag and confirm summaries)
 - [ ] Pilot with one county assembly
