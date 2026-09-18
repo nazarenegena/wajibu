@@ -43,11 +43,11 @@
 4. Toggle to **Swahili** — the whole page switches language
 5. Tap **"Framework Contract"** in the jargon buster — plain meaning pops up
 6. Scroll to the **red flag** — short deadline, with the source quote shown
-7. Click **"Text-only mode"** — visuals strip away, layout simplifies
+7. Click **"Re-analyse"** — the results return instantly from the on-device cache
 8. Open the **SMS preview** — show the ≤160-character summary and the SMS chat mock
 
 **Voiceover:**
-> "Every claim cites the source. Every technical term is explained. Every red flag points back to the exact line in the document. And for slow connections or feature phones — a text-only mode, and an SMS summary that fits in a hundred and sixty characters."
+> "Every claim cites the source. Every technical term is explained. Every red flag points back to the exact line in the document. And every analysis is cached on-device — re-opening the same tender is instant, even on a slow connection. For feature phones, an SMS summary that fits in a hundred and sixty characters."
 
 ---
 
@@ -77,7 +77,7 @@
 - [ ] Browser in a clean window — no bookmarks bar, no extra tabs, no notifications
 - [ ] System theme set to whichever mode you want to demo (dark is more striking)
 - [ ] Font size set to "base" before recording
-- [ ] Text-only mode OFF before recording
+- [ ] Reload the page before recording so the on-device cache is warm
 - [ ] Zoom level at 100% so text is readable at 1080p
 - [ ] Cursor visible and slow — don't flick between elements
 

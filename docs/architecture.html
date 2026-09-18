@@ -10,152 +10,168 @@
     --ink: #15281f;
     --muted: #5c6b63;
     --green: #0f5132;
+    --green-strong: #0a3a24;
     --green-soft: #e7efea;
     --border: #dde3de;
     --card: #ffffff;
     --chip: #f1f4f2;
+    --shadow: 0 1px 2px rgba(15, 81, 50, 0.05), 0 10px 28px -14px rgba(15, 81, 50, 0.18);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { -webkit-font-smoothing: antialiased; }
   body {
     font-family: "Geist Variable", Geist, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background: var(--bg);
+    background:
+      radial-gradient(1100px 700px at 50% -5%, rgba(15, 81, 50, 0.08), transparent 62%),
+      linear-gradient(180deg, #fcfbf8 0%, #f6f7f3 100%);
     color: var(--ink);
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: center;
   }
   .stage {
-    width: 1920px;
-    padding: 46px 56px 40px;
+    width: 100%;
+    max-width: 1040px;
+    padding: 44px 32px 52px;
   }
 
   /* ---------- header ---------- */
-  header { display: flex; align-items: baseline; justify-content: space-between; padding-bottom: 28px; border-bottom: 1px solid var(--border); }
-  .brand { display: flex; align-items: baseline; gap: 14px; }
+  header { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; padding-bottom: 26px; border-bottom: 1px solid var(--border); }
+  .brand { display: flex; align-items: baseline; gap: 14px; flex: none; }
   .wordmark { font-size: 22px; font-weight: 650; letter-spacing: 0.02em; color: var(--green); }
   .wordmark::after { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--green); margin-left: 7px; vertical-align: 2px; }
-  .title { font-size: 28px; font-weight: 650; letter-spacing: -0.01em; }
-  .subhead { text-align: right; font-size: 12.5px; color: var(--muted); line-height: 1.5; max-width: 430px; }
+  .title { font-size: 28px; font-weight: 680; letter-spacing: -0.015em; }
+  .subhead { text-align: right; font-size: 13px; color: var(--muted); line-height: 1.5; max-width: 420px; }
 
   /* ---------- flow ---------- */
-  main { margin-top: 44px; }
-  .row-wrap { position: relative; }
-  .row { display: flex; align-items: stretch; gap: 10px; }
-  .connector { flex: 0 0 36px; width: 36px; height: 14px; align-self: center; color: var(--green); opacity: 0.85; }
+  .flow { margin-top: 38px; display: flex; flex-direction: column; align-items: center; }
 
-  /* ---------- nodes ---------- */
-  .node {
-    flex: 1;
+  /* ---------- step cards ---------- */
+  .card {
+    width: 100%;
+    max-width: 860px;
     background: var(--card);
     border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 22px 20px 20px;
-    min-height: 300px;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 1px 2px rgba(15, 81, 50, 0.05);
+    border-radius: 18px;
+    padding: 36px 24px 20px;
+    box-shadow: var(--shadow);
+    position: relative;
   }
-  .node .kicker {
-    font-size: 10.5px;
-    font-weight: 600;
-    letter-spacing: 0.13em;
-    text-transform: uppercase;
-    color: var(--green);
-    margin-bottom: 14px;
+  .step-no {
+    position: absolute;
+    top: -15px;
+    left: 22px;
+    width: 46px;
+    height: 46px;
+    border-radius: 13px;
+    background: linear-gradient(160deg, #15603f, #0a3a24);
+    color: #fff;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    display: grid;
+    place-items: center;
+    box-shadow: 0 8px 18px -8px rgba(15, 81, 50, 0.6);
   }
-  .node .name { display: flex; align-items: center; gap: 9px; font-size: 19px; font-weight: 650; margin-bottom: 9px; line-height: 1.25; }
-  .node .ni { width: 21px; height: 21px; flex: none; color: var(--green); }
-  .node .desc { font-size: 12.5px; color: var(--muted); line-height: 1.55; margin-bottom: 14px; }
-  .node .pills { margin-top: auto; display: flex; flex-wrap: wrap; gap: 6px; }
-  .pill {
+  .card-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .kicker { font-size: 11px; font-weight: 660; letter-spacing: 0.14em; text-transform: uppercase; color: var(--green); }
+  .zone {
+    flex: none;
     font-size: 11px;
-    font-weight: 550;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--muted);
+    background: var(--chip);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 4px 11px;
+    white-space: nowrap;
+  }
+  .name { display: flex; align-items: center; gap: 10px; font-size: 20px; font-weight: 680; line-height: 1.25; letter-spacing: -0.01em; }
+  .ni { width: 22px; height: 22px; flex: none; color: var(--green); }
+  .desc { font-size: 13.5px; color: var(--muted); line-height: 1.6; margin-top: 8px; }
+  .desc code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 12px;
+    color: var(--green);
+    background: var(--chip);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1px 6px;
+  }
+  .pills { margin-top: 15px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .pill {
+    font-size: 11.5px;
+    font-weight: 560;
     letter-spacing: 0.02em;
     color: var(--green);
     background: var(--chip);
     border: 1px solid var(--border);
     border-radius: 999px;
-    padding: 4px 10px;
+    padding: 4px 11px;
     white-space: nowrap;
   }
   .pill.dark { color: var(--card); background: var(--green); border-color: var(--green); }
-  .node.final { border-style: dashed; border-width: 2px; border-color: var(--green); background: var(--green-soft); }
-  .node.final .kicker { color: var(--green); }
   .chips { display: flex; flex-wrap: wrap; gap: 6px; }
-  .node.final .pill { color: var(--green); background: var(--card); border-color: rgba(15, 81, 50, 0.25); }
+
+  /* ---------- flow arrows ---------- */
+  .flow-arrow { width: 40px; height: 40px; color: var(--green); opacity: 0.85; flex: none; margin: 4px 0 2px; }
 
   /* ---------- privacy boundary ---------- */
   .privacy {
-    position: absolute;
-    top: -14px;
-    bottom: -14px;
-    left: 28.14%;
-    width: 0;
-    border-left: 2px dashed var(--green);
-    opacity: 0.85;
-  }
-
-  /* ---------- captions below the row ---------- */
-  .zone { position: relative; height: 168px; margin-top: 52px; }
-  .stem {
-    position: absolute;
-    top: 0;
-    left: 28.14%;
-    height: 20px;
-    width: 0;
-    border-left: 2px dashed var(--green);
-    opacity: 0.85;
-  }
-  .privacy-label {
-    position: absolute;
-    top: 24px;
-    left: 28.14%;
-    transform: translateX(-50%);
-    width: 292px;
+    width: 100%;
+    margin: 8px 0;
+    padding: 26px 28px 24px;
     text-align: center;
-    font-size: 12px;
+    background: linear-gradient(180deg, #eef5ef 0%, #e6eee9 100%);
+    border: 2px dashed rgba(15, 81, 50, 0.45);
+    border-radius: 18px;
+    position: relative;
+  }
+  .privacy .lock {
+    width: 46px;
+    height: 46px;
+    margin: 0 auto 8px;
+    border-radius: 50%;
+    background: var(--card);
+    border: 1px solid rgba(15, 81, 50, 0.2);
+    box-shadow: 0 6px 14px -8px rgba(15, 81, 50, 0.4);
+    display: grid;
+    place-items: center;
     color: var(--green);
-    font-weight: 600;
-    line-height: 1.5;
-    padding: 11px 14px;
-    background: var(--bg);
-    border: 1px solid rgba(15, 81, 50, 0.25);
-    border-radius: 10px;
   }
-  .privacy-label::before {
-    content: "";
-    display: block;
-    width: 15px; height: 15px;
-    margin: 0 auto 7px;
-    background: var(--green);
-    -webkit-mask: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='5' y='11' width='14' height='9' rx='2'/%3E%3Cpath d='M8 11V8a4 4 0 0 1 8 0v3'/%3E%3C/svg%3E") center/contain no-repeat;
-    mask: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='5' y='11' width='14' height='9' rx='2'/%3E%3Cpath d='M8 11V8a4 4 0 0 1 8 0v3'/%3E%3C/svg%3E") center/contain no-repeat;
-  }
-  .privacy-label span { display: block; }
+  .privacy .lock svg { width: 22px; height: 22px; }
+  .privacy .p-title { font-size: 16.5px; font-weight: 680; letter-spacing: -0.01em; color: var(--green-strong); }
+  .privacy .p-sub { font-size: 12.5px; color: var(--muted); margin-top: 4px; }
+  .privacy .p-sub b { color: var(--green); font-weight: 640; }
 
+  /* ---------- final card ---------- */
+  .card.final { border-style: dashed; border-width: 2px; border-color: var(--green); background: linear-gradient(180deg, #fbfdfb, var(--green-soft)); }
+  .card.final .name { font-size: 21px; }
+  .card.final .pills, .card.final .chips { margin-top: 15px; }
+  .card.final .pill { color: var(--green); background: var(--card); border-color: rgba(15, 81, 50, 0.25); }
+
+  /* ---------- trust layer ---------- */
   .trust {
-    position: absolute;
-    top: 24px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 360px;
+    width: 100%;
+    max-width: 860px;
+    margin-top: 26px;
     text-align: center;
-    font-size: 12.5px;
+    font-size: 13px;
     color: var(--muted);
-    line-height: 1.55;
+    line-height: 1.6;
     background: var(--card);
     border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px 16px;
+    border-radius: 14px;
+    padding: 15px 18px;
     box-shadow: 0 1px 2px rgba(15, 81, 50, 0.04);
   }
-  .trust .tk { font-size: 10.5px; font-weight: 650; letter-spacing: 0.13em; text-transform: uppercase; color: var(--green); display: block; margin-bottom: 6px; }
-  .trust strong { color: var(--ink); font-weight: 600; }
+  .trust .tk { font-size: 10.5px; font-weight: 660; letter-spacing: 0.14em; text-transform: uppercase; color: var(--green); display: block; margin-bottom: 5px; }
+  .trust strong { color: var(--ink); font-weight: 620; }
 
+  /* ---------- footer ---------- */
   footer {
-    margin-top: 34px;
+    margin-top: 30px;
     padding-top: 18px;
     border-top: 1px solid var(--border);
     text-align: center;
@@ -164,11 +180,20 @@
   }
   footer b { color: var(--green); font-weight: 650; }
 
-  @media (max-width: 1680px) {
-    .stage { transform: scale(0.82); }
+  /* ---------- responsive ---------- */
+  @media (max-width: 720px) {
+    .stage { padding: 26px 16px 34px; }
+    header { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .subhead { text-align: left; }
+    .name { font-size: 18px; }
+    .card { padding: 34px 16px 18px; }
   }
-  @media (max-width: 1360px) {
-    .stage { transform: scale(0.66); }
+
+  /* ---------- print / clean capture ---------- */
+  @media print {
+    body { background: #fff; }
+    .stage { max-width: none; padding: 6mm; }
+    .card, .privacy, .trust { break-inside: avoid; box-shadow: none; }
   }
 </style>
 </head>
@@ -186,123 +211,147 @@
       </div>
     </header>
 
-    <main>
+    <main class="flow">
 
-      <div class="row-wrap">
-        <div class="row">
-
-          <!-- 1. User -->
-          <div class="node">
-            <span class="kicker">Step 1 · Browser</span>
-            <div class="name">
-              <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7.5" r="3.5"/><path d="M4.5 19c.7-3.6 3.9-5.7 7.5-5.7 3.6 0 6.8 2.1 7.5 5.7"/></svg>
-              User
-            </div>
-            <p class="desc">Uploads a PDF or pastes text directly in the browser.</p>
-          </div>
-
-          <svg class="connector" viewBox="0 0 36 14" fill="none" aria-hidden="true"><path d="M34 7H4M8 3L3 7l5 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-
-          <!-- 2. PDF extraction -->
-          <div class="node">
-            <span class="kicker">Step 2 · Browser</span>
-            <div class="name">
-              <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5"/><path d="M8.5 13h7M8.5 16h4.5"/></svg>
-              PDF text extraction
-            </div>
-            <p class="desc">pdfjs-dist parses the PDF locally, on-device. The raw file never leaves the device.</p>
-            <div class="pills"><span class="pill">pdfjs-dist</span></div>
-          </div>
-
-          <svg class="connector" viewBox="0 0 36 14" fill="none" aria-hidden="true"><path d="M34 7H4M8 3L3 7l5 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-
-          <!-- 3. Serverless API -->
-          <div class="node">
-            <span class="kicker">Step 3 · Serverless</span>
-            <div class="name">
-              <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="6" rx="1.5"/><rect x="4" y="14" width="16" height="6" rx="1.5"/><path d="M8 7h.01M8 17h.01"/></svg>
-              Serverless API
-            </div>
-            <p class="desc">Receives only the extracted text at <code>/api/analyse</code> on Vercel.</p>
-            <div class="pills"><span class="pill">Vercel serverless</span></div>
-          </div>
-
-          <svg class="connector" viewBox="0 0 36 14" fill="none" aria-hidden="true"><path d="M34 7H4M8 3L3 7l5 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-
-          <!-- 4. LLM -->
-          <div class="node">
-            <span class="kicker">Step 4 · Model</span>
-            <div class="name">
-              <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l1.7 4.2 4.2 1.7-4.2 1.7L12 15.3l-1.7-4.2-4.2-1.7 4.2-1.7z"/><path d="M18.5 15.5l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg>
-              LLM analysis
-            </div>
-            <p class="desc">Google Gemini (free tier) with a strict prompt that forbids invention.</p>
-            <div class="pills"><span class="pill dark">Google Gemini</span></div>
-          </div>
-
-          <svg class="connector" viewBox="0 0 36 14" fill="none" aria-hidden="true"><path d="M34 7H4M8 3L3 7l5 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-
-          <!-- 5. Structured output -->
-          <div class="node">
-            <span class="kicker">Step 5 · Output</span>
-            <div class="name">
-              <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3c-1.4.2-2.6 1.1-2.6 2.6v2.5c0 1.2-.9 1.8-2.4 1.9 1.5.1 2.4.7 2.4 1.9v2.5c0 1.5 1.2 2.4 2.6 2.6"/><path d="M16 3c1.4.2 2.6 1.1 2.6 2.6v2.5c0 1.2.9 1.8 2.4 1.9-1.5.1-2.4.7-2.4 1.9v2.5c0 1.5-1.2 2.4-2.6 2.6"/></svg>
-              Structured output
-            </div>
-            <p class="desc">One JSON response — summary (EN/SW), key details, jargon terms, red flags with source citations, and next steps.</p>
-          </div>
-
-          <svg class="connector" viewBox="0 0 36 14" fill="none" aria-hidden="true"><path d="M34 7H4M8 3L3 7l5 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-
-          <!-- 6. UI rendering -->
-          <div class="node">
-            <span class="kicker">Step 6 · Frontend</span>
-            <div class="name">
-              <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M9 20h6M12 16v4"/></svg>
-              UI rendering
-            </div>
-            <p class="desc">Renders the structured results — clean, bilingual, accessible.</p>
-            <div class="pills">
-              <span class="pill">Vite</span><span class="pill">React</span><span class="pill">TypeScript</span>
-              <span class="pill">Tailwind CSS</span><span class="pill">shadcn/ui</span>
-            </div>
-          </div>
-
-          <svg class="connector" viewBox="0 0 36 14" fill="none" aria-hidden="true"><path d="M34 7H4M8 3L3 7l5 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-
-          <!-- 7. What the user sees -->
-          <div class="node final">
-            <span class="kicker">Outputs</span>
-            <div class="name">
-              <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12s3.5-6 9-6 9 6 9 6-3.5 6-9 6-9-6-9-6Z"/><circle cx="12" cy="12" r="2.5"/></svg>
-              What the user sees
-            </div>
-            <p class="desc">Everything above, in plain language — plus a mobile SMS preview.</p>
-            <div class="chips">
-              <span class="pill">Summary</span>
-              <span class="pill">Key details</span>
-              <span class="pill">Jargon buster</span>
-              <span class="pill">Red flags</span>
-              <span class="pill">Next steps</span>
-              <span class="pill">SMS preview</span>
-            </div>
-          </div>
-
+      <!-- 1. User -->
+      <article class="card">
+        <span class="step-no" aria-hidden="true">01</span>
+        <div class="card-top">
+          <span class="kicker">Step 01</span>
+          <span class="zone">Browser</span>
         </div>
+        <div class="name">
+          <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7.5" r="3.5"/><path d="M4.5 19c.7-3.6 3.9-5.7 7.5-5.7 3.6 0 6.8 2.1 7.5 5.7"/></svg>
+          User
+        </div>
+        <p class="desc">Uploads a PDF or pastes text directly in the browser.</p>
+      </article>
 
-        <!-- privacy boundary between steps 2 and 3 -->
-        <div class="privacy" aria-hidden="true"></div>
+      <svg class="flow-arrow" viewBox="0 0 40 40" fill="none" aria-hidden="true"><path d="M20 5v24M14 24l6 6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+
+      <!-- 2. PDF extraction -->
+      <article class="card">
+        <span class="step-no" aria-hidden="true">02</span>
+        <div class="card-top">
+          <span class="kicker">Step 02</span>
+          <span class="zone">Browser &middot; On-device</span>
+        </div>
+        <div class="name">
+          <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5"/><path d="M8.5 13h7M8.5 16h4.5"/></svg>
+          PDF text extraction
+        </div>
+        <p class="desc">pdfjs-dist parses the PDF locally, on-device. The raw file never leaves the device.</p>
+        <div class="pills"><span class="pill">pdfjs-dist</span></div>
+      </article>
+
+      <!-- privacy boundary -->
+      <div class="privacy" role="note">
+        <div class="lock" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+        </div>
+        <div class="p-title">Raw PDF never leaves the browser</div>
+        <div class="p-sub">Only extracted text crosses this line — never the file. <b>The privacy boundary.</b></div>
       </div>
 
-      <!-- captions -->
-      <div class="zone">
-        <div class="stem" aria-hidden="true"></div>
-        <div class="privacy-label"><span>raw PDF never leaves the browser</span><span>— only extracted text is sent</span></div>
-        <div class="trust">
-          <span class="tk">Trust layer</span>
-          <strong>Every claim carries a source citation.</strong><br>
-          &ldquo;Show original text&rdquo; reveals the exact source passage.
+      <svg class="flow-arrow" viewBox="0 0 40 40" fill="none" aria-hidden="true"><path d="M20 5v24M14 24l6 6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+
+      <!-- 3. Serverless API -->
+      <article class="card">
+        <span class="step-no" aria-hidden="true">03</span>
+        <div class="card-top">
+          <span class="kicker">Step 03</span>
+          <span class="zone">Serverless</span>
         </div>
+        <div class="name">
+          <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="6" rx="1.5"/><rect x="4" y="14" width="16" height="6" rx="1.5"/><path d="M8 7h.01M8 17h.01"/></svg>
+          Serverless API
+        </div>
+        <p class="desc">Receives only the extracted text at <code>/api/analyse</code> on Vercel.</p>
+        <div class="pills"><span class="pill">Vercel serverless</span></div>
+      </article>
+
+      <svg class="flow-arrow" viewBox="0 0 40 40" fill="none" aria-hidden="true"><path d="M20 5v24M14 24l6 6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+
+      <!-- 4. LLM -->
+      <article class="card">
+        <span class="step-no" aria-hidden="true">04</span>
+        <div class="card-top">
+          <span class="kicker">Step 04</span>
+          <span class="zone">Model</span>
+        </div>
+        <div class="name">
+          <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l1.7 4.2 4.2 1.7-4.2 1.7L12 15.3l-1.7-4.2-4.2-1.7 4.2-1.7z"/><path d="M18.5 15.5l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg>
+          LLM analysis
+        </div>
+        <p class="desc">Google Gemini (free tier) with a strict prompt that forbids invention.</p>
+        <div class="pills"><span class="pill dark">Google Gemini</span></div>
+      </article>
+
+      <svg class="flow-arrow" viewBox="0 0 40 40" fill="none" aria-hidden="true"><path d="M20 5v24M14 24l6 6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+
+      <!-- 5. Structured output -->
+      <article class="card">
+        <span class="step-no" aria-hidden="true">05</span>
+        <div class="card-top">
+          <span class="kicker">Step 05</span>
+          <span class="zone">LLM output</span>
+        </div>
+        <div class="name">
+          <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3c-1.4.2-2.6 1.1-2.6 2.6v2.5c0 1.2-.9 1.8-2.4 1.9 1.5.1 2.4.7 2.4 1.9v2.5c0 1.5 1.2 2.4 2.6 2.6"/><path d="M16 3c1.4.2 2.6 1.1 2.6 2.6v2.5c0 1.2.9 1.8 2.4 1.9-1.5.1-2.4.7-2.4 1.9v2.5c0 1.5-1.2 2.4-2.6 2.6"/></svg>
+          Structured output
+        </div>
+        <p class="desc">One JSON response — summary (EN/SW), key details, jargon terms, red flags with source citations, and next steps.</p>
+      </article>
+
+      <svg class="flow-arrow" viewBox="0 0 40 40" fill="none" aria-hidden="true"><path d="M20 5v24M14 24l6 6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+
+      <!-- 6. UI rendering -->
+      <article class="card">
+        <span class="step-no" aria-hidden="true">06</span>
+        <div class="card-top">
+          <span class="kicker">Step 06</span>
+          <span class="zone">Frontend</span>
+        </div>
+        <div class="name">
+          <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M9 20h6M12 16v4"/></svg>
+          UI rendering
+        </div>
+        <p class="desc">Renders the structured results — clean, bilingual, accessible.</p>
+        <div class="pills">
+          <span class="pill">Vite</span><span class="pill">React</span><span class="pill">TypeScript</span>
+          <span class="pill">Tailwind CSS</span><span class="pill">shadcn/ui</span>
+        </div>
+      </article>
+
+      <svg class="flow-arrow" viewBox="0 0 40 40" fill="none" aria-hidden="true"><path d="M20 5v24M14 24l6 6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+
+      <!-- 7. What the user sees -->
+      <article class="card final">
+        <span class="step-no" aria-hidden="true">07</span>
+        <div class="card-top">
+          <span class="kicker">Outputs</span>
+          <span class="zone">User</span>
+        </div>
+        <div class="name">
+          <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12s3.5-6 9-6 9 6 9 6-3.5 6-9 6-9-6-9-6Z"/><circle cx="12" cy="12" r="2.5"/></svg>
+          What the user sees
+        </div>
+        <p class="desc">Everything above, in plain language — plus a mobile SMS preview.</p>
+        <div class="chips">
+          <span class="pill">Summary</span>
+          <span class="pill">Key details</span>
+          <span class="pill">Jargon buster</span>
+          <span class="pill">Red flags</span>
+          <span class="pill">Next steps</span>
+          <span class="pill">SMS preview</span>
+        </div>
+      </article>
+
+      <!-- trust layer -->
+      <div class="trust">
+        <span class="tk">Trust layer</span>
+        <strong>Every claim carries a source citation.</strong><br>
+        &ldquo;Show original text&rdquo; reveals the exact source passage.
       </div>
 
     </main>

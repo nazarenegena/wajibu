@@ -54,7 +54,7 @@ The hackathon brief asked designs to consider trust, low bandwidth, accessibilit
 | Condition | How Wajibu meets it |
 |---|---|
 | **Trust & verification** | Every summary and red flag carries a source citation. "Show original text" reveals the source passage on demand. The prompt explicitly forbids invention — if something is not in the document, the model says *"Not stated in this document."* |
-| **Low bandwidth** | Text-only mode strips visuals and reduces page size. An SMS preview shows the ≤160-character summary a feature-phone user receives, with a mock conversation showing follow-up. Offline app shell via service worker. |
+| **Low bandwidth** | Documents are parsed locally and every analysis is cached on-device — revisiting the same PDF is instant and makes no extra request. An SMS preview shows the ≤160-character summary a feature-phone user receives, with a mock conversation showing follow-up. Offline app shell via service worker. |
 | **Accessibility** | WCAG-aware semantics, skip-to-content link, three selectable text sizes (standard / large / extra-large), keyboard-navigable, high-contrast in both light and dark themes. |
 | **Privacy** | No login to read. No tracking. PDFs are parsed in the browser — only extracted text reaches the server. Queries are not tied to identity. |
 | **Multilingual access** | Swahili and English at launch, with a persistent toggle. Kikuyu on the roadmap. |
