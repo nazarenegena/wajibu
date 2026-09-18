@@ -47,7 +47,7 @@ export function JargonPopover({ terms }: JargonPopoverProps) {
             open={open}
             onOpenChange={(nextOpen) => toggle(index, nextOpen)}
           >
-            <CollapsibleTrigger className="flex h-auto w-full items-center justify-between rounded-xl border border-border px-4 py-3 text-left font-medium transition-colors outline-none hover:bg-muted focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50">
+            <CollapsibleTrigger className="flex cursor-pointer h-auto w-full items-center justify-between rounded-xl border border-border px-4 py-3 text-left font-medium transition-colors outline-none hover:bg-muted focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50">
               <span>{term.term}</span>
               <ChevronDown
                 className={cn(

@@ -44,7 +44,6 @@ export const en = {
     'Upload a tender or budget PDF, or paste its text. Wajibu will explain it in plain language.',
   analyse_upload: 'Upload PDF',
   analyse_paste: 'Paste text',
-  analyse_eyebrow: 'Start with a document',
   analyse_title_new: 'Make a tender easier to act on.',
   analyse_subtitle_new:
     'Upload a PDF or paste the text of a county tender notice. Wajibu will pull out the details that matter.',
@@ -81,7 +80,7 @@ export const en = {
   result_value: 'Estimated value',
   result_contact: 'Contact',
   result_who_can_apply: 'Who can apply',
-  result_jargon: 'Jargon buster',
+  result_jargon: 'Contract vocabulary',
   result_jargon_hint: 'Tap a term to see it explained in plain language',
   result_jargon_empty: 'No technical terms to explain in this document.',
   result_red_flags: 'Things worth questioning',

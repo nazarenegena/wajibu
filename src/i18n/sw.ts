@@ -46,7 +46,6 @@ export const sw: UiStrings = {
     'Pakia PDF ya zabuni au bajeti, au bandika maandishi yake. Wajibu atayaeleza kwa lugha rahisi.',
   analyse_upload: 'Pakia PDF',
   analyse_paste: 'Bandika maandishi',
-  analyse_eyebrow: 'Anza na hati',
   analyse_title_new: 'Fanya zabuni iwe rahisi kuchukua hatua.',
   analyse_subtitle_new:
     'Pakia PDF au bandika maandishi ya ilani ya zabuni ya kaunti. Wajibu atatoa maelezo muhimu.',

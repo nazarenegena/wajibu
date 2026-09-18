@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import {
-  ArrowRight,
   Eraser,
   Upload,
   X,
@@ -137,9 +136,6 @@ export function Analyse() {
     return (
       <div className="mx-auto max-w-3xl px-5 py-16 lg:px-8 lg:py-24">
         <div className="mb-10">
-          <p className="text-sm font-medium text-primary">
-            {t("analyse_eyebrow")}
-          </p>
           <h1 className="mt-2 text-4xl font-semibold tracking-tight sm:text-5xl">
             {t("analyse_title_new")}
           </h1>
@@ -165,9 +161,6 @@ export function Analyse() {
     return (
       <div className="mx-auto max-w-3xl px-5 py-16 lg:px-8 lg:py-24">
         <div className="mb-10">
-          <p className="text-sm font-medium text-primary">
-            {t("analyse_eyebrow")}
-          </p>
           <h1 className="mt-2 text-4xl font-semibold tracking-tight sm:text-5xl">
             {t("analyse_title_new")}
           </h1>
@@ -183,9 +176,6 @@ export function Analyse() {
   return (
     <div className="mx-auto max-w-3xl px-5 py-16 lg:px-8 lg:py-24">
       <div className="mb-10">
-        <p className="text-sm font-medium text-primary">
-          {t("analyse_eyebrow")}
-        </p>
         <h1 className="mt-2 text-4xl font-semibold tracking-tight sm:text-5xl">
           {t("analyse_title_new")}
         </h1>
@@ -248,12 +238,12 @@ export function Analyse() {
                 type="button"
                 variant="ghost"
                 size="sm"
-                className="h-7 gap-1 px-2 text-xs text-muted-foreground"
+                className="h-7 gap-1 px-2 text-xs text-muted-foreground cursor-pointer"
                 onClick={clearText}
               >
                 <Eraser className="size-3.5" />
                 {t("analyse_clear")}
-                <X className="size-3" />
+                <X className="size-3 " />
               </Button>
             </div>
           ) : null}
@@ -281,12 +271,12 @@ export function Analyse() {
 
         <Button
           size="lg"
-          className="h-12"
+          className="h-12 cursor-pointer"
           disabled={!canAnalyse}
           onClick={runAnalysis}
         >
           {t("analyse_action")}
-          <ArrowRight className="ml-2 size-4" />
+
         </Button>
       </div>
     </div>

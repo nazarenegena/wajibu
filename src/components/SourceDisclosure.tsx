@@ -57,7 +57,7 @@ export function SourceDisclosure({
     <Collapsible open={open} onOpenChange={setOpen}>
       <CollapsibleTrigger
         className={cn(
-          "group inline-flex items-center gap-1.5 text-sm outline-none focus-visible:ring-3 focus-visible:ring-ring/50 rounded-sm",
+          "group cursor-pointer inline-flex items-center gap-1.5 text-sm outline-none focus-visible:ring-3 focus-visible:ring-ring/50 rounded-sm",
           variant === "on-primary"
             ? "text-primary-foreground/70 hover:text-primary-foreground"
             : "text-muted-foreground hover:text-foreground"
