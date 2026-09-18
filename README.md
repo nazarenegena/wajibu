@@ -68,6 +68,14 @@ The LLM prompt explicitly forbids invention: if something is not in the document
 
 ---
 
+flowchart LR
+    A[User<br/>uploads PDF or pastes text] --> B[Browser-side PDF extraction<br/>pdfjs-dist]
+    B -.->|raw PDF never leaves browser<br/>only extracted text sent| C[Serverless API<br/>/api/analyse on Vercel]
+    C --> D[Google Gemini<br/>strict no-invention prompt]
+    D --> E[Structured JSON<br/>summary · details · jargon · red flags · next steps]
+    E --> F[UI rendering<br/>Vite + React + TypeScript<br/>Tailwind + shadcn/ui]
+    F --> G[User sees:<br/>summary EN/SW · key details<br/>jargon buster · red flags<br/>next steps · SMS preview]
+
 ## What You Can Do in the App
 
 - **Analyse a document** — upload a PDF or paste text

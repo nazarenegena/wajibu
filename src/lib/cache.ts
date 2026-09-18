@@ -2,7 +2,7 @@ import type { WajibuResult } from './types';
 
 const PREFIX = 'wajibu-cache:v2:';
 const TTL_MS = 7 * 24 * 60 * 60 * 1000;
-const MAX_ENTRIES = 50;
+const MAX_ENTRIES = 200; // keep in sync with CACHE_CAPACITY in api/analyse.ts
 
 interface CacheEntry {
   at: number;
