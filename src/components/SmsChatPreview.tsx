@@ -1,4 +1,3 @@
-import { Leaf } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
 
 interface SmsChatMessage {
@@ -18,9 +17,14 @@ function MessageBubble({ role, label, text }: MessageBubbleProps) {
     return (
       <div className="max-w-[85%] self-start rounded-2xl rounded-bl-md bg-[hsl(152_15%_16%)] px-4 py-3 text-sm leading-relaxed text-white">
         {label ? (
-          <p className="mb-1 text-xs font-medium text-[hsl(152_45%_55%)]">
-            {label}
-          </p>
+          <span
+            className="mb-1 inline-flex h-4 w-4 items-center justify-center rounded-[4px] bg-[hsl(152_45%_55%)]"
+            aria-hidden="true"
+          >
+            <span className="text-[9px] font-bold leading-none text-[hsl(152_25%_10%)]">
+              W
+            </span>
+          </span>
         ) : null}
         <p>{text}</p>
       </div>
@@ -44,7 +48,7 @@ interface SmsChatPreviewProps {
   tenderNumber?: string;
 }
 
-const DEFAULT_TENDER_NUMBER = "NYC/TNC/2024-2025/140";
+const DEFAULT_TENDER_NUMBER = "NWSC/FC/001/2026/2028";
 
 export function SmsChatPreview({ messages, tenderNumber }: SmsChatPreviewProps) {
   const { t } = useLanguage();
@@ -85,21 +89,12 @@ export function SmsChatPreview({ messages, tenderNumber }: SmsChatPreviewProps) 
           aria-hidden="true"
         />
 
-        <div className="flex items-center gap-3 border-b border-white/5 pb-4">
-          <div
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[hsl(152_45%_55%)]"
-            aria-hidden="true"
-          >
-            <Leaf className="h-5 w-5 text-[hsl(152_25%_10%)]" />
-          </div>
-          <div className="flex flex-1 flex-col leading-tight">
-            <p className="text-base font-semibold text-white">
-              {t("sms_chat_app_name")}
-            </p>
-            <p className="text-xs text-white/50">{t("sms_chat_subtitle")}</p>
+        <div className="flex items-center justify-between border-b border-white/5 pb-4">
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[hsl(152_45%_55%)]">
+            <span className="text-base font-bold text-[hsl(152_25%_10%)]">W</span>
           </div>
           <div
-            className="h-2 w-2 shrink-0 rounded-full bg-[hsl(152_45%_55%)]"
+            className="h-2 w-2 rounded-full bg-[hsl(152_45%_55%)]"
             aria-hidden="true"
           />
         </div>

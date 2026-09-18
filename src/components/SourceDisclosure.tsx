@@ -8,17 +8,50 @@ import {
 } from "./ui/collapsible";
 
 export interface SourceDisclosureProps {
-  label: string;
+  label?: string;
   passages: string[];
   variant?: "default" | "on-primary";
+  expanded?: boolean;
 }
+
+const labelClass = (variant: "default" | "on-primary") =>
+  cn(
+    "inline-flex items-center gap-1.5 text-sm",
+    variant === "on-primary"
+      ? "text-primary-foreground/70"
+      : "text-muted-foreground"
+  );
+
+const boxClass = (variant: "default" | "on-primary") =>
+  cn(
+    "mt-3 space-y-2 rounded-lg p-3 text-sm leading-relaxed whitespace-pre-wrap break-words",
+    variant === "on-primary"
+      ? "bg-primary-foreground/95 text-primary ring-1 ring-ring/10"
+      : "bg-muted text-muted-foreground"
+  );
 
 export function SourceDisclosure({
   label,
   passages,
   variant = "default",
+  expanded = false,
 }: SourceDisclosureProps) {
   const [open, setOpen] = useState(false);
+
+  if (expanded) {
+    return (
+      <div className="flex flex-col">
+        <span className={labelClass(variant)}>
+          {label}
+        </span>
+        <div className={boxClass(variant)}>
+          {passages.map((passage, index) => (
+            <p key={index}>{passage}</p>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <Collapsible open={open} onOpenChange={setOpen}>
@@ -41,16 +74,10 @@ export function SourceDisclosure({
           )}
           aria-hidden
         />
+
       </CollapsibleTrigger>
       <CollapsibleContent className="overflow-hidden">
-        <div
-          className={cn(
-            "mt-3 space-y-2 rounded-lg p-3 text-sm leading-relaxed whitespace-pre-wrap break-words",
-            variant === "on-primary"
-              ? "bg-primary-foreground/95 text-primary ring-1 ring-ring/10"
-              : "bg-muted text-muted-foreground"
-          )}
-        >
+        <div className={boxClass(variant)}>
           {passages.map((passage, index) => (
             <p key={index}>{passage}</p>
           ))}

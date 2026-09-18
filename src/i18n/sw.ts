@@ -18,14 +18,13 @@ export const sw: UiStrings = {
   home_hero_body:
     'Elewa zabuni za Kaunti ya Nyeri kwa Kiswahili rahisi au Kiingereza. Wajibu anageuza nyaraka ngumu za umma kuwa taarifa muhimu na zinazoweza kutekelezwa.',
   home_no_account: 'Hakuna akaunti inayohitajika. Hati zako zinabaki zako.',
-  home_mock_file: 'Ilani ya zabuni.pdf',
+  home_mock_file: 'Nyewasco-supply-of-Water-meters.pdf',
   home_mock_uploaded: 'Imepakiwa muda mfupi uliopita',
   home_mock_analysed: 'Imechambuliwa',
-  home_mock_plain_lang: 'Kwa lugha rahisi',
+  home_mock_plain_lang: 'Muhtasari',
   home_mock_blurb:
-    'Kaunti ya Nyeri inatafuta biashara iliyosajiliwa kusambaza vifaa vya matibabu.',
-  home_mock_deadline: '18 Okt 2024',
-  home_mock_value: 'KES 12.5M',
+    'Kampuni ya maji na maji taka ya Nyeri inatafuta biashara iliyosajiliwa kusambaza mita za maji.',
+  home_mock_deadline: '29 Mei 2026',
   samples_eyebrow: 'Jaribu mfano halisi',
   samples_h2: 'Chunguza zabuni za mfano',
   samples_desc:
@@ -87,14 +86,6 @@ export const sw: UiStrings = {
   result_value: 'Makadirio ya thamani',
   result_contact: 'Mawasiliano',
   result_who_can_apply: 'Nani anaweza kuomba',
-  result_category_prompt: 'Mimi ni:',
-  result_category_open: 'Funguliwa kwa kila mtu',
-  result_category_youth: 'Kijana (miaka 18–35)',
-  result_category_women: 'Biashara inayoongozwa na mwanamke',
-  result_category_plwd: 'Mtu mwenye ulemavu',
-  result_eligible: 'Huenda unastahiki',
-  result_not_eligible: 'Huenda huna sifa',
-  result_unclear: 'Haijaainishwa wazi — angalia muhtasari',
   result_jargon: 'Kueleza maneno magumu',
   result_jargon_hint: 'Bofya neno litajwe kwa lugha rahisi',
   result_jargon_empty: 'Hakuna maneno ya kiufundi ya kuelezewa kwenye hati hii.',
@@ -106,7 +97,7 @@ export const sw: UiStrings = {
   result_next_steps: 'Hatua zako zijazo',
   result_next_steps_empty:
     'Hakuna hatua zilizowazi zilizotambuliwa kwa hati hii.',
-  result_plain_lang: 'Kwa lugha rahisi',
+  result_plain_lang: 'Muhtasari',
   result_back: 'Rudi kwa mifano',
   result_complete: 'Uchambuzi umekamilika',
   result_status: 'Hali',
@@ -148,12 +139,12 @@ export const sw: UiStrings = {
   sms_chat_date: 'Leo · 10:42 asubuhi',
   sms_chat_placeholder: 'Jibu kwa swali',
   sms_chat_msg1:
-    'Zabuni: Vifaa vya matibabu kwa vituo vya afya vya Nyeri.',
+    'Ugavi na uwasilishaji wa mita za maji kwa NYEWASCO.',
   sms_chat_msg2:
-    'Omba ikiwa biashara yako imesajiliwa, inatii ushuru, na imewahi kusambaza vifaa kama hivi hapo awali.',
+    'Omba ikiwa biashara yako imesajiliwa, inatii ushuru, na imewahi kusambaza mita za maji au bidhaa kama hizo hapo awali.',
   sms_chat_msg3:
-    'Tarehe ya mwisho: 18 Okt 2024 saa 11:00 asubuhi. Thamani ya zabuni: KES 12.5M.',
+    'Tarehe ya mwisho: 29 Mei 2026 saa 11:00 asubuhi. Rejea ya zabuni: NWSC/FC/001/2026/2028.',
   sms_chat_question: 'Ninapaswa kuchunga nini?',
   sms_chat_msg4:
-    'Jumuisha dhamana ya zabuni ya asilimia 2 na wasilisha nakala za karatasi na za kielektroniki.',
+    'Wasilisha nakala za karatasi kabla ya tarehe ya mwisho. Zabuni zilizochelewa au za kielektroniki hazitakubaliwa.',
 };

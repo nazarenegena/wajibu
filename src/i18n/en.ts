@@ -16,14 +16,13 @@ export const en = {
   home_hero_body:
     'Understand Nyeri County tenders in plain Swahili or English. Wajibu turns complex public documents into useful, actionable information.',
   home_no_account: 'No account needed. Your documents stay yours.',
-  home_mock_file: 'Tender notice.pdf',
+  home_mock_file: 'Nyewasco-supply-of-Water-meters.pdf',
   home_mock_uploaded: 'Uploaded just now',
   home_mock_analysed: 'Analysed',
   home_mock_plain_lang: 'In plain language',
   home_mock_blurb:
-    'Nyeri County is looking for a registered business to supply medical equipment.',
-  home_mock_deadline: '18 Oct 2024',
-  home_mock_value: 'KES 12.5M',
+    'Nyeri Water & Sewerage Company is looking for a registered business to supply water meters.',
+  home_mock_deadline: '29 May 2026',
   samples_eyebrow: 'Try a real example',
   samples_h2: 'Explore sample tenders',
   samples_desc:
@@ -85,14 +84,6 @@ export const en = {
   result_value: 'Estimated value',
   result_contact: 'Contact',
   result_who_can_apply: 'Who can apply',
-  result_category_prompt: 'I am:',
-  result_category_open: 'Open to everyone',
-  result_category_youth: 'A youth (18–35)',
-  result_category_women: 'A women-led business',
-  result_category_plwd: 'A person with disability',
-  result_eligible: 'You may be eligible',
-  result_not_eligible: 'You may not be eligible',
-  result_unclear: 'Not clearly stated — check the summary',
   result_jargon: 'Jargon buster',
   result_jargon_hint: 'Tap a term to see it explained in plain language',
   result_jargon_empty: 'No technical terms to explain in this document.',
@@ -105,7 +96,7 @@ export const en = {
   result_next_steps: 'Your next steps',
   result_next_steps_empty:
     'No clear next steps were identified for this document.',
-  result_plain_lang: 'In plain language',
+  result_plain_lang: 'Overview',
   result_back: 'Back to samples',
   result_complete: 'Analysis complete',
   result_status: 'Status',
@@ -146,14 +137,14 @@ export const en = {
   sms_chat_subtitle: 'Nyeri County tender',
   sms_chat_date: 'Today · 10:42 AM',
   sms_chat_placeholder: 'Reply with a question',
-  sms_chat_msg1: 'Tender: Medical equipment for Nyeri health facilities.',
+  sms_chat_msg1: 'Supply and delivery of water meters for NYEWASCO.',
   sms_chat_msg2:
-    'Apply if your business is registered, tax compliant, and has supplied similar equipment before.',
+    'Apply if your business is registered, tax compliant, and has supplied water meters or similar goods before.',
   sms_chat_msg3:
-    'Deadline: 18 Oct 2024 at 11:00 AM. Tender value: KES 12.5M.',
+    'Deadline: 29 May 2026 at 11:00 AM. Tender ref: NWSC/FC/001/2026/2028.',
   sms_chat_question: 'What should I watch out for?',
   sms_chat_msg4:
-    'Include 2% bid security and submit both hard and electronic copies.',
+    'Submit hard copies before the deadline. Late or electronic tenders are rejected.',
 };
 
 export type UiStrings = typeof en;
