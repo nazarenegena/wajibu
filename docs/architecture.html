@@ -24,11 +24,11 @@
     min-height: 100vh;
     display: flex;
     justify-content: center;
+    align-items: center;
   }
   .stage {
-    width: 1640px;
-    padding: 44px 48px 36px;
-    transform-origin: top left;
+    width: 1920px;
+    padding: 46px 56px 40px;
   }
 
   /* ---------- header ---------- */
@@ -37,21 +37,13 @@
   .wordmark { font-size: 22px; font-weight: 650; letter-spacing: 0.02em; color: var(--green); }
   .wordmark::after { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--green); margin-left: 7px; vertical-align: 2px; }
   .title { font-size: 28px; font-weight: 650; letter-spacing: -0.01em; }
-  .subhead { text-align: right; font-size: 12.5px; color: var(--muted); line-height: 1.5; max-width: 360px; }
+  .subhead { text-align: right; font-size: 12.5px; color: var(--muted); line-height: 1.5; max-width: 430px; }
 
-  /* ---------- layout ---------- */
-  main { margin-top: 140px; }
+  /* ---------- flow ---------- */
+  main { margin-top: 44px; }
   .row-wrap { position: relative; }
-  .row { display: flex; align-items: center; gap: 12px; }
-
-  .connector { flex: 0 0 56px; width: 56px; height: 14px; color: var(--green); opacity: 0.85; }
-  .bend {
-    display: block;
-    width: 14px; height: 46px;
-    color: var(--green); opacity: 0.85;
-    margin-left: auto;
-    margin-right: 224px; /* centers the bend under the right-hand node column */
-  }
+  .row { display: flex; align-items: stretch; gap: 10px; }
+  .connector { flex: 0 0 36px; width: 36px; height: 14px; align-self: center; color: var(--green); opacity: 0.85; }
 
   /* ---------- nodes ---------- */
   .node {
@@ -59,8 +51,8 @@
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 14px;
-    padding: 20px 22px 18px;
-    min-height: 176px;
+    padding: 22px 20px 20px;
+    min-height: 300px;
     display: flex;
     flex-direction: column;
     box-shadow: 0 1px 2px rgba(15, 81, 50, 0.05);
@@ -68,17 +60,17 @@
   .node .kicker {
     font-size: 10.5px;
     font-weight: 600;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.13em;
     text-transform: uppercase;
     color: var(--green);
-    margin-bottom: 12px;
+    margin-bottom: 14px;
   }
-  .node .name { display: flex; align-items: center; gap: 9px; font-size: 18.5px; font-weight: 650; margin-bottom: 7px; }
-  .node .ni { width: 20px; height: 20px; flex: none; color: var(--green); }
-  .node .desc { font-size: 13.5px; color: var(--muted); line-height: 1.5; margin-bottom: 14px; }
+  .node .name { display: flex; align-items: center; gap: 9px; font-size: 19px; font-weight: 650; margin-bottom: 9px; line-height: 1.25; }
+  .node .ni { width: 21px; height: 21px; flex: none; color: var(--green); }
+  .node .desc { font-size: 12.5px; color: var(--muted); line-height: 1.55; margin-bottom: 14px; }
   .node .pills { margin-top: auto; display: flex; flex-wrap: wrap; gap: 6px; }
   .pill {
-    font-size: 11.5px;
+    font-size: 11px;
     font-weight: 550;
     letter-spacing: 0.02em;
     color: var(--green);
@@ -88,47 +80,54 @@
     padding: 4px 10px;
     white-space: nowrap;
   }
-  .pill.soft { background: var(--green-soft); border-color: rgba(15, 81, 50, 0.18); }
+  .pill.dark { color: var(--card); background: var(--green); border-color: var(--green); }
+  .node.final { border-style: dashed; border-width: 2px; border-color: var(--green); background: var(--green-soft); }
+  .node.final .kicker { color: var(--green); }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .node.final .pill { color: var(--green); background: var(--card); border-color: rgba(15, 81, 50, 0.25); }
 
   /* ---------- privacy boundary ---------- */
   .privacy {
     position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 67.5%;
+    top: -14px;
+    bottom: -14px;
+    left: 28.14%;
     width: 0;
     border-left: 2px dashed var(--green);
     opacity: 0.85;
   }
+
+  /* ---------- captions below the row ---------- */
+  .zone { position: relative; height: 168px; margin-top: 52px; }
   .stem {
     position: absolute;
-    left: 67.5%;
-    bottom: 100%;
-    height: 22px;
+    top: 0;
+    left: 28.14%;
+    height: 20px;
     width: 0;
     border-left: 2px dashed var(--green);
     opacity: 0.85;
   }
   .privacy-label {
     position: absolute;
-    left: 67.5%;
-    bottom: calc(100% + 22px);
+    top: 24px;
+    left: 28.14%;
     transform: translateX(-50%);
-    width: 264px;
+    width: 292px;
     text-align: center;
     font-size: 12px;
     color: var(--green);
     font-weight: 600;
     line-height: 1.5;
-    padding: 10px 14px;
+    padding: 11px 14px;
     background: var(--bg);
-    border: 1px solid rgba(15, 81, 50, 0.22);
+    border: 1px solid rgba(15, 81, 50, 0.25);
     border-radius: 10px;
   }
   .privacy-label::before {
     content: "";
     display: block;
-    width: 14px; height: 14px;
+    width: 15px; height: 15px;
     margin: 0 auto 7px;
     background: var(--green);
     -webkit-mask: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='5' y='11' width='14' height='9' rx='2'/%3E%3Cpath d='M8 11V8a4 4 0 0 1 8 0v3'/%3E%3C/svg%3E") center/contain no-repeat;
@@ -136,30 +135,27 @@
   }
   .privacy-label span { display: block; }
 
-  /* ---------- callouts under row 2 ---------- */
-  .callouts {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 36px;
-    margin-top: 44px;
-  }
-  .callout {
-    border: 1px solid var(--border);
-    border-radius: 12px;
+  .trust {
+    position: absolute;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 360px;
+    text-align: center;
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.55;
     background: var(--card);
-    padding: 16px 18px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
     box-shadow: 0 1px 2px rgba(15, 81, 50, 0.04);
   }
-  .callout h4 { font-size: 12px; font-weight: 650; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green); margin-bottom: 11px; }
-  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
-  .chips .pill { color: var(--ink); background: var(--chip); }
-  .trust { font-size: 12.5px; color: var(--muted); line-height: 1.55; }
+  .trust .tk { font-size: 10.5px; font-weight: 650; letter-spacing: 0.13em; text-transform: uppercase; color: var(--green); display: block; margin-bottom: 6px; }
   .trust strong { color: var(--ink); font-weight: 600; }
-  .trust p + p { margin-top: 3px; }
-  .jsonnote { font-size: 12.5px; color: var(--muted); line-height: 1.5; align-self: center; text-align: center; padding: 10px 14px; border: 1px dashed var(--border); border-radius: 10px; }
 
   footer {
-    margin-top: 30px;
+    margin-top: 34px;
     padding-top: 18px;
     border-top: 1px solid var(--border);
     text-align: center;
@@ -192,120 +188,120 @@
 
     <main>
 
-      <!-- ============ ROW 1 ============ -->
       <div class="row-wrap">
-      <div class="row">
-        <!-- Step 1: User -->
-        <div class="node">
-          <span class="kicker">Step 1 · Browser</span>
-          <div class="name">
-            <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7.5" r="3.5"/><path d="M4.5 19c.7-3.6 3.9-5.7 7.5-5.7 3.6 0 6.8 2.1 7.5 5.7"/></svg>
-            User
+        <div class="row">
+
+          <!-- 1. User -->
+          <div class="node">
+            <span class="kicker">Step 1 · Browser</span>
+            <div class="name">
+              <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7.5" r="3.5"/><path d="M4.5 19c.7-3.6 3.9-5.7 7.5-5.7 3.6 0 6.8 2.1 7.5 5.7"/></svg>
+              User
+            </div>
+            <p class="desc">Uploads a PDF or pastes text directly in the browser.</p>
           </div>
-          <p class="desc">Uploads a PDF or pastes text into the browser.</p>
+
+          <svg class="connector" viewBox="0 0 36 14" fill="none" aria-hidden="true"><path d="M34 7H4M8 3L3 7l5 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+
+          <!-- 2. PDF extraction -->
+          <div class="node">
+            <span class="kicker">Step 2 · Browser</span>
+            <div class="name">
+              <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5"/><path d="M8.5 13h7M8.5 16h4.5"/></svg>
+              PDF text extraction
+            </div>
+            <p class="desc">pdfjs-dist parses the PDF locally, on-device. The raw file never leaves the device.</p>
+            <div class="pills"><span class="pill">pdfjs-dist</span></div>
+          </div>
+
+          <svg class="connector" viewBox="0 0 36 14" fill="none" aria-hidden="true"><path d="M34 7H4M8 3L3 7l5 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+
+          <!-- 3. Serverless API -->
+          <div class="node">
+            <span class="kicker">Step 3 · Serverless</span>
+            <div class="name">
+              <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="6" rx="1.5"/><rect x="4" y="14" width="16" height="6" rx="1.5"/><path d="M8 7h.01M8 17h.01"/></svg>
+              Serverless API
+            </div>
+            <p class="desc">Receives only the extracted text at <code>/api/analyse</code> on Vercel.</p>
+            <div class="pills"><span class="pill">Vercel serverless</span></div>
+          </div>
+
+          <svg class="connector" viewBox="0 0 36 14" fill="none" aria-hidden="true"><path d="M34 7H4M8 3L3 7l5 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+
+          <!-- 4. LLM -->
+          <div class="node">
+            <span class="kicker">Step 4 · Model</span>
+            <div class="name">
+              <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l1.7 4.2 4.2 1.7-4.2 1.7L12 15.3l-1.7-4.2-4.2-1.7 4.2-1.7z"/><path d="M18.5 15.5l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg>
+              LLM analysis
+            </div>
+            <p class="desc">Google Gemini (free tier) with a strict prompt that forbids invention.</p>
+            <div class="pills"><span class="pill dark">Google Gemini</span></div>
+          </div>
+
+          <svg class="connector" viewBox="0 0 36 14" fill="none" aria-hidden="true"><path d="M34 7H4M8 3L3 7l5 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+
+          <!-- 5. Structured output -->
+          <div class="node">
+            <span class="kicker">Step 5 · Output</span>
+            <div class="name">
+              <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3c-1.4.2-2.6 1.1-2.6 2.6v2.5c0 1.2-.9 1.8-2.4 1.9 1.5.1 2.4.7 2.4 1.9v2.5c0 1.5 1.2 2.4 2.6 2.6"/><path d="M16 3c1.4.2 2.6 1.1 2.6 2.6v2.5c0 1.2.9 1.8 2.4 1.9-1.5.1-2.4.7-2.4 1.9v2.5c0 1.5-1.2 2.4-2.6 2.6"/></svg>
+              Structured output
+            </div>
+            <p class="desc">One JSON response — summary (EN/SW), key details, jargon terms, red flags with source citations, and next steps.</p>
+          </div>
+
+          <svg class="connector" viewBox="0 0 36 14" fill="none" aria-hidden="true"><path d="M34 7H4M8 3L3 7l5 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+
+          <!-- 6. UI rendering -->
+          <div class="node">
+            <span class="kicker">Step 6 · Frontend</span>
+            <div class="name">
+              <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M9 20h6M12 16v4"/></svg>
+              UI rendering
+            </div>
+            <p class="desc">Renders the structured results — clean, bilingual, accessible.</p>
+            <div class="pills">
+              <span class="pill">Vite</span><span class="pill">React</span><span class="pill">TypeScript</span>
+              <span class="pill">Tailwind CSS</span><span class="pill">shadcn/ui</span>
+            </div>
+          </div>
+
+          <svg class="connector" viewBox="0 0 36 14" fill="none" aria-hidden="true"><path d="M34 7H4M8 3L3 7l5 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+
+          <!-- 7. What the user sees -->
+          <div class="node final">
+            <span class="kicker">Outputs</span>
+            <div class="name">
+              <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12s3.5-6 9-6 9 6 9 6-3.5 6-9 6-9-6-9-6Z"/><circle cx="12" cy="12" r="2.5"/></svg>
+              What the user sees
+            </div>
+            <p class="desc">Everything above, in plain language — plus a mobile SMS preview.</p>
+            <div class="chips">
+              <span class="pill">Summary</span>
+              <span class="pill">Key details</span>
+              <span class="pill">Jargon buster</span>
+              <span class="pill">Red flags</span>
+              <span class="pill">Next steps</span>
+              <span class="pill">SMS preview</span>
+            </div>
+          </div>
+
         </div>
 
-        <svg class="connector" viewBox="0 0 56 14" fill="none" aria-hidden="true"><path d="M54 7H4M9 3l-5 4 5 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-
-        <!-- Step 2: PDF extraction -->
-        <div class="node">
-          <span class="kicker">Step 2 · Browser</span>
-          <div class="name">
-            <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5"/><path d="M8.5 13h7M8.5 16h4.5"/></svg>
-            PDF text extraction
-          </div>
-          <p class="desc">pdfjs-dist parses the PDF locally, on-device. The raw file never leaves the device.</p>
-          <div class="pills"><span class="pill">pdfjs-dist</span></div>
-        </div>
-
-        <svg class="connector" viewBox="0 0 56 14" fill="none" aria-hidden="true"><path d="M54 7H4M9 3l-5 4 5 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-
-        <!-- Step 3: Serverless API -->
-        <div class="node">
-          <span class="kicker">Step 3 · Serverless</span>
-          <div class="name">
-            <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="6" rx="1.5"/><rect x="4" y="14" width="16" height="6" rx="1.5"/><path d="M8 7h.01M8 17h.01"/></svg>
-            Serverless API
-          </div>
-          <p class="desc"><code>/api/analyse</code> on Vercel receives only the extracted text.</p>
-          <div class="pills"><span class="pill">Vercel serverless</span></div>
-        </div>
+        <!-- privacy boundary between steps 2 and 3 -->
+        <div class="privacy" aria-hidden="true"></div>
       </div>
 
-      <!-- privacy boundary between step 2 and 3 -->
-      <div class="privacy" aria-hidden="true"></div>
-      <div class="stem" aria-hidden="true"></div>
-      <div class="privacy-label"><span>raw PDF never leaves the browser</span><span>— only extracted text is sent —</span></div>
-      </div>
-
-      <!-- bend arrow: row 1 end -> row 2 start -->
-      <svg class="bend" viewBox="0 0 14 46" fill="none" aria-hidden="true"><path d="M7 2v40M3 36l4 6 4-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-
-      <!-- ============ ROW 2 ============ -->
-      <div class="row">
-        <!-- Step 6: UI rendering (far left) -->
-        <div class="node">
-          <span class="kicker">Step 6 · Frontend</span>
-          <div class="name">
-            <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M9 20h6M12 16v4"/></svg>
-            UI rendering
-          </div>
-          <p class="desc">Displays the structured results — clean, bilingual, accessible.</p>
-          <div class="pills">
-            <span class="pill">Vite</span><span class="pill">React</span><span class="pill">TypeScript</span>
-            <span class="pill">Tailwind CSS</span><span class="pill soft">shadcn/ui</span>
-          </div>
-        </div>
-
-        <svg class="connector" viewBox="0 0 56 14" fill="none" aria-hidden="true"><path d="M2 7h50M47 3l5 4-5 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-
-        <!-- Step 5: Structured JSON (middle) -->
-        <div class="node">
-          <span class="kicker">Step 5 · Output</span>
-          <div class="name">
-            <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3c-1.4.2-2.6 1.1-2.6 2.6v2.5c0 1.2-.9 1.8-2.4 1.9 1.5.1 2.4.7 2.4 1.9v2.5c0 1.5 1.2 2.4 2.6 2.6"/><path d="M16 3c1.4.2 2.6 1.1 2.6 2.6v2.5c0 1.2.9 1.8 2.4 1.9-1.5.1-2.4.7-2.4 1.9v2.5c0 1.5-1.2 2.4-2.6 2.6"/></svg>
-            Structured output
-          </div>
-          <p class="desc">One JSON response: summary (EN/SW), key details, jargon terms, red flags — each with a source citation — plus next steps.</p>
-        </div>
-
-        <svg class="connector" viewBox="0 0 56 14" fill="none" aria-hidden="true"><path d="M2 7h50M47 3l5 4-5 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-
-        <!-- Step 4: LLM (far right) -->
-        <div class="node">
-          <span class="kicker">Step 4 · Model</span>
-          <div class="name">
-            <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l1.7 4.2 4.2 1.7-4.2 1.7L12 15.3l-1.7-4.2-4.2-1.7 4.2-1.7z"/><path d="M18.5 15.5l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg>
-            LLM analysis
-          </div>
-          <p class="desc">Google Gemini (free tier) processes the text with a strict prompt that forbids invention.</p>
-          <div class="pills"><span class="pill soft">Google Gemini</span></div>
-        </div>
-      </div>
-
-      <!-- ============ CALLOUTS ============ -->
-      <div class="callouts">
-        <!-- Outputs users see (under step 6) -->
-        <div class="callout">
-          <h4>Outputs users see</h4>
-          <div class="chips">
-            <span class="pill">Summary</span>
-            <span class="pill">Key details</span>
-            <span class="pill">Jargon buster</span>
-            <span class="pill">Red flags</span>
-            <span class="pill">Next steps</span>
-            <span class="pill">SMS preview</span>
-          </div>
-        </div>
-
-        <!-- note under step 5 -->
-        <div class="jsonnote">One canonical response shape &mdash; localized in English &amp; Kiswahili.</div>
-
-        <!-- Trust layer (under step 4) -->
-        <div class="callout trust">
-          <h4>Trust layer</h4>
-          <p><strong>Every claim carries a source citation.</strong></p>
-          <p>&ldquo;Show original text&rdquo; reveals the exact source passage in the document.</p>
+      <!-- captions -->
+      <div class="zone">
+        <div class="stem" aria-hidden="true"></div>
+        <div class="privacy-label"><span>raw PDF never leaves the browser</span><span>— only extracted text is sent</span></div>
+        <div class="trust">
+          <span class="tk">Trust layer</span>
+          <strong>Every claim carries a source citation.</strong><br>
+          &ldquo;Show original text&rdquo; reveals the exact source passage.
         </div>
       </div>
 
