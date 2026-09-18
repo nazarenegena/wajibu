@@ -2,7 +2,7 @@ export const en = {
   nav_home: 'Home',
   nav_analyse: 'Analyse',
   nav_how_works: 'How it works',
-  header_tagline: 'Public information, made useful.',
+  header_tagline: 'Read it. Understand it. Bid on it.',
   cta_analyse_doc: 'Analyse a document',
   hero_tagline:
     'Understand Nyeri County tenders in plain Swahili or English',
@@ -23,10 +23,7 @@ export const en = {
   home_mock_blurb:
     'Nyeri Water & Sewerage Company is looking for a registered business to supply water meters.',
   home_mock_deadline: '29 May 2026',
-  samples_eyebrow: 'Try a real example',
-  samples_h2: 'Explore sample tenders',
-  samples_desc:
-    'See how Wajibu helps you move from confusing notice to confident next step.',
+  samples_h2: 'Explore uploaded tenders',
   type_open: 'Open tender',
   type_youth: 'Youth reserved',
   type_women: 'Women reserved',
