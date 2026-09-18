@@ -4,7 +4,7 @@ export const sw: UiStrings = {
   nav_home: 'Nyumbani',
   nav_analyse: 'Chambua',
   nav_how_works: 'Inavyofanya kazi',
-  header_tagline: 'Taarifa za umma, zilizofanywa kuwa muhimu.',
+  header_tagline: 'Soma. Elewa. Omba.',
   cta_analyse_doc: 'Chambua hati',
   hero_tagline:
     'Elewa zabuni za Kaunti ya Nyeri kwa Kiswahili rahisi au Kiingereza',
@@ -25,10 +25,7 @@ export const sw: UiStrings = {
   home_mock_blurb:
     'Kampuni ya maji na maji taka ya Nyeri inatafuta biashara iliyosajiliwa kusambaza mita za maji.',
   home_mock_deadline: '29 Mei 2026',
-  samples_eyebrow: 'Jaribu mfano halisi',
   samples_h2: 'Chunguza zabuni za mfano',
-  samples_desc:
-    'Ona jinsi Wajibu anavyokusaidia kutoka ilani ngumu hadi hatua ya uhakika.',
   type_open: 'Zabuni ya wazi',
   type_youth: 'Imehifadhiwa kwa vijana',
   type_women: 'Imehifadhiwa kwa wanawake',

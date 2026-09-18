@@ -109,7 +109,7 @@ export function Home() {
       </section>
 
       <section id="how-it-works" className="scroll-mt-24">
-        <div className="mx-auto max-w-6xl px-5 pb-12 pt-12 lg:px-8">
+        <div className="mx-auto max-w-6xl px-5 py-12 lg:px-8">
           <div className="mb-10 text-center">
             <h2 className="text-3xl font-semibold tracking-tight">
               {t("how_title")}
@@ -167,17 +167,13 @@ export function Home() {
       >
         <div className="mx-auto max-w-6xl px-5 py-12 lg:px-8">
           <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="text-sm font-medium text-primary">
-                {t("samples_eyebrow")}
-              </p>
-              <h2 className="mt-2 text-3xl font-semibold tracking-tight">
+
+
+              <h2 className="w-full text-3xl font-semibold tracking-tight text-center">
                 {t("samples_h2")}
               </h2>
-            </div>
-            <p className="max-w-sm text-sm leading-relaxed text-muted-foreground">
-              {t("samples_desc")}
-            </p>
+
+
           </div>
           <div className="grid gap-4 md:grid-cols-3">
             {samples.map((sample) => (
