@@ -68,13 +68,11 @@ The LLM prompt explicitly forbids invention: if something is not in the document
 
 ---
 
-flowchart LR
-    A[User<br/>uploads PDF or pastes text] --> B[Browser-side PDF extraction<br/>pdfjs-dist]
-    B -.->|raw PDF never leaves browser<br/>only extracted text sent| C[Serverless API<br/>/api/analyse on Vercel]
-    C --> D[Google Gemini<br/>strict no-invention prompt]
-    D --> E[Structured JSON<br/>summary · details · jargon · red flags · next steps]
-    E --> F[UI rendering<br/>Vite + React + TypeScript<br/>Tailwind + shadcn/ui]
-    F --> G[User sees:<br/>summary EN/SW · key details<br/>jargon buster · red flags<br/>next steps · SMS preview]
+## Architecture
+
+![Wajibu system architecture](docs/architecture.png)
+
+*The browser extracts text locally — only extracted text is sent to the serverless API — and Gemini returns a cited analysis that the frontend renders as a summary, key details, jargon buster, red flags, next steps, and an SMS preview.*
 
 ## What You Can Do in the App
 
