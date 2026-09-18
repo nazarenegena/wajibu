@@ -3,7 +3,6 @@ import babel from '@rolldown/plugin-babel'
 import { defineConfig } from 'vite'
 import tailwindcss from '@tailwindcss/vite'
 
-
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
@@ -11,17 +10,14 @@ export default defineConfig({
     babel({ presets: [reactCompilerPreset()] }),
     tailwindcss(),
   ],
-  resolve: {
-      alias: {
-        "@": import.meta.dirname + "/src",
-      },
-  },
   server: {
-     proxy: process.env.VERCEL ? {} : {
-       '/api': {
-         target: 'http://localhost:3000',
-         changeOrigin: true
-       }
-     }
-   }
+    proxy: process.env.VERCEL
+      ? {}
+      : {
+          '/api': {
+            target: 'http://localhost:3000',
+            changeOrigin: true,
+          },
+        },
+  },
 })

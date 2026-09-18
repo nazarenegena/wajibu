@@ -12,6 +12,8 @@ export interface WajibuSample {
   description: Record<Language, string>;
 }
 
+export const MOCK_TENDER_NUMBER = "NWSC/FC/001/2026/2028";
+
 export const samples: WajibuSample[] = [
   {
     id: 'water-meters',

@@ -1,15 +1,8 @@
 import type { UiStrings } from './en';
 
 export const sw: UiStrings = {
-  nav_home: 'Nyumbani',
-  nav_analyse: 'Chambua',
   nav_how_works: 'Inavyofanya kazi',
   header_tagline: 'Soma. Elewa. Omba.',
-  cta_analyse_doc: 'Chambua hati',
-  hero_tagline:
-    'Elewa zabuni za Kaunti ya Nyeri kwa Kiswahili rahisi au Kiingereza',
-  hero_problem:
-    'Zabuni za umma ziko wazi kisheria — lakini kivitendo hazisomeki. Zimeandikwa kwa Kiingereza kigumu cha sheria na ununuzi, huku tarehe za mwisho na sifa za kustahiki zikifichwa ndani ya PDF. Kama huzielewi, huwezi kuomba zabuni, wala huwezi kuhoji jinsi pesa za umma zinavyotumika.',
   cta_analyse: 'Chambua hati',
   cta_sample: 'Tazama mfano',
   home_badge: 'Imejengwa kwa ushiriki wa umma',
@@ -19,9 +12,7 @@ export const sw: UiStrings = {
     'Elewa zabuni za Kaunti ya Nyeri kwa Kiswahili rahisi au Kiingereza. Wajibu anageuza nyaraka ngumu za umma kuwa taarifa muhimu na zinazoweza kutekelezwa.',
   home_no_account: 'Hakuna akaunti inayohitajika. Hati zako zinabaki zako.',
   home_mock_file: 'Nyewasco-supply-of-Water-meters.pdf',
-  home_mock_uploaded: 'Imepakiwa muda mfupi uliopita',
   home_mock_analysed: 'Imechambuliwa',
-  home_mock_plain_lang: 'Muhtasari',
   home_mock_blurb:
     'Kampuni ya maji na maji taka ya Nyeri inatafuta biashara iliyosajiliwa kusambaza mita za maji.',
   home_mock_deadline: '29 Mei 2026',
@@ -31,8 +22,6 @@ export const sw: UiStrings = {
   type_women: 'Imehifadhiwa kwa wanawake',
   type_pwd: 'Imehifadhiwa kwa wenye ulemavu',
   type_agpo: 'AGPO',
-  samples_title: 'Jaribu hati halisi ya Nyeri',
-  samples_hint: 'Chagua moja ili kuiingiza kwenye chombo cha uchambuzi',
   how_title: 'Inavyofanya kazi',
   how_sub: 'Hatua tatu kutoka hati hadi uamuzi.',
   how_1_title: 'Pakia au bandika',
@@ -41,17 +30,12 @@ export const sw: UiStrings = {
   how_2_body: 'Maelezo muhimu, maneno magumu na mambo ya kuhojiwa kwa lugha rahisi.',
   how_3_title: 'Amua na uchukue hatua',
   how_3_body: 'Angalia kama unaweza kustahiki na nini cha kufanya baadaye.',
-  analyse_title: 'Chambua hati',
-  analyse_subtitle:
-    'Pakia PDF ya zabuni au bajeti, au bandika maandishi yake. Wajibu atayaeleza kwa lugha rahisi.',
   analyse_upload: 'Pakia PDF',
-  analyse_paste: 'Bandika maandishi',
   analyse_title_new: 'Fanya zabuni iwe rahisi kuchukua hatua.',
   analyse_subtitle_new:
     'Pakia PDF au bandika maandishi ya ilani ya zabuni ya kaunti. Wajibu atatoa maelezo muhimu.',
   analyse_drop: 'Tupa PDF hapa, au tafuta',
   analyse_drop_hint: 'PDF · hadi MB 10',
-  analyse_or: 'au',
   analyse_or_paste: 'au bandika maandishi',
   output_language: 'Lugha ya matokeo',
   output_hint: 'Unaweza kubadilisha baadaye',
@@ -63,8 +47,6 @@ export const sw: UiStrings = {
   analyse_sample_loaded: 'PDF ya mfano imepakiwa — tayari kuchambua',
   analyse_document_label: 'Hati iliyobandikwa',
   analyse_clear: 'Futa',
-  analyse_min_chars: 'Inahitaji angalau herufi 50',
-  analyse_ready: 'Tayari kuchambua',
   loading_reading: 'Wajibu anasoma hati…',
   loading_seconds: 'Hii inaweza kuchukua sekunde chache.',
   error_title: 'Hitilafu imetokea',
@@ -74,7 +56,6 @@ export const sw: UiStrings = {
     'PDF ya mfano haikuweza kupakiwa. Angalia kwamba faili lipo kwenye public/samples/.',
   error_retry: 'Jaribu tena',
   error_back: 'Rudi',
-  result_summary: 'Muhtasari',
   result_key_details: 'Maelezo muhimu',
   result_tender_number: 'Nambari ya zabuni',
   result_deadline: 'Tarehe ya mwisho',
@@ -85,7 +66,6 @@ export const sw: UiStrings = {
   result_jargon: 'Kueleza maneno magumu',
   result_jargon_hint: 'Bofya neno litajwe kwa lugha rahisi',
   result_jargon_empty: 'Hakuna maneno ya kiufundi ya kuelezewa kwenye hati hii.',
-  result_red_flags: 'Mambo yanayostahili kuhojiwa',
   result_red_flags_title: 'Mambo ya kuhojiwa',
   result_red_flags_hint: 'Si vizingiti, lakini thamani ya kuangalia kabla ya kuomba.',
   result_red_flags_empty:
@@ -110,7 +90,6 @@ export const sw: UiStrings = {
   result_copy_failed: 'Haikuweza kunakiliwa',
   result_sources: 'Vyanzo vya taarifa',
   result_share: 'Shiriki muhtasari huu',
-  result_shared: 'Muhtasari umenakiliwa kwenye clipboard',
   result_analyse_another: 'Chambua hati nyingine',
   result_reanalyse: 'Chambua tena',
   result_reanalysed: 'Imechambuliwa tena kwa maelezo mapya zaidi',
@@ -119,9 +98,6 @@ export const sw: UiStrings = {
     'Huu ni uthibitisho wa dhana. Hatuunganishwi na Serikali ya Kaunti ya Nyeri.',
   footer_right:
     'Imejengwa kwa ushiriki wazi wa umma nchini Kenya.',
-  footer_built:
-    'Imejengwa na Nazarene Gena kwa mashindano ya ubunifu wa teknolojia ya kiraia 2026.',
-  lang_label: 'Lugha',
   text_size: 'Ukubwa wa maandishi',
   text_size_standard: 'Maandishi ya kawaida',
   text_size_large: 'Maandishi makubwa',
@@ -131,7 +107,6 @@ export const sw: UiStrings = {
   sms_from: 'Wajibu',
   sms_chat_you: 'Wewe',
   sms_chat_app_name: 'Taarifa za Wajibu',
-  sms_chat_subtitle: 'Zabuni ya Kaunti ya Nyeri',
   sms_chat_date: 'Leo · 10:42 asubuhi',
   sms_chat_placeholder: 'Jibu kwa swali',
   sms_chat_msg1:

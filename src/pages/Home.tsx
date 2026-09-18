@@ -11,7 +11,7 @@ import {
 import { useLanguage } from "../context/LanguageContext";
 import { TenderCard } from "../components/TenderCard";
 import { Button } from "../components/ui/button";
-import { samples } from "../lib/samples";
+import { MOCK_TENDER_NUMBER, samples } from "../lib/samples";
 
 export function Home() {
   const { t } = useLanguage();
@@ -72,7 +72,6 @@ export function Home() {
                     <p className="text-sm font-medium">
                       {t("home_mock_file")}
                     </p>
-
                   </div>
                 </div>
                 <span className="rounded-full bg-success/10 px-2.5 py-1 text-xs font-medium text-success">
@@ -80,7 +79,6 @@ export function Home() {
                 </span>
               </div>
               <div className="py-6">
-
                 <p className="text-xl font-medium leading-relaxed">
                   {t("home_mock_blurb")}
                 </p>
@@ -99,7 +97,7 @@ export function Home() {
                     {t("result_tender_number")}
                   </p>
                   <p className="mt-1 break-words text-sm font-medium">
-                    NWSC/FC/001/2026/2028
+                    {MOCK_TENDER_NUMBER}
                   </p>
                 </div>
               </div>

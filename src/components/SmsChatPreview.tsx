@@ -1,3 +1,4 @@
+import { MOCK_TENDER_NUMBER } from "../lib/samples";
 import { useLanguage } from "../context/LanguageContext";
 
 interface SmsChatMessage {
@@ -48,13 +49,11 @@ interface SmsChatPreviewProps {
   tenderNumber?: string;
 }
 
-const DEFAULT_TENDER_NUMBER = "NWSC/FC/001/2026/2028";
-
 export function SmsChatPreview({ messages, tenderNumber }: SmsChatPreviewProps) {
   const { t } = useLanguage();
 
   const defaultMessages: SmsChatMessage[] = [
-    { role: "outgoing", label: t("sms_chat_you"), text: tenderNumber ?? DEFAULT_TENDER_NUMBER },
+    { role: "outgoing", label: t("sms_chat_you"), text: tenderNumber ?? MOCK_TENDER_NUMBER },
     { role: "incoming", label: t("sms_from"), text: t("sms_chat_msg1") },
     { role: "incoming", text: t("sms_chat_msg2") },
     { role: "incoming", text: t("sms_chat_msg3") },
