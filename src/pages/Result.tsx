@@ -117,11 +117,18 @@ export function Result() {
           </div>
         </div>
         <div className="flex flex-col gap-2 sm:flex-row">
-          <Button variant="ghost" onClick={reAnalyse} disabled={reanalysing}>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={reAnalyse}
+            disabled={reanalysing}
+            aria-label={t("result_reanalyse")}
+            title={t("result_reanalyse")}
+            className="cursor-pointer"
+          >
             <RotateCcw
-              className={cn("mr-2 size-4", reanalysing && "animate-spin")}
+              className={cn("size-4", reanalysing && "animate-spin")}
             />
-            {t("result_reanalyse")}
           </Button>
           <Button
             variant="outline"
@@ -173,7 +180,7 @@ export function Result() {
           </section>
 
           <section>
-            <div className="mb-4 flex items-end justify-between">
+            <div className="mb-4 flex items-end justify-between ">
               <div>
                 <h2 className="text-lg font-semibold">
                   {t("result_red_flags_title")}
@@ -190,7 +197,7 @@ export function Result() {
           <section className="rounded-2xl border border-border bg-card">
             <button
               type="button"
-              className="flex w-full items-center justify-between rounded-2xl px-6 py-4 text-left font-semibold tracking-tight outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+              className="flex w-full cursor-pointer items-center justify-between rounded-2xl px-6 py-4 text-left font-semibold tracking-tight outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
               onClick={() => setSourcesOpen(!sourcesOpen)}
             >
               <span>{t("result_sources")}</span>
