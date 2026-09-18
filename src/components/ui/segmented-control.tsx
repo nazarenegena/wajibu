@@ -78,7 +78,7 @@ export function SegmentedControl<T extends string>({
       {options.map((option) => {
         const active = value === option.value;
         return (
-          <span
+          <div
             key={option.value}
             className="flex"
             ref={(node) => {
@@ -91,11 +91,11 @@ export function SegmentedControl<T extends string>({
               aria-label={option.ariaLabel}
               onClick={() => onChange(option.value)}
               className={cn(
-                "relative z-10 inline-flex h-7 shrink-0 items-center justify-center rounded-full px-2.5 text-xs font-medium transition-colors outline-none select-none focus-visible:ring-3 focus-visible:ring-ring/50",
+                "relative cursor-pointer z-10 inline-flex h-7 shrink-0 items-center justify-center rounded-full px-2.5 text-xs font-medium transition-colors outline-none select-none focus-visible:ring-3 focus-visible:ring-ring/50",
                 slidingIndicator
                   ? active
-                    ? "text-foreground"
-                    : "text-muted-foreground hover:text-foreground"
+                    ? "text-primary"
+                    : " hover:text-foreground"
                   : active
                     ? "border border-border bg-card text-foreground shadow-sm"
                     : "text-muted-foreground hover:text-foreground"
@@ -103,7 +103,7 @@ export function SegmentedControl<T extends string>({
             >
               {option.label}
             </button>
-          </span>
+          </div>
         );
       })}
     </div>

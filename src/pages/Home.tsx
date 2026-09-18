@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import {
+  ArrowDown,
   ArrowRight,
   ArrowUpRight,
   FileText,
@@ -71,9 +72,7 @@ export function Home() {
                     <p className="text-sm font-medium">
                       {t("home_mock_file")}
                     </p>
-                    <p className="text-xs text-muted-foreground">
-                      {t("home_mock_uploaded")}
-                    </p>
+
                   </div>
                 </div>
                 <span className="rounded-full bg-success/10 px-2.5 py-1 text-xs font-medium text-success">
@@ -81,9 +80,7 @@ export function Home() {
                 </span>
               </div>
               <div className="py-6">
-                <p className="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                  {t("home_mock_plain_lang")}
-                </p>
+
                 <p className="text-xl font-medium leading-relaxed">
                   {t("home_mock_blurb")}
                 </p>
@@ -99,10 +96,10 @@ export function Home() {
                 </div>
                 <div className="rounded-xl bg-muted p-3">
                   <p className="text-xs text-muted-foreground">
-                    {t("result_value")}
+                    {t("result_tender_number")}
                   </p>
-                  <p className="mt-1 text-sm font-medium">
-                    {t("home_mock_value")}
+                  <p className="mt-1 break-words text-sm font-medium">
+                    NWSC/FC/001/2026/2028
                   </p>
                 </div>
               </div>
@@ -119,31 +116,47 @@ export function Home() {
             </h2>
             <p className="mt-3 text-muted-foreground">{t("how_sub")}</p>
           </div>
-          <div className="grid gap-6 sm:grid-cols-3">
-            {[
-              { icon: Loader, title: t("how_1_title"), body: t("how_1_body") },
-              {
-                icon: MessageCircle,
-                title: t("how_2_title"),
-                body: t("how_2_body"),
-              },
-              { icon: Search, title: t("how_3_title"), body: t("how_3_body") },
-            ].map((step) => (
-              <div
-                key={step.title}
-                className="rounded-2xl border border-border bg-card p-6"
-              >
-                <span className="grid size-8 place-items-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">
-                  <step.icon className="size-4" />
-                </span>
-                <h3 className="mt-4 text-base font-semibold">
-                  {step.title}
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  {step.body}
-                </p>
-              </div>
-            ))}
+          <div className="relative">
+            <div className="absolute left-[16.6%] right-[16.6%] top-4 hidden border-t border-dashed border-primary/30 sm:block" />
+            <ArrowRight className="absolute left-[33%] top-1 hidden size-6 -translate-x-1/2 text-primary/70 sm:block" strokeWidth={2.5} />
+            <ArrowRight className="absolute left-[66%] top-1 hidden size-6 -translate-x-1/2 text-primary/70 sm:block" strokeWidth={2.5} />
+            <div className="grid gap-10 sm:grid-cols-3 sm:gap-6">
+              {[
+                { icon: Loader, title: t("how_1_title"), body: t("how_1_body") },
+                {
+                  icon: MessageCircle,
+                  title: t("how_2_title"),
+                  body: t("how_2_body"),
+                },
+                { icon: Search, title: t("how_3_title"), body: t("how_3_body") },
+              ].map((step, index) => (
+                <div
+                  key={step.title}
+                  className="relative flex items-start gap-5 sm:block sm:text-center"
+                >
+                  {index < 2 && (
+                    <>
+                      <div className="absolute left-4 top-4 -bottom-14 w-px border-l border-dashed border-primary/30 sm:hidden" />
+                      <ArrowDown className="absolute left-1 mt-2 top-full size-6 text-primary/70 sm:hidden" strokeWidth={2.5} />
+                    </>
+                  )}
+                  <span className="relative grid size-8 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground sm:mx-auto">
+                    <step.icon className="size-4" />
+                    <span className="absolute -right-1.5 -top-1.5 grid size-5 place-items-center rounded-full border border-border bg-card text-[10px] font-semibold tabular-nums text-muted-foreground">
+                      {index + 1}
+                    </span>
+                  </span>
+                  <div>
+                    <h3 className="mt-0.5 text-base font-semibold sm:mt-4">
+                      {step.title}
+                    </h3>
+                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                      {step.body}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>

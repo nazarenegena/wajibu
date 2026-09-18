@@ -10,7 +10,6 @@ import {
 import { cn } from "cn";
 import { useLanguage } from "../context/LanguageContext";
 import { Button } from "../components/ui/button";
-import { CategorySelect } from "../components/category-select";
 import { JargonPopover } from "../components/JargonPopover";
 import { NextSteps } from "../components/NextSteps";
 import { RedFlagList } from "../components/RedFlagList";
@@ -18,43 +17,12 @@ import { SmsChatPreview } from "../components/SmsChatPreview";
 import { SourceDisclosure } from "../components/SourceDisclosure";
 import { StatusBadge } from "../components/StatusBadge";
 import { analyseDocument } from "../lib/api";
-import {
-  getVerdict,
-  verdictMeta,
-  type CategoryId,
-  type Verdict,
-} from "../lib/eligibility";
 import { toMonolingual } from "../lib/monolingual";
 import { getKeyDetailFields, resolveTenderNumber } from "../lib/normalize";
 import type { WajibuResult, MonolingualResult } from "../lib/types";
 
 interface ResultLocationState {
   result?: WajibuResult;
-}
-
-function InlineVerdict({
-  verdict,
-  className,
-}: {
-  verdict: Verdict;
-  className?: string;
-}) {
-  const { t } = useLanguage();
-  const meta = verdictMeta[verdict];
-  const Icon = meta.icon;
-
-  return (
-    <span
-      className={cn(
-        "inline-flex items-center gap-1.5 text-sm font-medium",
-        meta.className,
-        className
-      )}
-    >
-      <Icon className="size-4" />
-      {t(meta.labelKey)}
-    </span>
-  );
 }
 
 export function Result() {
@@ -67,7 +35,6 @@ export function Result() {
 
   const [current, setCurrent] = useState<WajibuResult | null>(initialResult);
   const [reanalysing, setReanalysing] = useState(false);
-  const [category, setCategory] = useState<CategoryId | null>(null);
   const [sourcesOpen, setSourcesOpen] = useState(false);
 
   const view = useMemo<MonolingualResult | null>(
@@ -103,8 +70,6 @@ export function Result() {
 
   const tenderNumber = resolveTenderNumber(view);
   const langLabel = lang === "sw" ? "Kiswahili" : "English";
-  const hay = `${view.who_can_apply} ${view.key_details.eligibility}`
-    .toLowerCase();
 
   const keyDetailFields = getKeyDetailFields(view, t);
 
@@ -170,20 +135,20 @@ export function Result() {
 
       <div className="grid gap-6 lg:grid-cols-[1.3fr_.7fr]">
         <div className="flex flex-col gap-6">
-          <section className="rounded-2xl bg-primary p-6 text-primary-foreground shadow-lg shadow-primary/10 sm:p-8">
-            <p className="text-sm font-medium text-primary-foreground/70">
+          <section className="space-y-2 rounded-2xl bg-primary p-6 text-primary-foreground shadow-lg shadow-primary/10 sm:p-8 ">
+            <p className="text-lg font-medium text-primary-foreground/70">
               {t("result_plain_lang")}
             </p>
-            <p className="mt-4 text-xl leading-relaxed sm:text-2xl">
+            <p className=" text-xl leading-relaxed sm:text-2xl">
               {view.summary}
             </p>
-            <div className="mt-5">
+
               <SourceDisclosure
                 variant="on-primary"
-                label={t("show_original_text")}
                 passages={view.source_citations.slice(0, 2)}
+                expanded
               />
-            </div>
+
           </section>
 
           <section className="rounded-2xl border border-border bg-card p-6">
@@ -193,12 +158,6 @@ export function Result() {
             <p className="mt-3 leading-relaxed text-muted-foreground">
               {view.who_can_apply}
             </p>
-            <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
-              <CategorySelect value={category} onChange={setCategory} />
-              {category ? (
-                <InlineVerdict verdict={getVerdict(hay, category)} />
-              ) : null}
-            </div>
           </section>
 
           <section className="rounded-2xl border border-border bg-card p-6">
