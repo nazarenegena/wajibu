@@ -1,7 +1,7 @@
 # Project Wajibu — Written Summary
 
 **Track:** Transparency & Accountability
-**Live app:** [wajibu.vercel.app](https://wajibu.vercel.app)
+**Live app:** [wajibu-five.vercel.app](https://wajibu-five.vercel.app)
 **Repository:** [github.com/nazarenegena/wajibu](https://github.com/nazarenegena/wajibu)
 
 ---
@@ -57,7 +57,7 @@ The hackathon brief asked designs to consider trust, low bandwidth, accessibilit
 | **Low bandwidth** | Documents are parsed locally and every analysis is cached on-device — revisiting the same PDF is instant and makes no extra request. An SMS preview shows the ≤160-character summary a feature-phone user receives, with a mock conversation showing follow-up. Offline app shell via service worker. |
 | **Accessibility** | WCAG-aware semantics, skip-to-content link, three selectable text sizes (standard / large / extra-large), keyboard-navigable, high-contrast in both light and dark themes. |
 | **Privacy** | No login to read. No tracking. PDFs are parsed in the browser — only extracted text reaches the server. Queries are not tied to identity. |
-| **Multilingual access** | Swahili and English at launch, with a persistent toggle. Kikuyu on the roadmap. |
+| **Multilingual access** | Swahili and English at launch, with a persistent toggle. Local dialects on the roadmap (Kikuyu first). |
 | **Local relevance** | Real Nyeri County tender and budget documents. Named oversight bodies: Nyeri County Assembly, PPRA, EACC. |
 | **Clear next steps** | Every result ends with named actions: ask your MCA, report to PPRA or EACC, contact the procurement office. |
 
@@ -67,7 +67,7 @@ The hackathon brief asked designs to consider trust, low bandwidth, accessibilit
 
 Access to information is not the same as ability to understand it. Wajibu closes that gap for the documents that most directly affect people's economic and civic lives: tenders and budgets. By making these documents legible in the languages people actually speak, Wajibu can widen tender participation, reduce the sidelining of local and marginalized bidders, and give citizens a practical tool for accountability.
 
-This proof of concept demonstrates the full flow on real Nyeri County documents. The next step is a pilot with one county assembly, followed by SMS/USSD access, Kikuyu language support, and a community verification layer where citizens can flag and confirm summaries.
+This proof of concept demonstrates the full flow on real Nyeri County documents. The next step is a pilot with one county assembly, followed by SMS/USSD access, local dialect support, and a community verification layer where citizens can flag and confirm summaries.
 
 ---
 
