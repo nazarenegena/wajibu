@@ -10,20 +10,6 @@ Wajibu is a civic-tech proof of concept that turns dense Kenyan county tender no
 
 ---
 
-## Submission Materials
-
-Built for the **Andela × Open Society Foundations** civic tech invention sprint (September 2026).
-
-- 🌐 **Live app:** [wajibu.vercel.app](https://wajibu-five.vercel.app/)
-- 📹 **Demo video:** [Watch on YouTube](https://youtu.be/...) *(link to be added)*
-- 📊 **Pitch deck:** [View slides](https://docs.google.com/presentation/...) · [Outline in PITCH-DECK.md](./PITCH-DECK.md)
-- 📝 **Written summary:** [SUMMARY.md](./SUMMARY.md)
-- 🎬 **Demo script:** [DEMO-SCRIPT.md](./DEMO-SCRIPT.md)
-
-**Track:** Transparency & Accountability (cross-track: Stability & Social Cohesion)
-
----
-
 ## The Problem
 
 Public tender notices and county budget documents in Kenya are technically public, but practically unreadable. They are written in dense legal and procurement English, with deadlines and eligibility rules buried deep in PDFs. Most affected residents, including the small suppliers and youth who could bid, cannot decode them.
